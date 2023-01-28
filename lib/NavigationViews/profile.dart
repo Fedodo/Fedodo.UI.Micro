@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  const Profile({Key? key, required this.accessToken}) : super(key: key);
+
+  final String accessToken;
 
   @override
   State<Profile> createState() => _ProfileState();

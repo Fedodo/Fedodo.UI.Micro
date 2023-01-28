@@ -14,13 +14,11 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  List screens = [Home(), Search(), Profile()];
   int currentIndex = 0;
 
-  void createPost() {  }
+  void createPost() {}
 
-  void changeMenu(int index)
-  {
+  void changeMenu(int index) {
     setState(() {
       currentIndex = index;
     });
@@ -28,19 +26,25 @@ class _NavigationState extends State<Navigation> {
 
   @override
   Widget build(BuildContext context) {
+    List screens = [
+      Home(accessToken: widget.accessToken),
+      Search(accessToken: widget.accessToken),
+      Profile(accessToken: widget.accessToken)
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentIndex,
-          onTap: changeMenu,
-          type: BottomNavigationBarType.fixed,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(icon: Icon(Icons.contacts), label: "Profile"),
-          ],
+        currentIndex: currentIndex,
+        onTap: changeMenu,
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.contacts), label: "Profile"),
+        ],
       ),
       body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
