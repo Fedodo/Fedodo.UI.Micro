@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home.dart';
+import 'navigation.dart';
 
 void main() {
   runApp(const FedidoMicro());
@@ -17,7 +17,7 @@ class FedidoMicro extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
       ),
-      home: const Home(title: 'Fedodo Micro'),
+      home: const Navigation(title: 'Fedodo Micro'),
     );
   }
 }
