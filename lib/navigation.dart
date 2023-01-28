@@ -1,6 +1,6 @@
-import 'package:fedido_micro/NavigationViews/home.dart';
-import 'package:fedido_micro/NavigationViews/profile.dart';
-import 'package:fedido_micro/NavigationViews/search.dart';
+import 'package:fedodo_micro/NavigationViews/home.dart';
+import 'package:fedodo_micro/NavigationViews/profile.dart';
+import 'package:fedodo_micro/NavigationViews/search.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
