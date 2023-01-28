@@ -4,9 +4,10 @@ import 'package:fedodo_micro/NavigationViews/search.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
-  const Navigation({super.key, required this.title});
+  const Navigation({super.key, required this.title, required this.accessToken});
 
   final String title;
+  final String accessToken;
 
   @override
   State<Navigation> createState() => _NavigationState();
