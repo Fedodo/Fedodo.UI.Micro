@@ -19,6 +19,6 @@ class InboxProvider {
         });
 
     String jsonString = response.body;
-    OrderedCollection<Post> collection = OrderedCollection.fromJson(jsonDecode(jsonString));
+    OrderedCollection<Post> collection = OrderedCollection<Post>.fromJson(jsonDecode(jsonString));
   }
 }
