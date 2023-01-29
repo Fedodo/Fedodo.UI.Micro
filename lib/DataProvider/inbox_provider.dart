@@ -10,7 +10,7 @@ class InboxProvider {
 
   InboxProvider(this.accessToken);
 
-  void getPosts() async {
+  Future<OrderedCollection<Post>> getPosts() async {
     http.Response response = await http.get(
         Uri.parse(
             "https://dev.fedodo.social/inbox/50e4f154-a329-45d3-9769-7ed3ac1f5ee4"),
@@ -20,5 +20,6 @@ class InboxProvider {
 
     String jsonString = response.body;
     OrderedCollection<Post> collection = OrderedCollection<Post>.fromJson(jsonDecode(jsonString));
+    return collection;
   }
 }

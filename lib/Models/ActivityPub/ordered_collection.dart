@@ -5,7 +5,7 @@ class OrderedCollection<T> {
   final String summary;
   final String type;
   final int totalItems;
-  final List<T>? orderedItems;
+  final List<T> orderedItems;
 
   OrderedCollection(this.context, this.summary, this.type, this.totalItems,
       this.orderedItems);

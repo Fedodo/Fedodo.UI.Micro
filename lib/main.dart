@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:fedodo_micro/DataProvider/application_registration.dart';
 import 'package:fedodo_micro/DataProvider/login_manager.dart';
 import 'package:flutter/material.dart';
-import 'navigation.dart';
+import 'Views/navigation.dart';
 import 'dart:collection';
 import 'package:flutter/material.dart';
 
