@@ -30,6 +30,27 @@ class _HomeState extends State<Home> {
           List<Widget> posts = [];
           for (var element in snapshot.data!.orderedItems){
             posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
+            posts.add(PostView(post: element));
           }
 
           child = ListView(
