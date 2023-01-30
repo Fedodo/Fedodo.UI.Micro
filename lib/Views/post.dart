@@ -48,7 +48,7 @@ class _PostViewState extends State<PostView> {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black45
+                        color: Colors.white54
                       ),
                     ),
                   ],

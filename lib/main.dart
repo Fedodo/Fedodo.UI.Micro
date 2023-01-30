@@ -26,7 +26,24 @@ class _FedodoMicroState extends State<FedodoMicro> {
     return MaterialApp(
       title: 'Fedodo Micro',
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: const Color.fromARGB(68, 2, 229, 218),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          elevation: 5, // Does not seem to do anything
+          backgroundColor: const Color.fromARGB(68, 2, 229, 218),
+          enableFeedback: true,
+        ),
+        appBarTheme: const AppBarTheme(
+            centerTitle: true,
+            elevation: 100,
+            scrolledUnderElevation: 100,
+            shadowColor: Colors.black,
+            titleTextStyle: TextStyle(
+              fontFamily: "RobotoMono",
+              fontSize: 25,
+              fontWeight: FontWeight.w300,
+            )),
       ),
       home: FutureBuilder<String?>(
         future: accessTokenFuture,
