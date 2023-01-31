@@ -30,19 +30,31 @@ class _FedodoMicroState extends State<FedodoMicro> {
         brightness: Brightness.dark,
         colorSchemeSeed: const Color.fromARGB(68, 2, 229, 218),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          elevation: 5, // Does not seem to do anything
-          backgroundColor: const Color.fromARGB(68, 2, 229, 218),
+          // elevation: 5000, // Does not seem to do anything. Oh I see... There is a bug on GitHub
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Color.fromARGB(68, 2, 229, 218),
           enableFeedback: true,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedIconTheme: IconThemeData(
+            size: 30,
+            color: Colors.white,
+          ),
+          unselectedIconTheme: IconThemeData(
+            size: 30,
+            color: Colors.white54,
+          ),
         ),
         appBarTheme: const AppBarTheme(
             centerTitle: true,
-            elevation: 100,
-            scrolledUnderElevation: 100,
+            color: Color.fromARGB(68, 2, 229, 218),
+            elevation: 0.5,
+            scrolledUnderElevation: 0.5,
             shadowColor: Colors.black,
             titleTextStyle: TextStyle(
-              fontFamily: "RobotoMono",
+              fontFamily: "Righteous",
               fontSize: 25,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w100,
             )),
       ),
       home: FutureBuilder<String?>(

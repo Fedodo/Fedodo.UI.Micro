@@ -29,7 +29,8 @@ class _NavigationState extends State<Navigation> {
     List screens = [
       Home(accessToken: widget.accessToken),
       Search(accessToken: widget.accessToken),
-      Profile(accessToken: widget.accessToken)
+      Search(accessToken: widget.accessToken), // TODO
+      Profile(accessToken: widget.accessToken),
     ];
 
     return Scaffold(
@@ -42,6 +43,7 @@ class _NavigationState extends State<Navigation> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifications"),
           BottomNavigationBarItem(icon: Icon(Icons.contacts), label: "Profile"),
         ],
       ),
