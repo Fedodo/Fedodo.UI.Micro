@@ -23,34 +23,18 @@ class _HomeState extends State<Home> {
 
     return FutureBuilder<OrderedCollection<Post>>(
       future: collectionFuture,
-      builder: (BuildContext context, AsyncSnapshot<OrderedCollection<Post>> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<OrderedCollection<Post>> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-
           List<Widget> posts = [];
-          for (var element in snapshot.data!.orderedItems){
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
-            posts.add(PostView(post: element));
+          for (var element in snapshot.data!.orderedItems) {
+            posts.add(
+              PostView(
+                post: element,
+                accessToken: widget.accessToken,
+              ),
+            );
           }
 
           child = ListView(

@@ -1,3 +1,5 @@
+import 'package:fedodo_micro/DataProvider/actor_provider.dart';
+import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -7,9 +9,11 @@ import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart'; // For using CSS
 
 class PostView extends StatefulWidget {
-  const PostView({Key? key, required this.post}) : super(key: key);
+  const PostView({Key? key, required this.post, required this.accessToken})
+      : super(key: key);
 
   final Post post;
+  final String accessToken;
 
   @override
   State<PostView> createState() => _PostViewState();
@@ -19,6 +23,11 @@ class _PostViewState extends State<PostView> {
   @override
   Widget build(BuildContext context) {
     dom.Document document = htmlparser.parse(widget.post.content);
+
+    ActorProvider actorProvider = ActorProvider(widget.accessToken);
+
+    Future<Actor> actorFuture =
+        actorProvider.getActor(widget.post.attributedTo);
 
     return Column(
       children: [
@@ -37,23 +46,45 @@ class _PostViewState extends State<PostView> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "LNA-DEV",
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    Text(
-                      "@lna_dev@mastodon.online",
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white54),
-                    ),
-                  ],
+                child: FutureBuilder<Actor>(
+                  future: actorFuture,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+                    Widget child;
+                    if (snapshot.hasData) {
+                      child = Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snapshot.data!.name!,
+                            style: const TextStyle(fontSize: 17),
+                          ),
+                          Text(
+                            "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}",
+                            style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white54),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      child = const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      );
+                    } else {
+                      child = const SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return child;
+                  },
                 ),
-              )
+              ),
             ],
           ),
         ),
