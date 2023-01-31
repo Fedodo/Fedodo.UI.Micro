@@ -5,7 +5,7 @@ class Post {
   final String? name;
   final String? summary;
   final bool sensitive;
-  final String inReplyTo;
+  final String? inReplyTo;
   final String content;
   final String id;
   final String type;

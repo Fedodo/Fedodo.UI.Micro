@@ -13,7 +13,7 @@ class InboxProvider {
   Future<OrderedCollection<Post>> getPosts() async {
     http.Response response = await http.get(
         Uri.parse(
-            "https://dev.fedodo.social/inbox/50e4f154-a329-45d3-9769-7ed3ac1f5ee4"),
+            "https://dev.fedodo.social/inbox/e287834b-0564-4ece-b793-0ef323344959"),
         headers: <String, String>{
           "Authorization": "Bearer $accessToken"
         });
