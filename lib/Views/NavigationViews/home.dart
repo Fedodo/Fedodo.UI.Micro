@@ -6,20 +6,34 @@ import 'package:flutter/material.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key, required this.accessToken}) : super(key: key);
+  Home({Key? key, required this.accessToken}) : super(key: key);
 
   final String accessToken;
+
+  late InboxProvider provider;
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  late Future<OrderedCollection<Post>> collectionFuture;
+
+  Future<OrderedCollection<Post>> onRefresh() {
+    Future<OrderedCollection<Post>> refreshFuture = widget.provider.getPosts();
+
+    setState(() {
+      collectionFuture = refreshFuture;
+    });
+
+    return refreshFuture;
+  }
+
   @override
   Widget build(BuildContext context) {
-    InboxProvider provider = InboxProvider(widget.accessToken);
+    widget.provider = InboxProvider(widget.accessToken);
 
-    Future<OrderedCollection<Post>> collectionFuture = provider.getPosts();
+    collectionFuture = widget.provider.getPosts();
 
     return FutureBuilder<OrderedCollection<Post>>(
       future: collectionFuture,
@@ -36,9 +50,11 @@ class _HomeState extends State<Home> {
               ),
             );
           }
-
-          child = ListView(
-            children: posts,
+          child = RefreshIndicator(
+            onRefresh: onRefresh,
+            child: ListView(
+              children: posts,
+            ),
           );
         } else if (snapshot.hasError) {
           child = const Icon(
