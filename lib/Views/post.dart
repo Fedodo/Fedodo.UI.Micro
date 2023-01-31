@@ -1,6 +1,7 @@
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:html/dom.dart" as dom;
 import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart'; // For using CSS
@@ -46,10 +47,9 @@ class _PostViewState extends State<PostView> {
                     Text(
                       "@lna_dev@mastodon.online",
                       style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white54
-                      ),
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white54),
                     ),
                   ],
                 ),
@@ -68,28 +68,33 @@ class _PostViewState extends State<PostView> {
             Column(
               children: [
                 IconButton(
-                    onPressed: chatOnPressed,
-                    icon: const Icon(Icons.chat_bubble_outline))
+                  onPressed: chatOnPressed,
+                  icon: const Icon(FontAwesomeIcons.comments),
+                )
               ],
             ),
             Column(
               children: [
                 IconButton(
-                    onPressed: chatOnPressed,
-                    icon: const Icon(Icons.broadcast_on_personal_outlined))
+                  onPressed: chatOnPressed,
+                  icon: const Icon(FontAwesomeIcons.retweet),
+                )
               ],
             ),
             Column(
               children: [
                 IconButton(
-                    onPressed: chatOnPressed,
-                    icon: const Icon(Icons.star_border))
+                  onPressed: chatOnPressed,
+                  icon: const Icon(FontAwesomeIcons.star),
+                )
               ],
             ),
             Column(
               children: [
                 IconButton(
-                    onPressed: chatOnPressed, icon: const Icon(Icons.share))
+                  onPressed: chatOnPressed,
+                  icon: const Icon(FontAwesomeIcons.shareNodes),
+                )
               ],
             ),
           ],
