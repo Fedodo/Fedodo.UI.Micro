@@ -1,6 +1,6 @@
-# fedido_micro
+# fedodo_micro
 
-Microblogging with Fedido
+Microblogging with Fedodo
 
 ## Getting Started
 

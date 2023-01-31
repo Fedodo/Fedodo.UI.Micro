@@ -1,11 +1,11 @@
 {
-    "name": "fedido_micro",
-    "short_name": "fedido_micro",
+    "name": "fedodo_micro",
+    "short_name": "fedodo_micro",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Microblogging with Fedido",
+    "description": "Microblogging with Fedodo",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
