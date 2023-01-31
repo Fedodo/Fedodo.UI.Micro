@@ -1,0 +1,27 @@
+name: BuildDev
+
+on:
+  push:
+    branches: [ dev ]
+
+env:
+  VERSION: 0.1.${{ github.run_number }}
+
+jobs:
+  BuildApk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1.1
+
+      - run: flutter build apk --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
+        working-directory: ./
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: apk
+          path: ./fedodo_micro/build/app/outputs/flutter-apk/app-release.apk
