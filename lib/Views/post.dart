@@ -33,26 +33,25 @@ class _PostViewState extends State<PostView> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.network(
-                  width: 50,
-                  height: 50,
-                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: FutureBuilder<Actor>(
-                  future: actorFuture,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Actor> snapshot) {
-                    Widget child;
-                    if (snapshot.hasData) {
-                      child = Column(
+          child: FutureBuilder<Actor>(
+            future: actorFuture,
+            builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+              Widget child;
+              if (snapshot.hasData) {
+                child = Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.network(
+                        width: 45,
+                        height: 45,
+                        snapshot.data?.icon?.url ?? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -67,25 +66,25 @@ class _PostViewState extends State<PostView> {
                                 color: Colors.white54),
                           ),
                         ],
-                      );
-                    } else if (snapshot.hasError) {
-                      child = const Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 60,
-                      );
-                    } else {
-                      child = const SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return child;
-                  },
-                ),
-              ),
-            ],
+                      ),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                child = const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                );
+              } else {
+                child = const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return child;
+            },
           ),
         ),
         Html(
