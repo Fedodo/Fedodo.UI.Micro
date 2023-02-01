@@ -36,6 +36,8 @@ dependencies:
   http: ^0.13.5
   flutter_html: ^2.2.1
   font_awesome_flutter: ^10.3.0
+  metadata_fetch: ^0.4.1
+  url_launcher: ^6.1.8
 
 dev_dependencies:
   flutter_test:

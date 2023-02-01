@@ -1,6 +1,7 @@
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
+import 'package:fedodo_micro/Views/link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,6 +21,32 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
+  Widget? getLinkPreview(dom.Document document) {
+    List<dom.Element> elements = document.getElementsByTagName("html a");
+
+    List<String> links = [];
+
+    for (var element in elements) {
+      links.add(element.text);
+    }
+
+    if (links.isNotEmpty) {
+      // Get last element which does not start with # or @
+      Iterable<String> filteredLinks = links
+          .where(
+              (element) => !element.startsWith("#") && !element.startsWith("@"));
+
+      if (filteredLinks.isNotEmpty) {
+        LinkPreview linkPreview = LinkPreview(link: filteredLinks.last);
+        return linkPreview;
+      }
+
+      return null;
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     dom.Document document = htmlparser.parse(widget.post.content);
@@ -28,6 +55,12 @@ class _PostViewState extends State<PostView> {
 
     Future<Actor> actorFuture =
         actorProvider.getActor(widget.post.attributedTo);
+
+    List<Widget> bottomChildren = [];
+    Widget? linkPreview = getLinkPreview(document);
+    if (linkPreview != null) {
+      bottomChildren.add(linkPreview);
+    }
 
     return Column(
       children: [
@@ -46,7 +79,8 @@ class _PostViewState extends State<PostView> {
                       child: Image.network(
                         width: 45,
                         height: 45,
-                        snapshot.data?.icon?.url ?? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                        snapshot.data?.icon?.url ??
+                            "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
                       ),
                     ),
                     Padding(
@@ -90,7 +124,13 @@ class _PostViewState extends State<PostView> {
         Html(
           data: document.outerHtml,
           onLinkTap: onLinkTab,
-          style: {"p": Style(fontSize: const FontSize(18))},
+          style: {
+            "p": Style(fontSize: const FontSize(16)),
+            "a": Style(fontSize: const FontSize(16)),
+          },
+        ),
+        Row(
+          children: bottomChildren,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
