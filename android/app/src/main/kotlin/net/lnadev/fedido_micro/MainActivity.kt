@@ -1,4 +1,4 @@
-package net.lnadev.fedido_micro
+package net.lnadev.fedodo_micro
 
 import io.flutter.embedding.android.FlutterActivity
 
