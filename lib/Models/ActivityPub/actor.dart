@@ -43,7 +43,16 @@ class Actor {
         outbox = json["outbox"],
         followers = json["followers"],
         following = json["following"],
-        icon = Media.fromJson(json["icon"]),
+        icon = getMedia(json["icon"]),
         publicKey = PublicKey.fromJson(json["publicKey"]),
         endpoints = Endpoints.fromJson(json["endpoints"]);
+  
+  static Media? getMedia(dynamic json){
+    if (json != null){
+      Media? media = Media.fromJson(json);
+      return media;
+    }
+    
+    return null;
+  }
 }
