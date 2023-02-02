@@ -14,6 +14,10 @@ class LinkPreview extends StatefulWidget {
 class _LinkPreviewState extends State<LinkPreview> {
   linkPreviewPressed() async {
     bool couldLaunchUrl = await canLaunchUrl(Uri.parse(widget.link));
+
+    if (couldLaunchUrl) {
+      launchUrl(Uri.parse(widget.link));
+    }
   }
 
   @override
@@ -27,45 +31,47 @@ class _LinkPreviewState extends State<LinkPreview> {
         if (snapshot.hasData) {
           child = InkWell(
             onTap: linkPreviewPressed,
-            child: Stack(
-              alignment: AlignmentDirectional.bottomStart,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 200,
-                  child: Image.network(
-                    snapshot.data!.image!,
-                    alignment: Alignment.center,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  color: const Color.fromARGB(210, 7, 5, 5),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                    child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        Text(
-                          snapshot.data!.title!,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          Uri.parse(widget.link).authority,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 13, color: Colors.white54),
-                        ),
-                      ],
+            child: Ink(
+              child: Stack(
+                alignment: AlignmentDirectional.bottomStart,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    child: Image.network(
+                      snapshot.data!.image!,
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ),
-              ],
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: const Color.fromARGB(210, 7, 5, 5),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                      child: ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          Text(
+                            snapshot.data!.title!,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            Uri.parse(widget.link).authority,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 13, color: Colors.white54),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         } else if (snapshot.hasError) {

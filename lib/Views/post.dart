@@ -32,9 +32,8 @@ class _PostViewState extends State<PostView> {
 
     if (links.isNotEmpty) {
       // Get last element which does not start with # or @
-      Iterable<String> filteredLinks = links
-          .where(
-              (element) => !element.startsWith("#") && !element.startsWith("@"));
+      Iterable<String> filteredLinks = links.where(
+          (element) => !element.startsWith("#") && !element.startsWith("@"));
 
       if (filteredLinks.isNotEmpty) {
         LinkPreview linkPreview = LinkPreview(link: filteredLinks.last);
@@ -62,117 +61,125 @@ class _PostViewState extends State<PostView> {
       bottomChildren.add(linkPreview);
     }
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-          child: FutureBuilder<Actor>(
-            future: actorFuture,
-            builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
-              Widget child;
-              if (snapshot.hasData) {
-                child = Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.network(
-                        width: 45,
-                        height: 45,
-                        snapshot.data?.icon?.url ??
-                            "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            snapshot.data!.name!,
-                            style: const TextStyle(fontSize: 17),
-                          ),
-                          Text(
-                            "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}",
-                            style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white54),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                child = const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                );
-              } else {
-                child = const SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return child;
-            },
-          ),
-        ),
-        Html(
-          data: document.outerHtml,
-          onLinkTap: onLinkTab,
-          style: {
-            "p": Style(fontSize: const FontSize(16)),
-            "a": Style(fontSize: const FontSize(16)),
-          },
-        ),
-        Row(
-          children: bottomChildren,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    void onTap(){}
+
+
+    return InkWell(
+      onTap: onTap,
+      child: Ink(
+        child: Column(
           children: [
-            Column(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
+              child: FutureBuilder<Actor>(
+                future: actorFuture,
+                builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+                  Widget child;
+                  if (snapshot.hasData) {
+                    child = Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.network(
+                            width: 45,
+                            height: 45,
+                            snapshot.data?.icon?.url ??
+                                "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snapshot.data!.name!,
+                                style: const TextStyle(fontSize: 17),
+                              ),
+                              Text(
+                                "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}",
+                                style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white54),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    child = const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    );
+                  } else {
+                    child = const SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return child;
+                },
+              ),
+            ),
+            Html(
+              data: document.outerHtml,
+              onLinkTap: onLinkTab,
+              style: {
+                "p": Style(fontSize: const FontSize(16)),
+                "a": Style(fontSize: const FontSize(16)),
+              },
+            ),
+            Row(
+              children: bottomChildren,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconButton(
-                  onPressed: chatOnPressed,
-                  icon: const Icon(FontAwesomeIcons.comments),
-                )
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: chatOnPressed,
+                      icon: const Icon(FontAwesomeIcons.comments),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: chatOnPressed,
+                      icon: const Icon(FontAwesomeIcons.retweet),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: chatOnPressed,
+                      icon: const Icon(FontAwesomeIcons.star),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: chatOnPressed,
+                      icon: const Icon(FontAwesomeIcons.shareNodes),
+                    )
+                  ],
+                ),
               ],
             ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: chatOnPressed,
-                  icon: const Icon(FontAwesomeIcons.retweet),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: chatOnPressed,
-                  icon: const Icon(FontAwesomeIcons.star),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: chatOnPressed,
-                  icon: const Icon(FontAwesomeIcons.shareNodes),
-                )
-              ],
+            const Divider(
+              thickness: 1,
             ),
           ],
         ),
-        const Divider(
-          thickness: 1,
-        ),
-      ],
+      ),
     );
   }
 
