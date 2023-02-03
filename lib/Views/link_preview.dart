@@ -31,17 +31,16 @@ class _LinkPreviewState extends State<LinkPreview> {
         if (snapshot.hasData) {
           child = InkWell(
             onTap: linkPreviewPressed,
-            child: Ink(
               child: Stack(
                 alignment: AlignmentDirectional.bottomStart,
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 200,
-                    child: Image.network(
-                      snapshot.data!.image!,
+                    child: Ink.image(
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
+                      image: NetworkImage(snapshot.data!.image!)
                     ),
                   ),
                   Container(
@@ -72,7 +71,6 @@ class _LinkPreviewState extends State<LinkPreview> {
                   ),
                 ],
               ),
-            ),
           );
         } else if (snapshot.hasError) {
           child = const Icon(

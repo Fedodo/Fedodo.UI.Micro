@@ -138,7 +138,7 @@ class _PostViewState extends State<PostView> {
               children: bottomChildren,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
+              padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

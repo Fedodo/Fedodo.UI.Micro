@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:fedodo_micro/DataProvider/application_registration.dart';
 import 'package:fedodo_micro/DataProvider/login_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'Views/navigation.dart';
 import 'dart:collection';
 import 'package:flutter/material.dart';
@@ -28,11 +29,11 @@ class _FedodoMicroState extends State<FedodoMicro> {
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
-        colorSchemeSeed: const Color.fromARGB(68, 2, 229, 218),
+        colorSchemeSeed: const Color.fromARGB(255, 1, 76, 72),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           // elevation: 5000, // Does not seem to do anything. Oh I see... There is a bug on GitHub
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Color.fromARGB(68, 2, 229, 218),
+          backgroundColor: Color.fromARGB(255, 1, 76, 72),
           enableFeedback: true,
           showSelectedLabels: false,
           showUnselectedLabels: false,
@@ -46,8 +47,9 @@ class _FedodoMicroState extends State<FedodoMicro> {
           ),
         ),
         appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(),
             centerTitle: true,
-            color: Color.fromARGB(68, 2, 229, 218),
+            color: Color.fromARGB(255, 1, 76, 72),
             elevation: 0.5,
             scrolledUnderElevation: 0.5,
             shadowColor: Colors.black,
