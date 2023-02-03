@@ -61,8 +61,7 @@ class _PostViewState extends State<PostView> {
       bottomChildren.add(linkPreview);
     }
 
-    void onTap(){}
-
+    void onTap() {}
 
     return InkWell(
       onTap: onTap,
@@ -131,7 +130,10 @@ class _PostViewState extends State<PostView> {
               onLinkTap: onLinkTab,
               style: {
                 "p": Style(fontSize: const FontSize(16)),
-                "a": Style(fontSize: const FontSize(16)),
+                "a": Style(
+                  fontSize: const FontSize(16),
+                  textDecoration: TextDecoration.none,
+                ),
               },
             ),
             Row(
