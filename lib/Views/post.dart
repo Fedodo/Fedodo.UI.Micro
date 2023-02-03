@@ -7,7 +7,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:html/dom.dart" as dom;
 import 'package:html/parser.dart' as htmlparser;
-import 'package:flutter_html/style.dart'; // For using CSS
+import 'package:flutter_html/style.dart';
+import 'package:url_launcher/url_launcher.dart'; // For using CSS
 
 class PostView extends StatefulWidget {
   const PostView({Key? key, required this.post, required this.accessToken})
@@ -190,7 +191,15 @@ class _PostViewState extends State<PostView> {
   }
 
   void onLinkTab(String? url, RenderContext context,
-      Map<String, String> attributes, dom.Element? element) {}
+      Map<String, String> attributes, dom.Element? element) async {
+    if (url != null) {
+      bool couldLaunchUrl = await canLaunchUrl(Uri.parse(url));
+
+      if (couldLaunchUrl) {
+        launchUrl(Uri.parse(url));
+      }
+    }
+  }
 
   void chatOnPressed() {}
 }
