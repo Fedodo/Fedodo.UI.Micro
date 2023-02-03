@@ -137,45 +137,49 @@ class _PostViewState extends State<PostView> {
             Row(
               children: bottomChildren,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    IconButton(
-                      onPressed: chatOnPressed,
-                      icon: const Icon(FontAwesomeIcons.comments),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    IconButton(
-                      onPressed: chatOnPressed,
-                      icon: const Icon(FontAwesomeIcons.retweet),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    IconButton(
-                      onPressed: chatOnPressed,
-                      icon: const Icon(FontAwesomeIcons.star),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    IconButton(
-                      onPressed: chatOnPressed,
-                      icon: const Icon(FontAwesomeIcons.shareNodes),
-                    )
-                  ],
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: chatOnPressed,
+                        icon: const Icon(FontAwesomeIcons.comments),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: chatOnPressed,
+                        icon: const Icon(FontAwesomeIcons.retweet),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: chatOnPressed,
+                        icon: const Icon(FontAwesomeIcons.star),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: chatOnPressed,
+                        icon: const Icon(FontAwesomeIcons.shareNodes),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
             const Divider(
               thickness: 1,
+              height: 0,
             ),
           ],
         ),
