@@ -62,10 +62,12 @@ class _PostViewState extends State<PostView> {
       bottomChildren.add(linkPreview);
     }
 
-    void onTap() {}
+    void openPost() {}
+
+    void openProfile() {}
 
     return InkWell(
-      onTap: onTap,
+      onTap: openPost,
       child: Ink(
         child: Column(
           children: [
@@ -76,38 +78,42 @@ class _PostViewState extends State<PostView> {
                 builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
                   Widget child;
                   if (snapshot.hasData) {
-                    child = Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.network(
-                            width: 45,
-                            height: 45,
-                            snapshot.data?.icon?.url ??
-                                "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                    child = InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: openProfile,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.network(
+                              width: 45,
+                              height: 45,
+                              snapshot.data?.icon?.url ??
+                                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapshot.data!.name!,
-                                style: const TextStyle(fontSize: 17),
-                              ),
-                              Text(
-                                "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}",
-                                style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white54),
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!.name!,
+                                  style: const TextStyle(fontSize: 17),
+                                ),
+                                Text(
+                                  "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}",
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white54),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   } else if (snapshot.hasError) {
                     child = const Icon(
