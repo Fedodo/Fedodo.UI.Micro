@@ -134,13 +134,23 @@ class _PostViewState extends State<PostView> {
             ),
             Html(
               data: document.outerHtml,
-              onLinkTap: onLinkTab,
               style: {
                 "p": Style(fontSize: const FontSize(16)),
                 "a": Style(
                   fontSize: const FontSize(16),
                   textDecoration: TextDecoration.none,
                 ),
+              },
+              customRender: {
+                "a": (RenderContext context, Widget child) {
+                  return InkWell(
+                    onTap: () => {
+                      launchUrl(
+                          Uri.parse(context.tree.element!.attributes["href"]!))
+                    },
+                    child: child,
+                  );
+                },
               },
             ),
             Row(
@@ -194,17 +204,6 @@ class _PostViewState extends State<PostView> {
         ),
       ),
     );
-  }
-
-  void onLinkTab(String? url, RenderContext context,
-      Map<String, String> attributes, dom.Element? element) async {
-    if (url != null) {
-      bool couldLaunchUrl = await canLaunchUrl(Uri.parse(url));
-
-      if (couldLaunchUrl) {
-        launchUrl(Uri.parse(url));
-      }
-    }
   }
 
   void chatOnPressed() {}
