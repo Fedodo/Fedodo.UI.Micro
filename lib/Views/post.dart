@@ -9,6 +9,7 @@ import "package:html/dom.dart" as dom;
 import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart';
 import 'package:url_launcher/url_launcher.dart'; // For using CSS
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostView extends StatefulWidget {
   const PostView({Key? key, required this.post, required this.accessToken})
@@ -47,6 +48,10 @@ class _PostViewState extends State<PostView> {
     return null;
   }
 
+  void openPost() {}
+
+  void openProfile() {}
+
   @override
   Widget build(BuildContext context) {
     dom.Document document = htmlparser.parse(widget.post.content);
@@ -61,10 +66,6 @@ class _PostViewState extends State<PostView> {
     if (linkPreview != null) {
       bottomChildren.add(linkPreview);
     }
-
-    void openPost() {}
-
-    void openProfile() {}
 
     return InkWell(
       onTap: openPost,
@@ -103,7 +104,8 @@ class _PostViewState extends State<PostView> {
                                   style: const TextStyle(fontSize: 17),
                                 ),
                                 Text(
-                                  "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}",
+                                  "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority} "
+                                      "· ${timeago.format(widget.post.published, locale: "en_short").replaceAll("~", "")}",
                                   style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
