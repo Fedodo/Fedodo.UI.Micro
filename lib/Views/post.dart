@@ -1,6 +1,7 @@
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
+import 'package:fedodo_micro/Views/full_post.dart';
 import 'package:fedodo_micro/Views/link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -12,11 +13,18 @@ import 'package:url_launcher/url_launcher.dart'; // For using CSS
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostView extends StatefulWidget {
-  const PostView({Key? key, required this.post, required this.accessToken})
-      : super(key: key);
+  const PostView({
+    Key? key,
+    this.isClickable = true,
+    required this.post,
+    required this.accessToken,
+    required this.appTitle,
+  }) : super(key: key);
 
   final Post post;
   final String accessToken;
+  final String appTitle;
+  final bool isClickable;
 
   @override
   State<PostView> createState() => _PostViewState();
@@ -48,7 +56,29 @@ class _PostViewState extends State<PostView> {
     return null;
   }
 
-  void openPost() {}
+  void openPost() {
+    if (widget.isClickable) {
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          pageBuilder: (context, animation, animation2) => FullPostView(
+            post: widget.post,
+            accessToken: widget.accessToken,
+            appTitle: widget.appTitle,
+          ),
+          transitionsBuilder: (context, animation, animation2, widget) =>
+              SlideTransition(
+                  position: Tween(
+                    begin: const Offset(1.0, 0.0),
+                    end: const Offset(0.0, 0.0),
+                  ).animate(animation),
+                  child: widget),
+        ),
+      );
+    }
+  }
 
   void openProfile() {}
 
@@ -105,7 +135,7 @@ class _PostViewState extends State<PostView> {
                                 ),
                                 Text(
                                   "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority} "
-                                      "· ${timeago.format(widget.post.published, locale: "en_short").replaceAll("~", "")}",
+                                  "· ${timeago.format(widget.post.published, locale: "en_short").replaceAll("~", "")}",
                                   style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,

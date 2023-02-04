@@ -27,7 +27,10 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     List screens = [
-      Home(accessToken: widget.accessToken),
+      Home(
+        accessToken: widget.accessToken,
+        appTitle: widget.title,
+      ),
       Search(accessToken: widget.accessToken),
       Search(accessToken: widget.accessToken), // TODO
       Profile(accessToken: widget.accessToken),
@@ -43,7 +46,8 @@ class _NavigationState extends State<Navigation> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Notifications"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: "Notifications"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),

@@ -6,9 +6,14 @@ import 'package:flutter/material.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key, required this.accessToken}) : super(key: key);
+  Home({
+    Key? key,
+    required this.accessToken,
+    required this.appTitle,
+  }) : super(key: key);
 
   final String accessToken;
+  final String appTitle;
 
   late InboxProvider provider;
 
@@ -43,12 +48,16 @@ class _HomeState extends State<Home> {
         if (snapshot.hasData) {
           List<Widget> posts = [];
           for (var element in snapshot.data!.orderedItems) {
-            posts.add(
-              PostView(
-                post: element,
-                accessToken: widget.accessToken,
-              ),
-            );
+            if (element.inReplyTo == null || element.inReplyTo!.isEmpty) {
+              // TODO Add reply's of people you follow
+              posts.add(
+                PostView(
+                  post: element,
+                  accessToken: widget.accessToken,
+                  appTitle: widget.appTitle,
+                ),
+              );
+            }
           }
           child = RefreshIndicator(
             onRefresh: onRefresh,
