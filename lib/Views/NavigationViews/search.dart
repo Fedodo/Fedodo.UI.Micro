@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+class Search extends StatefulWidget {
+  const Search({Key? key, required this.accessToken}) : super(key: key);
+
+  final String accessToken;
+
+  @override
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  @override
+  Widget build(BuildContext context) {
+    return const Text("Search");
+  }
+}
