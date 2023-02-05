@@ -55,6 +55,7 @@ class _HomeState extends State<Home> {
                   post: element,
                   accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
+                  replies: snapshot.data!.orderedItems.where((e) => e.inReplyTo == element.id).toList(),
                 ),
               );
             }

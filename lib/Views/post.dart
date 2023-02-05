@@ -19,12 +19,14 @@ class PostView extends StatefulWidget {
     required this.post,
     required this.accessToken,
     required this.appTitle,
+    required this.replies,
   }) : super(key: key);
 
   final Post post;
   final String accessToken;
   final String appTitle;
   final bool isClickable;
+  final List<Post> replies;
 
   @override
   State<PostView> createState() => _PostViewState();
@@ -67,6 +69,7 @@ class _PostViewState extends State<PostView> {
             post: widget.post,
             accessToken: widget.accessToken,
             appTitle: widget.appTitle,
+            replies: widget.replies,
           ),
           transitionsBuilder: (context, animation, animation2, widget) =>
               SlideTransition(
