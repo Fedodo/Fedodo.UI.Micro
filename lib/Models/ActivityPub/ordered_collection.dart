@@ -19,12 +19,22 @@ class OrderedCollection<T> {
 
   static List<T> generatePosts<T>(json) {
     var list = json as List;
-    List<Post> returnList = [];
 
-    for (var element in list) {
-      returnList.add(Post.fromJson(element));
+    if (T == Post) {
+      List<Post> returnList = [];
+
+      for (var element in list) {
+        returnList.add(Post.fromJson(element));
+      }
+
+      return returnList as List<T>;
+    } else if (T == String){
+      List<T> returnList = [];
+      returnList.addAll(List<T>.from(json));
+
+      return returnList;
     }
 
-    return returnList as List<T>;
+    return [];
   }
 }
