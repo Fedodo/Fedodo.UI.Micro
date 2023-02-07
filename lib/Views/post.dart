@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
@@ -215,7 +216,7 @@ class _PostViewState extends State<PostView> {
                   Column(
                     children: [
                       IconButton(
-                        onPressed: chatOnPressed,
+                        onPressed: like,
                         icon: const Icon(FontAwesomeIcons.star),
                       )
                     ],
@@ -242,4 +243,9 @@ class _PostViewState extends State<PostView> {
   }
 
   void chatOnPressed() {}
+
+  void like() {
+    ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
+    activityHandler.like(widget.post.id);
+  }
 }
