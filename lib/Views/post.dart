@@ -90,10 +90,16 @@ class _PostViewState extends State<PostView> {
   void openProfile() {}
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     LikesProvider likesProvider = LikesProvider(widget.accessToken);
+
     isPostLikedFuture = likesProvider.isPostLiked(widget.post.id,
         "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     dom.Document document = htmlparser.parse(widget.post.content);
 
@@ -231,7 +237,10 @@ class _PostViewState extends State<PostView> {
                             child = IconButton(
                                 onPressed: like,
                                 icon: snapshot.data!
-                                    ? const Icon(FontAwesomeIcons.solidStar)
+                                    ? const Icon(
+                                        FontAwesomeIcons.solidStar,
+                                        color: Colors.orangeAccent,
+                                      )
                                     : const Icon(FontAwesomeIcons.star));
                           } else if (snapshot.hasError) {
                             child = const Icon(
@@ -275,11 +284,11 @@ class _PostViewState extends State<PostView> {
   void chatOnPressed() {}
 
   void like() {
+    setState(() {
+      isPostLikedFuture = Future.value(true);
+    });
+
     ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
     activityHandler.like(widget.post.id);
-
-    setState(() {
-      isPostLikedFuture = Future<bool>(() => true);
-    });
   }
 }
