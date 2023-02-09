@@ -279,9 +279,7 @@ class _PostViewState extends State<PostView> {
     activityHandler.like(widget.post.id);
 
     setState(() {
-      LikesProvider likesProvider = LikesProvider(widget.accessToken);
-      isPostLikedFuture = likesProvider.isPostLiked(widget.post.id,
-          "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
+      isPostLikedFuture = Future<bool>(() => true);
     });
   }
 }
