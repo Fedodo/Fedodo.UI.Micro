@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 import '../Models/ActivityPub/ordered_collection.dart';
 
 class LikesProvider{
@@ -22,5 +20,14 @@ class LikesProvider{
     String jsonString = response.body;
     OrderedCollection<String> collection = OrderedCollection<String>.fromJson(jsonDecode(jsonString));
     return collection;
+  }
+
+  Future<bool> isPostLiked(String postId, String actorId) async{
+    OrderedCollection<String> likes = await getLikes(postId);
+    if (likes.orderedItems.where((element) => element == actorId).isEmpty){
+     return false;
+    } else{
+      return true;
+    }
   }
 }

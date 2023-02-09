@@ -1,5 +1,6 @@
 import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
+import 'package:fedodo_micro/DataProvider/likes_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/full_post.dart';
@@ -34,6 +35,8 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
+  Future<bool> isPostLikedFuture = Future(() => false);
+
   Widget? getLinkPreview(dom.Document document) {
     List<dom.Element> elements = document.getElementsByTagName("html a");
 
@@ -88,6 +91,10 @@ class _PostViewState extends State<PostView> {
 
   @override
   Widget build(BuildContext context) {
+    LikesProvider likesProvider = LikesProvider(widget.accessToken);
+    isPostLikedFuture = likesProvider.isPostLiked(widget.post.id,
+        "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
+
     dom.Document document = htmlparser.parse(widget.post.content);
 
     ActorProvider actorProvider = ActorProvider(widget.accessToken);
@@ -215,10 +222,33 @@ class _PostViewState extends State<PostView> {
                   ),
                   Column(
                     children: [
-                      IconButton(
-                        onPressed: like,
-                        icon: const Icon(FontAwesomeIcons.star),
-                      )
+                      FutureBuilder<bool>(
+                        future: isPostLikedFuture,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
+                          Widget child;
+                          if (snapshot.hasData) {
+                            child = IconButton(
+                                onPressed: like,
+                                icon: snapshot.data!
+                                    ? const Icon(FontAwesomeIcons.solidStar)
+                                    : const Icon(FontAwesomeIcons.star));
+                          } else if (snapshot.hasError) {
+                            child = const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
+                            );
+                          } else {
+                            child = const SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return child;
+                        },
+                      ),
                     ],
                   ),
                   Column(
@@ -247,5 +277,11 @@ class _PostViewState extends State<PostView> {
   void like() {
     ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
     activityHandler.like(widget.post.id);
+
+    setState(() {
+      LikesProvider likesProvider = LikesProvider(widget.accessToken);
+      isPostLikedFuture = likesProvider.isPostLiked(widget.post.id,
+          "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
+    });
   }
 }
