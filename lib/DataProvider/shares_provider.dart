@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 import '../Models/ActivityPub/ordered_collection.dart';
 
 class SharesProvider{
@@ -22,5 +20,14 @@ class SharesProvider{
     String jsonString = response.body;
     OrderedCollection<String> collection = OrderedCollection<String>.fromJson(jsonDecode(jsonString));
     return collection;
+  }
+
+  Future<bool> isPostShared(String postId, String actorId) async{
+    OrderedCollection<String> shares = await getShares(postId);
+    if (shares.orderedItems.where((element) => element == actorId).isEmpty){
+      return false;
+    } else{
+      return true;
+    }
   }
 }

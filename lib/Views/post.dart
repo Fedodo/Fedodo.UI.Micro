@@ -1,6 +1,7 @@
 import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/DataProvider/likes_provider.dart';
+import 'package:fedodo_micro/DataProvider/shares_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/full_post.dart';
@@ -36,6 +37,7 @@ class PostView extends StatefulWidget {
 
 class _PostViewState extends State<PostView> {
   Future<bool> isPostLikedFuture = Future(() => false);
+  Future<bool> isPostSharedFuture = Future(() => false);
 
   Widget? getLinkPreview(dom.Document document) {
     List<dom.Element> elements = document.getElementsByTagName("html a");
@@ -93,14 +95,16 @@ class _PostViewState extends State<PostView> {
   void initState() {
     super.initState();
     LikesProvider likesProvider = LikesProvider(widget.accessToken);
+    SharesProvider sharesProvider = SharesProvider(widget.accessToken);
 
     isPostLikedFuture = likesProvider.isPostLiked(widget.post.id,
+        "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
+    isPostSharedFuture = sharesProvider.isPostShared(widget.post.id,
         "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
   }
 
   @override
   Widget build(BuildContext context) {
-
     dom.Document document = htmlparser.parse(widget.post.content);
 
     ActorProvider actorProvider = ActorProvider(widget.accessToken);
@@ -220,10 +224,36 @@ class _PostViewState extends State<PostView> {
                   ),
                   Column(
                     children: [
-                      IconButton(
-                        onPressed: chatOnPressed,
-                        icon: const Icon(FontAwesomeIcons.retweet),
-                      )
+                      FutureBuilder<bool>(
+                        future: isPostSharedFuture,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
+                          Widget child;
+                          if (snapshot.hasData) {
+                            child = IconButton(
+                                onPressed: share,
+                                icon: snapshot.data!
+                                    ? const Icon(
+                                        FontAwesomeIcons.retweet,
+                                        color: Colors.blue,
+                                      )
+                                    : const Icon(FontAwesomeIcons.retweet));
+                          } else if (snapshot.hasError) {
+                            child = const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
+                            );
+                          } else {
+                            child = const SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return child;
+                        },
+                      ),
                     ],
                   ),
                   Column(
@@ -290,5 +320,14 @@ class _PostViewState extends State<PostView> {
 
     ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
     activityHandler.like(widget.post.id);
+  }
+
+  void share() {
+    setState(() {
+      isPostSharedFuture = Future.value(true);
+    });
+
+    ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
+    activityHandler.share(widget.post.id);
   }
 }
