@@ -75,10 +75,12 @@ class _FedodoMicroState extends State<FedodoMicro> {
               size: 60,
             );
           } else {
-            child = const SizedBox(
-              width: 60,
-              height: 60,
-              child: CircularProgressIndicator(),
+            child = const Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           return child;
