@@ -175,10 +175,12 @@ class _PostViewState extends State<PostView> {
                       size: 60,
                     );
                   } else {
-                    child = const SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: CircularProgressIndicator(),
+                    child = const Center(
+                      child: SizedBox(
+                        width: 45,
+                        height: 45,
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   }
                   return child;
@@ -246,9 +248,9 @@ class _PostViewState extends State<PostView> {
                             );
                           } else {
                             child = const SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: CircularProgressIndicator(),
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(),
                             );
                           }
                           return child;
@@ -280,9 +282,9 @@ class _PostViewState extends State<PostView> {
                             );
                           } else {
                             child = const SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: CircularProgressIndicator(),
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(),
                             );
                           }
                           return child;

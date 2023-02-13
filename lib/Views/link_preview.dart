@@ -24,13 +24,16 @@ class _LinkPreviewState extends State<LinkPreview> {
   Widget build(BuildContext context) {
     Future<Metadata?> dataFuture = MetadataFetch.extract(widget.link);
 
-    return FutureBuilder<Metadata?>(
-      future: dataFuture,
-      builder: (BuildContext context, AsyncSnapshot<Metadata?> snapshot) {
-        Widget child;
-        if (snapshot.hasData) {
-          child = InkWell(
-            onTap: linkPreviewPressed,
+    return SizedBox(
+      height: 200,
+      width: MediaQuery.of(context).size.width,
+      child: FutureBuilder<Metadata?>(
+        future: dataFuture,
+        builder: (BuildContext context, AsyncSnapshot<Metadata?> snapshot) {
+          Widget child;
+          if (snapshot.hasData) {
+            child = InkWell(
+              onTap: linkPreviewPressed,
               child: Stack(
                 alignment: AlignmentDirectional.bottomStart,
                 children: [
@@ -38,10 +41,11 @@ class _LinkPreviewState extends State<LinkPreview> {
                     width: MediaQuery.of(context).size.width,
                     height: 200,
                     child: Ink.image(
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      image: NetworkImage(snapshot.data!.image!)
-                    ),
+                        width: MediaQuery.of(context).size.width,
+                        height: 200,
+                        alignment: Alignment.center,
+                        fit: BoxFit.cover,
+                        image: NetworkImage(snapshot.data!.image!)),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
@@ -71,22 +75,25 @@ class _LinkPreviewState extends State<LinkPreview> {
                   ),
                 ],
               ),
-          );
-        } else if (snapshot.hasError) {
-          child = const Icon(
-            Icons.error_outline,
-            color: Colors.red,
-            size: 60,
-          );
-        } else {
-          child = const SizedBox(
-            width: 60,
-            height: 60,
-            child: CircularProgressIndicator(),
-          );
-        }
-        return child;
-      },
+            );
+          } else if (snapshot.hasError) {
+            child = const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 60,
+            );
+          } else {
+            child = const Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          return child;
+        },
+      ),
     );
   }
 }

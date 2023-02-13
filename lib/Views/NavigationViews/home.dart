@@ -62,8 +62,11 @@ class _HomeState extends State<Home> {
           }
           child = RefreshIndicator(
             onRefresh: onRefresh,
-            child: ListView(
-              children: posts,
+            child: ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                return posts[index];
+              },
             ),
           );
         } else if (snapshot.hasError) {
