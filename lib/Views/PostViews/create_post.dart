@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -52,7 +53,10 @@ class _CreatePostViewState extends State<CreatePostView> {
                     if(text != ""){
                       setState(() {
                         widget.buttonFunction = () {
+                          ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
+                          activityHandler.post(text);
 
+                          Navigator.pop(context);
                         };
                       });
                     }else{
