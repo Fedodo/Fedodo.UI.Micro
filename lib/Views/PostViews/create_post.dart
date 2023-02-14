@@ -42,26 +42,30 @@ class _CreatePostViewState extends State<CreatePostView> {
       body: Column(
         children: [
           UserHeader(userId: widget.userId, accessToken: widget.accessToken),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              maxLines: null,
-              onChanged: (String text) {
-                if(text != ""){
-                  setState(() {
-                    widget.buttonFunction = () {
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  maxLines: null,
+                  onChanged: (String text) {
+                    if(text != ""){
+                      setState(() {
+                        widget.buttonFunction = () {
 
-                    };
-                  });
-                }else{
-                  setState(() {
-                    widget.buttonFunction = null;
-                  });
-                }
-              },
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Here you can type and paste freely',
+                        };
+                      });
+                    }else{
+                      setState(() {
+                        widget.buttonFunction = null;
+                      });
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Here you can type and paste freely',
+                  ),
+                ),
               ),
             ),
           ),
