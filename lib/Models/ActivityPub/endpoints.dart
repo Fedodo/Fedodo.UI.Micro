@@ -3,6 +3,6 @@ class Endpoints{
 
   Endpoints(this.sharedInbox);
 
-  Endpoints.fromJson(Map<String, dynamic> json)
-    : sharedInbox = json["sharedInbox"];
+  Endpoints.fromJson(Map<String, dynamic>? json)
+    : sharedInbox = json?["sharedInbox"];
 }

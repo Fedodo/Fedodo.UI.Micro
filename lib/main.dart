@@ -65,6 +65,7 @@ class _FedodoMicroState extends State<FedodoMicro> {
           Widget child;
           if (snapshot.hasData) {
             child = Navigation(
+              userId: "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959", //TODO
               title: "Fedodo Micro",
               accessToken: snapshot.data!,
             );

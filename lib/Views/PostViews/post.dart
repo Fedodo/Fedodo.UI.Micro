@@ -1,11 +1,13 @@
+import 'package:fedodo_micro/Components/user_header.dart';
 import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/DataProvider/likes_provider.dart';
 import 'package:fedodo_micro/DataProvider/shares_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
-import 'package:fedodo_micro/Views/full_post.dart';
-import 'package:fedodo_micro/Views/link_preview.dart';
+import 'package:fedodo_micro/Views/PostViews/create_post.dart';
+import 'package:fedodo_micro/Views/PostViews/full_post.dart';
+import 'package:fedodo_micro/Components/link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +16,6 @@ import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart'; // For using CSS
-import 'package:timeago/timeago.dart' as timeago;
 
 class PostView extends StatefulWidget {
   const PostView({
@@ -24,6 +25,7 @@ class PostView extends StatefulWidget {
     required this.accessToken,
     required this.appTitle,
     required this.replies,
+    required this.userId,
   }) : super(key: key);
 
   final Post post;
@@ -31,6 +33,7 @@ class PostView extends StatefulWidget {
   final String appTitle;
   final bool isClickable;
   final List<Post> replies;
+  final String userId;
 
   @override
   State<PostView> createState() => _PostViewState();
@@ -74,6 +77,7 @@ class _PostViewState extends State<PostView> {
           reverseTransitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, animation2) => FullPostView(
             post: widget.post,
+            userId: widget.userId,
             accessToken: widget.accessToken,
             appTitle: widget.appTitle,
             replies: widget.replies,
@@ -90,28 +94,19 @@ class _PostViewState extends State<PostView> {
     }
   }
 
-  void openProfile() {}
-
   @override
   void initState() {
     super.initState();
     LikesProvider likesProvider = LikesProvider(widget.accessToken);
     SharesProvider sharesProvider = SharesProvider(widget.accessToken);
 
-    isPostLikedFuture = likesProvider.isPostLiked(widget.post.id,
-        "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
-    isPostSharedFuture = sharesProvider.isPostShared(widget.post.id,
-        "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959"); // TODO
+    isPostLikedFuture = likesProvider.isPostLiked(widget.post.id, widget.userId);
+    isPostSharedFuture = sharesProvider.isPostShared(widget.post.id, widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
     dom.Document document = htmlparser.parse(widget.post.content);
-
-    ActorProvider actorProvider = ActorProvider(widget.accessToken);
-
-    Future<Actor> actorFuture =
-        actorProvider.getActor(widget.post.attributedTo);
 
     List<Widget> bottomChildren = [];
     Widget? linkPreview = getLinkPreview(document);
@@ -124,69 +119,10 @@ class _PostViewState extends State<PostView> {
       child: Ink(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-              child: FutureBuilder<Actor>(
-                future: actorFuture,
-                builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
-                  Widget child;
-                  if (snapshot.hasData) {
-                    child = InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: openProfile,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              width: 45,
-                              height: 45,
-                              snapshot.data?.icon?.url ??
-                                  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data!.name!,
-                                  style: const TextStyle(fontSize: 17),
-                                ),
-                                Text(
-                                  "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority} "
-                                  "· ${timeago.format(widget.post.published, locale: "en_short").replaceAll("~", "")}",
-                                  style: const TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white54),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    child = const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    );
-                  } else {
-                    child = const Center(
-                      child: SizedBox(
-                        width: 45,
-                        height: 45,
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  return child;
-                },
-              ),
+            UserHeader(
+              userId: widget.post.attributedTo,
+              accessToken: widget.accessToken,
+              publishedDateTime: widget.post.published,
             ),
             Html(
               data: document.outerHtml,
@@ -249,9 +185,9 @@ class _PostViewState extends State<PostView> {
                             );
                           } else {
                             child = const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(),
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(),
                             );
                           }
                           return child;
@@ -283,9 +219,9 @@ class _PostViewState extends State<PostView> {
                             );
                           } else {
                             child = const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(),
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(),
                             );
                           }
                           return child;
@@ -314,7 +250,26 @@ class _PostViewState extends State<PostView> {
     );
   }
 
-  void chatOnPressed() {}
+  void chatOnPressed() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 300),
+        pageBuilder: (context, animation, animation2) => CreatePostView(
+          accessToken: widget.accessToken,
+          userId: widget.userId
+        ),
+        transitionsBuilder: (context, animation, animation2, widget) =>
+            SlideTransition(
+                position: Tween(
+                  begin: const Offset(1.0, 0.0),
+                  end: const Offset(0.0, 0.0),
+                ).animate(animation),
+                child: widget),
+      ),
+    );
+  }
 
   void share() {
     Share.share("Checkout this post on Fedodo. ${widget.post.id} \n\n");

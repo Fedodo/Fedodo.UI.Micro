@@ -1,6 +1,6 @@
 import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
-import 'package:fedodo_micro/Views/post.dart';
+import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 
 import '../../Models/ActivityPub/post.dart';
@@ -10,10 +10,12 @@ class Home extends StatefulWidget {
     Key? key,
     required this.accessToken,
     required this.appTitle,
+    required this.userId,
   }) : super(key: key);
 
   final String accessToken;
   final String appTitle;
+  final String userId;
 
   late InboxProvider provider;
 
@@ -55,7 +57,10 @@ class _HomeState extends State<Home> {
                   post: element,
                   accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
-                  replies: snapshot.data!.orderedItems.where((e) => e.inReplyTo == element.id).toList(),
+                  replies: snapshot.data!.orderedItems
+                      .where((e) => e.inReplyTo == element.id)
+                      .toList(),
+                  userId: widget.userId,
                 ),
               );
             }

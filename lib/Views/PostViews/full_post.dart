@@ -2,11 +2,11 @@ import 'package:fedodo_micro/Components/icon_bar.dart';
 import 'package:fedodo_micro/DataProvider/likes_provider.dart';
 import 'package:fedodo_micro/DataProvider/shares_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
-import 'package:fedodo_micro/Views/post.dart';
+import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import '../Models/ActivityPub/post.dart';
+import '../../Models/ActivityPub/post.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({
@@ -15,12 +15,14 @@ class FullPostView extends StatefulWidget {
     required this.accessToken,
     required this.appTitle,
     required this.replies,
+    required this.userId,
   }) : super(key: key);
 
   final Post post;
   final String accessToken;
   final String appTitle;
   final List<Post> replies;
+  final String userId;
 
   @override
   State<FullPostView> createState() => _FullPostViewState();
@@ -43,7 +45,8 @@ class _FullPostViewState extends State<FullPostView> {
           post: widget.post,
           accessToken: widget.accessToken,
           appTitle: widget.appTitle,
-          replies: const [],
+          replies: const [], // TODO
+          userId: widget.userId,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
@@ -130,7 +133,8 @@ class _FullPostViewState extends State<FullPostView> {
           post: element,
           accessToken: widget.accessToken,
           appTitle: widget.appTitle,
-          replies: const [],
+          userId: widget.userId,
+          replies: const [], // TODO
         ),
       );
     }
