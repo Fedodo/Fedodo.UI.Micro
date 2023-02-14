@@ -12,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:html/dom.dart" as dom;
 import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart'; // For using CSS
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -233,7 +234,7 @@ class _PostViewState extends State<PostView> {
                           Widget child;
                           if (snapshot.hasData) {
                             child = IconButton(
-                                onPressed: share,
+                                onPressed: announce,
                                 icon: snapshot.data!
                                     ? const Icon(
                                         FontAwesomeIcons.retweet,
@@ -295,7 +296,7 @@ class _PostViewState extends State<PostView> {
                   Column(
                     children: [
                       IconButton(
-                        onPressed: chatOnPressed,
+                        onPressed: share,
                         icon: const Icon(FontAwesomeIcons.shareNodes),
                       )
                     ],
@@ -315,6 +316,10 @@ class _PostViewState extends State<PostView> {
 
   void chatOnPressed() {}
 
+  void share() {
+    Share.share("Checkout this post on Fedodo. ${widget.post.id} \n\n");
+  }
+
   void like() {
     setState(() {
       isPostLikedFuture = Future.value(true);
@@ -324,7 +329,7 @@ class _PostViewState extends State<PostView> {
     activityHandler.like(widget.post.id);
   }
 
-  void share() {
+  void announce() {
     setState(() {
       isPostSharedFuture = Future.value(true);
     });
