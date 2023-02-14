@@ -42,11 +42,24 @@ class _CreatePostViewState extends State<CreatePostView> {
       body: Column(
         children: [
           UserHeader(userId: widget.userId, accessToken: widget.accessToken),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
               maxLines: null,
-              decoration: InputDecoration(
+              onChanged: (String text) {
+                if(text != ""){
+                  setState(() {
+                    widget.buttonFunction = () {
+
+                    };
+                  });
+                }else{
+                  setState(() {
+                    widget.buttonFunction = null;
+                  });
+                }
+              },
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Here you can type and paste freely',
               ),
