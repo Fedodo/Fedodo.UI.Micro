@@ -110,7 +110,7 @@ class _FullPostViewState extends State<FullPostView> {
                 children: [
                   Text(
                     DateFormat("MMMM d, yyyy HH:mm", "en_us").format(
-                        widget.post.published), // TODO Internationalization
+                        widget.post.published.toLocal()), // TODO Internationalization
                     style: const TextStyle(
                       color: Colors.white54,
                     ),
