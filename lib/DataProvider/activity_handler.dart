@@ -7,7 +7,7 @@ class ActivityHandler {
 
   ActivityHandler(this.accessToken);
 
-  void post(String content) async {
+  void post(String content, String? inReplyTo) async {
     Map<String, dynamic> body = {
       "to": ["as:Public"],
       "type": "Create",
@@ -17,6 +17,10 @@ class ActivityHandler {
         "published": DateTime.now().toUtc().toIso8601String(),
       }
     };
+
+    if (inReplyTo != null){
+      body["object"]["inReplyTo"] = inReplyTo;
+    }
 
     String json = jsonEncode(body);
 

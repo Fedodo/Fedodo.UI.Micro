@@ -258,7 +258,9 @@ class _PostViewState extends State<PostView> {
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => CreatePostView(
           accessToken: widget.accessToken,
-          userId: widget.userId
+          userId: widget.userId,
+          inReplyToActor: widget.post.attributedTo,
+          inReplyToPost: widget.post.id,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(
