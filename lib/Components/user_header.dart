@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/Views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../DataProvider/actor_provider.dart';
@@ -67,9 +68,10 @@ class _UserHeaderState extends State<UserHeader> {
                         Text(
                           text,
                           style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white54),
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white54,
+                          ),
                         ),
                       ],
                     ),
@@ -98,5 +100,24 @@ class _UserHeaderState extends State<UserHeader> {
     );
   }
 
-  void openProfile() {}
+  void openProfile() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 300),
+        pageBuilder: (context, animation, animation2) => ProfileView(
+          accessToken: widget.accessToken,
+          userId: widget.userId,
+        ),
+        transitionsBuilder: (context, animation, animation2, widget) =>
+            SlideTransition(
+                position: Tween(
+                  begin: const Offset(1.0, 0.0),
+                  end: const Offset(0.0, 0.0),
+                ).animate(animation),
+                child: widget),
+      ),
+    );
+  }
 }
