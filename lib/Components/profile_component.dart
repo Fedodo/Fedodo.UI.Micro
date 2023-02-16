@@ -22,7 +22,22 @@ class ProfileComponent extends StatefulWidget {
   State<ProfileComponent> createState() => _ProfileComponentState();
 }
 
-class _ProfileComponentState extends State<ProfileComponent> {
+class _ProfileComponentState extends State<ProfileComponent>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ActorProvider actorProvider = ActorProvider(widget.accessToken);
@@ -162,7 +177,71 @@ class _ProfileComponentState extends State<ProfileComponent> {
                   ),
                 ],
               ),
-              Row() // Menu
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      TabBar(
+                        isScrollable: true,
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(
+                            text: "Posts",
+                          ),
+                          Tab(
+                            text: "Posts and Replies",
+                          ),
+                          Tab(
+                            text: "Media",
+                          ),
+                          Tab(
+                            text: "About",
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          width: MediaQuery.of(context).size.width -16,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              ListView(
+                                children: [
+                                  Text("data"),
+                                  Text("data"),
+                                  Text("data"),
+                                  Text("data"),
+                                ],
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           );
         } else if (snapshot.hasError) {
