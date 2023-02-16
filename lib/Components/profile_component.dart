@@ -1,18 +1,24 @@
+import 'package:fedodo_micro/DataProvider/outbox_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../DataProvider/actor_provider.dart';
 import '../Models/ActivityPub/actor.dart';
+import '../Models/ActivityPub/ordered_collection.dart';
+import '../Models/ActivityPub/post.dart';
+import '../Views/PostViews/post.dart';
 
 class ProfileComponent extends StatefulWidget {
   ProfileComponent({
     Key? key,
     required this.accessToken,
     required this.userId,
+    required this.appTitle,
   }) : super(key: key);
 
   final String accessToken;
   final String userId;
+  final String appTitle;
 
   int postsCount = 0;
   int followingCount = 0;
@@ -50,6 +56,9 @@ class _ProfileComponentState extends State<ProfileComponent>
         if (snapshot.hasData) {
           String fullUserName =
               "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}";
+
+          OutboxProvider outboxProvider = OutboxProvider(widget.accessToken);
+          Future<OrderedCollection<Post>> collectionFuture = outboxProvider.getPosts(snapshot.data?.outbox ?? ""); // TODO
 
           child = Column(
             children: [
@@ -204,10 +213,62 @@ class _ProfileComponentState extends State<ProfileComponent>
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.30,
-                          width: MediaQuery.of(context).size.width -16,
+                          width: MediaQuery.of(context).size.width - 16,
                           child: TabBarView(
                             controller: _tabController,
                             children: [
+                              FutureBuilder<OrderedCollection<Post>>(
+                                future: collectionFuture,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<OrderedCollection<Post>>
+                                        snapshot) {
+                                  Widget child;
+                                  if (snapshot.hasData) {
+                                    List<Widget> posts = [];
+                                    for (var element
+                                        in snapshot.data!.orderedItems) {
+                                      if (element.inReplyTo == null ||
+                                          element.inReplyTo!.isEmpty) {
+                                        // TODO Add reply's of people you follow
+                                        posts.add(
+                                          PostView(
+                                            post: element,
+                                            accessToken: widget.accessToken,
+                                            appTitle: widget.appTitle,
+                                            replies: snapshot.data!.orderedItems
+                                                .where((e) =>
+                                                    e.inReplyTo == element.id)
+                                                .toList(),
+                                            userId: widget.userId,
+                                          ),
+                                        );
+                                      }
+                                    }
+                                    child = ListView.builder(
+                                      itemCount: posts.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return posts[index];
+                                      },
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    child = const Icon(
+                                      Icons.error_outline,
+                                      color: Colors.red,
+                                      size: 60,
+                                    );
+                                  } else {
+                                    child = const Center(
+                                      child: SizedBox(
+                                        width: 200,
+                                        height: 200,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  }
+                                  return child;
+                                },
+                              ),
                               ListView(
                                 children: [
                                   Text("data"),

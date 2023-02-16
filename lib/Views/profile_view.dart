@@ -6,10 +6,12 @@ class ProfileView extends StatefulWidget {
     Key? key,
     required this.accessToken,
     required this.userId,
+    required this.appTitle,
   }) : super(key: key);
 
   final String accessToken;
   final String userId;
+  final String appTitle;
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -31,6 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
       body: Column(
         children: [
           ProfileComponent(
+            appTitle: widget.appTitle,
             accessToken: widget.accessToken,
             userId: widget.userId,
           ),

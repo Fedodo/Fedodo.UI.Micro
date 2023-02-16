@@ -33,6 +33,7 @@ class _NavigationState extends State<Navigation> {
           // post: widget.post,
           accessToken: widget.accessToken,
           userId: widget.userId,
+          appTitle: widget.title,
           // replies: widget.replies,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>

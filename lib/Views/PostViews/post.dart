@@ -123,6 +123,7 @@ class _PostViewState extends State<PostView> {
               userId: widget.post.attributedTo,
               accessToken: widget.accessToken,
               publishedDateTime: widget.post.published,
+              appTitle: widget.appTitle,
             ),
             Html(
               data: document.outerHtml,
@@ -261,6 +262,7 @@ class _PostViewState extends State<PostView> {
           userId: widget.userId,
           inReplyToActor: widget.post.attributedTo,
           inReplyToPost: widget.post.id,
+          appTitle: widget.appTitle,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

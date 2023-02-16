@@ -5,16 +5,18 @@ import '../DataProvider/actor_provider.dart';
 import '../Models/ActivityPub/actor.dart';
 
 class UserHeader extends StatefulWidget {
-  const UserHeader(
-      {Key? key,
-      required this.userId,
-      required this.accessToken,
-      this.publishedDateTime})
-      : super(key: key);
+  const UserHeader({
+    Key? key,
+    required this.userId,
+    required this.accessToken,
+    required this.appTitle,
+    this.publishedDateTime,
+  }) : super(key: key);
 
   final String accessToken;
   final String userId;
   final DateTime? publishedDateTime;
+  final String appTitle;
 
   @override
   State<UserHeader> createState() => _UserHeaderState();
@@ -109,6 +111,7 @@ class _UserHeaderState extends State<UserHeader> {
         pageBuilder: (context, animation, animation2) => ProfileView(
           accessToken: widget.accessToken,
           userId: widget.userId,
+          appTitle: widget.appTitle,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

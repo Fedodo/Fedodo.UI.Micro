@@ -14,12 +14,14 @@ class CreatePostView extends StatefulWidget {
     Key? key,
     required this.userId,
     required this.accessToken,
+    required this.appTitle,
     this.inReplyToActor,
     this.inReplyToPost,
   }) : super(key: key);
 
   final String userId;
   final String accessToken;
+  final String appTitle;
 
   String? inReplyToPost;
   String? inReplyToActor;
@@ -33,7 +35,7 @@ class _CreatePostViewState extends State<CreatePostView> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [
-      UserHeader(userId: widget.userId, accessToken: widget.accessToken),
+      UserHeader(userId: widget.userId, accessToken: widget.accessToken, appTitle: widget.appTitle,),
       Expanded(
         child: SingleChildScrollView(
           child: Padding(
