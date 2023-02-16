@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../DataProvider/actor_provider.dart';
 import '../Models/ActivityPub/actor.dart';
 
@@ -35,11 +36,11 @@ class _ProfileComponentState extends State<ProfileComponent> {
           String fullUserName =
               "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}";
 
-          child = Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
+          child = Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
                   children: [
                     Column(
                       children: [
@@ -98,71 +99,71 @@ class _ProfileComponentState extends State<ProfileComponent> {
                       ),
                     ),
                   ],
-                ), // Profile Pic Likes...
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            snapshot.data?.name ?? "",
-                            style: const TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            fullUserName,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white54,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text("Do Something"),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ), // Name and Button
-                Row(
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Html(
-                      data: snapshot.data?.summary ?? "",
-                      style: {
-                        "p": Style(fontSize: const FontSize(16)),
-                        "a": Style(
-                          fontSize: const FontSize(16),
-                          textDecoration: TextDecoration.none,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          snapshot.data?.name ?? "",
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      },
-                      // customRender: {
-                      //   "a": (RenderContext context, Widget child) {
-                      //     return InkWell(
-                      //       onTap: () => {
-                      //         launchUrl(
-                      //             Uri.parse(context.tree.element!.attributes["href"]!))
-                      //       },
-                      //       child: child,
-                      //     );
-                      //   },
-                      // },
+                        Text(
+                          fullUserName,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: Text("Do Something"),
+                        ),
+                      ],
                     ),
                   ],
-                ), // Description
-                Row() // Menu
-              ],
-            ),
+                ),
+              ),
+              Row(
+                children: [
+                  Html(
+                    data: snapshot.data?.summary ?? "",
+                    style: {
+                      "p": Style(fontSize: const FontSize(16)),
+                      "a": Style(
+                        fontSize: const FontSize(16),
+                        textDecoration: TextDecoration.none,
+                      ),
+                    },
+                    customRender: {
+                      "a": (RenderContext context, Widget child) {
+                        return InkWell(
+                          onTap: () => {
+                            launchUrl(Uri.parse(
+                                context.tree.element!.attributes["href"]!))
+                          },
+                          child: child,
+                        );
+                      },
+                    },
+                  ),
+                ],
+              ),
+              Row() // Menu
+            ],
           );
         } else if (snapshot.hasError) {
           child = const Icon(
