@@ -12,6 +12,7 @@ class ActivityHandler {
       "to": ["as:Public"],
       "type": "Create",
       "object": {
+        "to": ["as:Public"],
         "type": "Note",
         "content": content,
         "published": DateTime.now().toUtc().toIso8601String(),

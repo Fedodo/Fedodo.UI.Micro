@@ -2,7 +2,7 @@ import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 
 class OrderedCollection<T> {
   final String context;
-  final String summary;
+  final String? summary;
   final String type;
   final int totalItems;
   final List<T> orderedItems;

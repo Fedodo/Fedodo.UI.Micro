@@ -229,7 +229,6 @@ class _ProfileComponentState extends State<ProfileComponent>
                                         in snapshot.data!.orderedItems) {
                                       if (element.inReplyTo == null ||
                                           element.inReplyTo!.isEmpty) {
-                                        // TODO Add reply's of people you follow
                                         posts.add(
                                           PostView(
                                             post: element,
@@ -276,12 +275,6 @@ class _ProfileComponentState extends State<ProfileComponent>
                                   Text("data"),
                                   Text("data"),
                                 ],
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.blueAccent,
-                                ),
                               ),
                               Container(
                                 decoration: BoxDecoration(
