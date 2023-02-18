@@ -2,7 +2,6 @@ import 'package:fedodo_micro/Components/ProfileComponents/profile_description.da
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:flutter/material.dart';
-
 import '../DataProvider/actor_provider.dart';
 import '../DataProvider/outbox_provider.dart';
 import '../Models/ActivityPub/actor.dart';
@@ -10,8 +9,9 @@ import '../Models/ActivityPub/ordered_collection.dart';
 import '../Models/ActivityPub/post.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({
+  ProfileView({
     Key? key,
+    this.showAppBar = true,
     required this.accessToken,
     required this.userId,
     required this.appTitle,
@@ -20,6 +20,8 @@ class ProfileView extends StatefulWidget {
   final String accessToken;
   final String userId;
   final String appTitle;
+
+  bool showAppBar = true;
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -55,69 +57,77 @@ class _ProfileViewState extends State<ProfileView>
           Future<OrderedCollection<Post>> collectionFuture =
               outboxProvider.getPosts(snapshot.data?.outbox ?? ""); // TODO
 
+          var silvers = <Widget>[
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  ProfilePictureDetail(
+                    followersCount: 0,
+                    followingCount: 0,
+                    iconUrl: snapshot.data!.icon?.url,
+                    postsCount: 0,
+                  ),
+                  ProfileNameRow(
+                      preferredUsername: snapshot.data!.preferredUsername!,
+                      userId: snapshot.data!.id!,
+                      name: snapshot.data!.name),
+                  ProfileDescription(
+                    htmlData: snapshot.data!.summary ?? "",
+                  ),
+                ],
+              ),
+            ),
+            SliverAppBar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              primary: false,
+              pinned: true,
+              automaticallyImplyLeading: false,
+              title: Row(
+                children: <Widget>[
+                  TabBar(
+                    isScrollable: true,
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(
+                        text: "Posts",
+                      ),
+                      Tab(
+                        text: "Posts and Replies",
+                      ),
+                      Tab(
+                        text: "Media",
+                      ),
+                      Tab(
+                        text: "About",
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SliverAnimatedList(
+              itemBuilder: (_, index, ___) {
+                return ListTile(
+                  title: Text(index.toString()),
+                );
+              },
+              initialItemCount: 100,
+            )
+          ];
+
+          if (widget.showAppBar) {
+            silvers.insert(
+              0,
+              const SliverAppBar(
+                primary: true,
+                pinned: true,
+              ),
+            );
+          }
+
           child = Scaffold(
             body: CustomScrollView(
-              slivers: <Widget>[
-                const SliverAppBar(
-                  primary: true,
-                  pinned: true,
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      const ProfilePictureDetail(
-                        followersCount: 0,
-                        followingCount: 0,
-                        iconUrl: null,
-                        postsCount: 0,
-                      ),
-                      ProfileNameRow(
-                          preferredUsername: snapshot.data!.preferredUsername!,
-                          userId: snapshot.data!.id!,
-                          name: snapshot.data!.name),
-                      ProfileDescription(
-                        htmlData: snapshot.data!.summary ?? "",
-                      ),
-                    ],
-                  ),
-                ),
-                SliverAppBar(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  primary: false,
-                  pinned: true,
-                  automaticallyImplyLeading: false,
-                  title: Row(
-                    children: <Widget>[
-                      TabBar(
-                        isScrollable: true,
-                        controller: _tabController,
-                        tabs: const [
-                          Tab(
-                            text: "Posts",
-                          ),
-                          Tab(
-                            text: "Posts and Replies",
-                          ),
-                          Tab(
-                            text: "Media",
-                          ),
-                          Tab(
-                            text: "About",
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SliverAnimatedList(
-                  itemBuilder: (_, index, ___) {
-                    return ListTile(
-                      title: Text(index.toString()),
-                    );
-                  },
-                  initialItemCount: 100,
-                )
-              ],
+              slivers: silvers,
             ),
           );
         } else if (snapshot.hasError) {

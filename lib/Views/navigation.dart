@@ -63,7 +63,11 @@ class _NavigationState extends State<Navigation> {
       ),
       Search(accessToken: widget.accessToken),
       Search(accessToken: widget.accessToken), // TODO
-      Profile(accessToken: widget.accessToken),
+      Profile(
+        accessToken: widget.accessToken,
+        appTitle: widget.title,
+        userId: widget.userId,
+      ),
     ];
 
     return Scaffold(
