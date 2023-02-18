@@ -1,6 +1,7 @@
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
+import 'package:fedodo_micro/DataProvider/followers_provider.dart';
 import 'package:flutter/material.dart';
 import '../DataProvider/actor_provider.dart';
 import '../DataProvider/outbox_provider.dart';
@@ -59,6 +60,13 @@ class _ProfileViewState extends State<ProfileView>
           OutboxProvider outboxProvider = OutboxProvider(widget.accessToken);
           Future<OrderedCollection<Post>> collectionFuture =
               outboxProvider.getPosts(snapshot.data?.outbox ?? ""); // TODO
+
+          if (snapshot.data?.followers != null) {
+            FollowersProvider followersProvider =
+                FollowersProvider(widget.accessToken);
+            Future<OrderedCollection<Actor>> followersCollection =
+                followersProvider.getFollowers(snapshot.data!.followers!);
+          }
 
           var silvers = <Widget>[
             SliverList(
