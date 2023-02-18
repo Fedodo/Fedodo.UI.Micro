@@ -212,7 +212,7 @@ class _ProfileComponentState extends State<ProfileComponent>
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.30,
+                          height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width - 16,
                           child: TabBarView(
                             controller: _tabController,

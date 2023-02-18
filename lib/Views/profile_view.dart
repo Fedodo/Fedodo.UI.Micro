@@ -1,5 +1,13 @@
-import 'package:fedodo_micro/Components/profile_component.dart';
+import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
+import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
+import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:flutter/material.dart';
+
+import '../DataProvider/actor_provider.dart';
+import '../DataProvider/outbox_provider.dart';
+import '../Models/ActivityPub/actor.dart';
+import '../Models/ActivityPub/ordered_collection.dart';
+import '../Models/ActivityPub/post.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({
@@ -17,28 +25,118 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _ProfileViewState extends State<ProfileView>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        ),
-      //   actions: [
-      //     ElevatedButton(
-      //       onPressed: widget.buttonFunction,
-      //       child: const Text("Publish"),
-      //     ),
-      //   ],
-      // ),
-      body: Column(
-        children: [
-          ProfileComponent(
-            appTitle: widget.appTitle,
-            accessToken: widget.accessToken,
-            userId: widget.userId,
-          ),
-        ],
-      ),
+    ActorProvider actorProvider = ActorProvider(widget.accessToken);
+    Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
+
+    return FutureBuilder<Actor>(
+      future: actorFuture,
+      builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+        Widget child;
+        if (snapshot.hasData) {
+          OutboxProvider outboxProvider = OutboxProvider(widget.accessToken);
+          Future<OrderedCollection<Post>> collectionFuture =
+              outboxProvider.getPosts(snapshot.data?.outbox ?? ""); // TODO
+
+          child = Scaffold(
+            body: CustomScrollView(
+              slivers: <Widget>[
+                const SliverAppBar(
+                  primary: true,
+                  pinned: true,
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      const ProfilePictureDetail(
+                        followersCount: 0,
+                        followingCount: 0,
+                        iconUrl: null,
+                        postsCount: 0,
+                      ),
+                      ProfileNameRow(
+                          preferredUsername: snapshot.data!.preferredUsername!,
+                          userId: snapshot.data!.id!,
+                          name: snapshot.data!.name),
+                      ProfileDescription(
+                        htmlData: snapshot.data!.summary ?? "",
+                      ),
+                    ],
+                  ),
+                ),
+                SliverAppBar(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  primary: false,
+                  pinned: true,
+                  automaticallyImplyLeading: false,
+                  title: Row(
+                    children: <Widget>[
+                      TabBar(
+                        isScrollable: true,
+                        controller: _tabController,
+                        tabs: const [
+                          Tab(
+                            text: "Posts",
+                          ),
+                          Tab(
+                            text: "Posts and Replies",
+                          ),
+                          Tab(
+                            text: "Media",
+                          ),
+                          Tab(
+                            text: "About",
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SliverAnimatedList(
+                  itemBuilder: (_, index, ___) {
+                    return ListTile(
+                      title: Text(index.toString()),
+                    );
+                  },
+                  initialItemCount: 100,
+                )
+              ],
+            ),
+          );
+        } else if (snapshot.hasError) {
+          child = const Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 60,
+          );
+        } else {
+          child = const Center(
+            child: SizedBox(
+              width: 45,
+              height: 45,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        return child;
+      },
     );
   }
 }
