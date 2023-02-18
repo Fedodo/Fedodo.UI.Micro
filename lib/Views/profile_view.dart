@@ -21,6 +21,9 @@ class ProfileView extends StatefulWidget {
   final String userId;
   final String appTitle;
 
+  int postCount = 0;
+  int followingCount = 0;
+  int followersCount = 0;
   bool showAppBar = true;
 
   @override
@@ -62,10 +65,10 @@ class _ProfileViewState extends State<ProfileView>
               delegate: SliverChildListDelegate(
                 [
                   ProfilePictureDetail(
-                    followersCount: 0,
-                    followingCount: 0,
+                    followersCount: widget.followersCount,
+                    followingCount: widget.followingCount,
                     iconUrl: snapshot.data!.icon?.url,
-                    postsCount: 0,
+                    postsCount: widget.postCount,
                   ),
                   ProfileNameRow(
                       preferredUsername: snapshot.data!.preferredUsername!,
