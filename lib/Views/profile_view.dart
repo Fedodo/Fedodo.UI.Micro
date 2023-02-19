@@ -2,6 +2,7 @@ import 'package:fedodo_micro/Components/ProfileComponents/profile_description.da
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:fedodo_micro/DataProvider/followers_provider.dart';
+import 'package:fedodo_micro/DataProvider/followings_provider.dart';
 import 'package:flutter/material.dart';
 import '../DataProvider/actor_provider.dart';
 import '../DataProvider/outbox_provider.dart';
@@ -47,6 +48,24 @@ class _ProfileViewState extends State<ProfileView>
     _tabController.dispose();
   }
 
+  void setFollowers(String followersString) async {
+    FollowersProvider followersProvider = FollowersProvider();
+    OrderedCollection<Actor> followersCollection = await followersProvider.getFollowers(followersString);
+
+    setState(() {
+      widget.followersCount = followersCollection.totalItems;
+    });
+  }
+
+  void setFollowings(String followingsString) async {
+    FollowingProvider followersProvider = FollowingProvider();
+    OrderedCollection<Actor> followingCollection = await followersProvider.getFollowings(followingsString);
+
+    setState(() {
+      widget.followingCount = followingCollection.totalItems;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ActorProvider actorProvider = ActorProvider(widget.accessToken);
@@ -62,10 +81,10 @@ class _ProfileViewState extends State<ProfileView>
               outboxProvider.getPosts(snapshot.data?.outbox ?? ""); // TODO
 
           if (snapshot.data?.followers != null) {
-            FollowersProvider followersProvider =
-                FollowersProvider(widget.accessToken);
-            Future<OrderedCollection<Actor>> followersCollection =
-                followersProvider.getFollowers(snapshot.data!.followers!);
+            setFollowers(snapshot.data!.followers!);
+          }
+          if (snapshot.data?.following != null) {
+            setFollowings(snapshot.data!.following!);
           }
 
           var silvers = <Widget>[
