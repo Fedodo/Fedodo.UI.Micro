@@ -27,7 +27,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   static const _pageSize = 20;
   final PagingController<int, Post> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 0);
 
   late Future<OrderedCollection<Post>> collectionFuture;
 
