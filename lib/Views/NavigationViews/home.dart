@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.orderedItems);
       } else {
-        final nextPageKey = pageKey + newItems.orderedItems.length;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.orderedItems, nextPageKey);
       }
     } catch (error) {
