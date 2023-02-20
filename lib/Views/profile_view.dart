@@ -42,12 +42,6 @@ class _ProfileViewState extends State<ProfileView>
     _tabController = TabController(length: 4, vsync: this);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
-  }
-
   void setFollowers(String followersString) async {
     FollowersProvider followersProvider = FollowersProvider();
     OrderedCollection<Actor> followersCollection = await followersProvider.getFollowers(followersString);
@@ -178,5 +172,11 @@ class _ProfileViewState extends State<ProfileView>
         return child;
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }

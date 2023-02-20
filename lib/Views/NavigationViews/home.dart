@@ -2,6 +2,7 @@ import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
 import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../Models/ActivityPub/post.dart';
 
@@ -24,73 +25,66 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  static const _pageSize = 20;
+  final PagingController<int, Post> _pagingController =
+      PagingController(firstPageKey: 1);
+
   late Future<OrderedCollection<Post>> collectionFuture;
 
-  Future<OrderedCollection<Post>> onRefresh() {
-    Future<OrderedCollection<Post>> refreshFuture = widget.provider.getPosts();
-
-    setState(() {
-      collectionFuture = refreshFuture;
+  @override
+  void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
     });
+    super.initState();
+  }
 
-    return refreshFuture;
+  // Future<OrderedCollection<Post>> onRefresh() {
+  //   Future<OrderedCollection<Post>> refreshFuture = widget.provider.getPosts(0);
+  //
+  //   setState(() {
+  //     collectionFuture = refreshFuture;
+  //   });
+  //
+  //   return refreshFuture;
+  // }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      InboxProvider provider = InboxProvider(widget.accessToken);
+
+      final newItems = await provider.getPosts(pageKey);
+      final isLastPage = newItems.orderedItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems.orderedItems);
+      } else {
+        final nextPageKey = pageKey + newItems.orderedItems.length;
+        _pagingController.appendPage(newItems.orderedItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.provider = InboxProvider(widget.accessToken);
-
-    collectionFuture = widget.provider.getPosts();
-
-    return FutureBuilder<OrderedCollection<Post>>(
-      future: collectionFuture,
-      builder: (BuildContext context,
-          AsyncSnapshot<OrderedCollection<Post>> snapshot) {
-        Widget child;
-        if (snapshot.hasData) {
-          List<Widget> posts = [];
-          for (var element in snapshot.data!.orderedItems) {
-            if (element.inReplyTo == null || element.inReplyTo!.isEmpty) {
-              // TODO Add reply's of people you follow
-              posts.add(
-                PostView(
-                  post: element,
-                  accessToken: widget.accessToken,
-                  appTitle: widget.appTitle,
-                  replies: snapshot.data!.orderedItems
-                      .where((e) => e.inReplyTo == element.id)
-                      .toList(),
-                  userId: widget.userId,
-                ),
-              );
-            }
-          }
-          child = RefreshIndicator(
-            onRefresh: onRefresh,
-            child: ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return posts[index];
-              },
-            ),
-          );
-        } else if (snapshot.hasError) {
-          child = const Icon(
-            Icons.error_outline,
-            color: Colors.red,
-            size: 60,
-          );
-        } else {
-          child = const Center(
-            child: SizedBox(
-              width: 200,
-              height: 200,
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        return child;
-      },
+    return PagedListView<int, Post>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<Post>(
+        itemBuilder: (context, item, index) => PostView(
+          post: item,
+          accessToken: widget.accessToken,
+          appTitle: widget.appTitle,
+          replies: const [], // TODO
+          userId: widget.userId,
+        ),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 }
