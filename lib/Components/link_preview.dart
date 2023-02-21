@@ -24,9 +24,11 @@ class _LinkPreviewState extends State<LinkPreview> {
   Widget build(BuildContext context) {
     Future<Metadata?> dataFuture = MetadataFetch.extract(widget.link);
 
+    var width = MediaQuery.of(context).size.width;
+
     return SizedBox(
       height: 200,
-      width: MediaQuery.of(context).size.width,
+      width: width,
       child: FutureBuilder<Metadata?>(
         future: dataFuture,
         builder: (BuildContext context, AsyncSnapshot<Metadata?> snapshot) {
@@ -37,18 +39,15 @@ class _LinkPreviewState extends State<LinkPreview> {
               child: Stack(
                 alignment: AlignmentDirectional.bottomStart,
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                  Ink.image(
+                    width: width,
                     height: 200,
-                    child: Ink.image(
-                        width: MediaQuery.of(context).size.width,
-                        height: 200,
-                        alignment: Alignment.center,
-                        fit: BoxFit.cover,
-                        image: NetworkImage(snapshot.data!.image!)),
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                    image: NetworkImage(snapshot.data!.image!),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: width,
                     height: 50,
                     color: const Color.fromARGB(210, 7, 5, 5),
                     child: Padding(
@@ -67,7 +66,9 @@ class _LinkPreviewState extends State<LinkPreview> {
                             Uri.parse(widget.link).authority,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                fontSize: 13, color: Colors.white54),
+                              fontSize: 13,
+                              color: Colors.white54,
+                            ),
                           ),
                         ],
                       ),
