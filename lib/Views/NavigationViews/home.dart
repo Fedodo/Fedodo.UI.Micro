@@ -18,8 +18,6 @@ class Home extends StatefulWidget {
   final String appTitle;
   final String userId;
 
-  late InboxProvider provider;
-
   @override
   State<Home> createState() => _HomeState();
 }
@@ -38,16 +36,6 @@ class _HomeState extends State<Home> {
     });
     super.initState();
   }
-
-  // Future<OrderedCollection<Post>> onRefresh() {
-  //   Future<OrderedCollection<Post>> refreshFuture = widget.provider.getPosts(0);
-  //
-  //   setState(() {
-  //     collectionFuture = refreshFuture;
-  //   });
-  //
-  //   return refreshFuture;
-  // }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
@@ -68,15 +56,21 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, Post>(
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<Post>(
-        itemBuilder: (context, item, index) => PostView(
-          post: item,
-          accessToken: widget.accessToken,
-          appTitle: widget.appTitle,
-          replies: const [], // TODO
-          userId: widget.userId,
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(
+        () => _pagingController.refresh(),
+      ),
+      child: PagedListView<int, Post>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Post>(
+          itemBuilder: (context, item, index) => PostView(
+            post: item,
+            accessToken: widget.accessToken,
+            appTitle: widget.appTitle,
+            replies: const [],
+            // TODO
+            userId: widget.userId,
+          ),
         ),
       ),
     );
