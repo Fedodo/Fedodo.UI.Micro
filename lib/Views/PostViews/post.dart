@@ -100,8 +100,10 @@ class _PostViewState extends State<PostView> {
     LikesProvider likesProvider = LikesProvider(widget.accessToken);
     SharesProvider sharesProvider = SharesProvider(widget.accessToken);
 
-    isPostLikedFuture = likesProvider.isPostLiked(widget.post.id, widget.userId);
-    isPostSharedFuture = sharesProvider.isPostShared(widget.post.id, widget.userId);
+    isPostLikedFuture =
+        likesProvider.isPostLiked(widget.post.id, widget.userId);
+    isPostSharedFuture =
+        sharesProvider.isPostShared(widget.post.id, widget.userId);
   }
 
   @override
@@ -185,11 +187,7 @@ class _PostViewState extends State<PostView> {
                               size: 60,
                             );
                           } else {
-                            child = const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(),
-                            );
+                            child = const Icon(FontAwesomeIcons.retweet);
                           }
                           return child;
                         },
@@ -219,11 +217,7 @@ class _PostViewState extends State<PostView> {
                               size: 60,
                             );
                           } else {
-                            child = const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(),
-                            );
+                            child = const Icon(FontAwesomeIcons.star);
                           }
                           return child;
                         },
