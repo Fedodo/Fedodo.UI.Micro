@@ -9,6 +9,7 @@ import '../DataProvider/outbox_provider.dart';
 import '../Models/ActivityPub/actor.dart';
 import '../Models/ActivityPub/ordered_collection.dart';
 import '../Models/ActivityPub/post.dart';
+import 'PostViews/post.dart';
 
 class ProfileView extends StatefulWidget {
   ProfileView({
@@ -44,7 +45,8 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowers(String followersString) async {
     FollowersProvider followersProvider = FollowersProvider();
-    OrderedCollection<Actor> followersCollection = await followersProvider.getFollowers(followersString);
+    OrderedCollection<Actor> followersCollection =
+        await followersProvider.getFollowers(followersString);
 
     setState(() {
       widget.followersCount = followersCollection.totalItems;
@@ -53,7 +55,8 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowings(String followingsString) async {
     FollowingProvider followersProvider = FollowingProvider();
-    OrderedCollection<Actor> followingCollection = await followersProvider.getFollowings(followingsString);
+    OrderedCollection<Actor> followingCollection =
+        await followersProvider.getFollowings(followingsString);
 
     setState(() {
       widget.followingCount = followingCollection.totalItems;
@@ -81,7 +84,7 @@ class _ProfileViewState extends State<ProfileView>
             setFollowings(snapshot.data!.following!);
           }
 
-          var silvers = <Widget>[
+          var slivers = <Widget>[
             SliverList(
               delegate: SliverChildListDelegate(
                 [
@@ -129,18 +132,10 @@ class _ProfileViewState extends State<ProfileView>
                 ],
               ),
             ),
-            SliverAnimatedList(
-              itemBuilder: (_, index, ___) {
-                return ListTile(
-                  title: Text(index.toString()),
-                );
-              },
-              initialItemCount: 100,
-            )
           ];
 
           if (widget.showAppBar) {
-            silvers.insert(
+            slivers.insert(
               0,
               const SliverAppBar(
                 primary: true,
@@ -150,8 +145,84 @@ class _ProfileViewState extends State<ProfileView>
           }
 
           child = Scaffold(
-            body: CustomScrollView(
-              slivers: silvers,
+            body: NestedScrollView(
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) { return slivers; },
+              body: TabBarView(
+                controller: _tabController,
+                children: [
+                  FutureBuilder<OrderedCollection<Post>>(
+                    future: collectionFuture,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<OrderedCollection<Post>>
+                        snapshot) {
+                      Widget child;
+                      if (snapshot.hasData) {
+                        List<Widget> posts = [];
+                        for (var element
+                        in snapshot.data!.orderedItems) {
+                          if (element.inReplyTo == null ||
+                              element.inReplyTo!.isEmpty) {
+                            posts.add(
+                              PostView(
+                                post: element,
+                                accessToken: widget.accessToken,
+                                appTitle: widget.appTitle,
+                                replies: snapshot.data!.orderedItems
+                                    .where((e) =>
+                                e.inReplyTo == element.id)
+                                    .toList(),
+                                userId: widget.userId,
+                              ),
+                            );
+                          }
+                        }
+                        child = ListView.builder(
+                          itemCount: posts.length,
+                          itemBuilder:
+                              (BuildContext context, int index) {
+                            return posts[index];
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        child = const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 60,
+                        );
+                      } else {
+                        child = const Center(
+                          child: SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      return child;
+                    },
+                  ),
+                  ListView(
+                    children: [
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                    ],
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         } else if (snapshot.hasError) {
