@@ -4,6 +4,7 @@ import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail
 import 'package:fedodo_micro/DataProvider/followers_provider.dart';
 import 'package:fedodo_micro/DataProvider/followings_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../DataProvider/actor_provider.dart';
 import '../DataProvider/outbox_provider.dart';
 import '../Models/ActivityPub/actor.dart';
@@ -33,14 +34,37 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView>
-    with TickerProviderStateMixin {
+class _ProfileViewState extends State<ProfileView> with TickerProviderStateMixin {
   late TabController _tabController;
+  static const _pageSize = 20;
+  final PagingController<int, Post> _pagingController =
+  PagingController(firstPageKey: 0);
 
   @override
   void initState() {
-    super.initState();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
     _tabController = TabController(length: 4, vsync: this);
+
+    super.initState();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      OutboxProvider provider = OutboxProvider(widget.accessToken);
+
+      final newItems = await provider.getPosts(pageKey);
+      final isLastPage = newItems.orderedItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems.orderedItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(newItems.orderedItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   void setFollowers(String followersString) async {
@@ -73,10 +97,6 @@ class _ProfileViewState extends State<ProfileView>
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          OutboxProvider outboxProvider = OutboxProvider(widget.accessToken);
-          Future<OrderedCollection<Post>> collectionFuture =
-              outboxProvider.getPosts(snapshot.data?.outbox ?? ""); // TODO
-
           if (snapshot.data?.followers != null) {
             setFollowers(snapshot.data!.followers!);
           }
@@ -150,64 +170,24 @@ class _ProfileViewState extends State<ProfileView>
               body: TabBarView(
                 controller: _tabController,
                 children: [
-                  FutureBuilder<OrderedCollection<Post>>(
-                    future: collectionFuture,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<OrderedCollection<Post>>
-                        snapshot) {
-                      Widget child;
-                      if (snapshot.hasData) {
-                        List<Widget> posts = [];
-                        for (var element
-                        in snapshot.data!.orderedItems) {
-                          if (element.inReplyTo == null ||
-                              element.inReplyTo!.isEmpty) {
-                            posts.add(
-                              PostView(
-                                post: element,
-                                accessToken: widget.accessToken,
-                                appTitle: widget.appTitle,
-                                replies: snapshot.data!.orderedItems
-                                    .where((e) =>
-                                e.inReplyTo == element.id)
-                                    .toList(),
-                                userId: widget.userId,
-                              ),
-                            );
-                          }
-                        }
-                        child = ListView.builder(
-                          itemCount: posts.length,
-                          itemBuilder:
-                              (BuildContext context, int index) {
-                            return posts[index];
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        child = const Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                          size: 60,
-                        );
-                      } else {
-                        child = const Center(
-                          child: SizedBox(
-                            width: 200,
-                            height: 200,
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      return child;
-                    },
+                  PagedListView<int, Post>(
+                    pagingController: _pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<Post>(
+                      itemBuilder: (context, item, index) => PostView(
+                        post: item,
+                        accessToken: widget.accessToken,
+                        appTitle: widget.appTitle,
+                        replies: const [],
+                        // TODO
+                        userId: widget.userId,
+                      ),
+                    ),
                   ),
-                  ListView(
-                    children: [
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                    ],
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.blueAccent,
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -248,6 +228,7 @@ class _ProfileViewState extends State<ProfileView>
   @override
   void dispose() {
     _tabController.dispose();
+    _pagingController.dispose();
     super.dispose();
   }
 }

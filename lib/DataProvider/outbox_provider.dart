@@ -1,8 +1,6 @@
 import 'dart:convert';
-
-import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
+import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:http/http.dart' as http;
-
 import '../Models/ActivityPub/post.dart';
 
 class OutboxProvider {
@@ -10,15 +8,19 @@ class OutboxProvider {
 
   OutboxProvider(this.accessToken);
 
-  Future<OrderedCollection<Post>> getPosts(String outbox) async {
-    http.Response response = await http.get(
-        Uri.parse(outbox),
+  Future<OrderedCollectionPage<Post>> getPosts(int pageKey) async {
+    http.Response pageResponse = await http.get(
+        Uri.parse(
+            "https://dev.fedodo.social/outbox/e287834b-0564-4ece-b793-0ef323344959/page/$pageKey"), //TODO
         headers: <String, String>{
           "Authorization": "Bearer $accessToken"
-        });
+        }
+    );
 
-    String jsonString = response.body;
-    OrderedCollection<Post> collection = OrderedCollection<Post>.fromJson(jsonDecode(jsonString));
+    String jsonString = pageResponse.body;
+
+    OrderedCollectionPage<Post> collection = OrderedCollectionPage.fromJson(jsonDecode(jsonString));
+
     return collection;
   }
 }
