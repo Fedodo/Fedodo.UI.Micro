@@ -19,11 +19,13 @@ class ProfileView extends StatefulWidget {
     required this.accessToken,
     required this.userId,
     required this.appTitle,
+    required this.outboxUrl,
   }) : super(key: key);
 
   final String accessToken;
   final String userId;
   final String appTitle;
+  final String outboxUrl;
 
   int postCount = 0;
   int followingCount = 0;
@@ -34,11 +36,13 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> with TickerProviderStateMixin {
+class _ProfileViewState extends State<ProfileView>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   static const _pageSize = 20;
-  final PagingController<int, Post> _pagingController =
-  PagingController(firstPageKey: 0);
+  late final PagingController<String, Post> _pagingController = PagingController(firstPageKey: widget.outboxUrl);
+  late final ActorProvider actorProvider = ActorProvider(widget.accessToken);
+  late Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
 
   @override
   void initState() {
@@ -50,16 +54,16 @@ class _ProfileViewState extends State<ProfileView> with TickerProviderStateMixin
     super.initState();
   }
 
-  Future<void> _fetchPage(int pageKey) async {
+  Future<void> _fetchPage(String pageKey) async {
     try {
-      OutboxProvider provider = OutboxProvider(widget.accessToken);
+      OutboxProvider provider = OutboxProvider();
 
       final newItems = await provider.getPosts(pageKey);
       final isLastPage = newItems.orderedItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.orderedItems);
       } else {
-        final nextPageKey = pageKey + 1;
+        final nextPageKey = newItems.next;
         _pagingController.appendPage(newItems.orderedItems, nextPageKey);
       }
     } catch (error) {
@@ -89,9 +93,6 @@ class _ProfileViewState extends State<ProfileView> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    ActorProvider actorProvider = ActorProvider(widget.accessToken);
-    Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
-
     return FutureBuilder<Actor>(
       future: actorFuture,
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
@@ -166,11 +167,14 @@ class _ProfileViewState extends State<ProfileView> with TickerProviderStateMixin
 
           child = Scaffold(
             body: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) { return slivers; },
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return slivers;
+              },
               body: TabBarView(
                 controller: _tabController,
                 children: [
-                  PagedListView<int, Post>(
+                  PagedListView<String, Post>(
                     pagingController: _pagingController,
                     builderDelegate: PagedChildBuilderDelegate<Post>(
                       itemBuilder: (context, item, index) => PostView(

@@ -67,6 +67,7 @@ class _NavigationState extends State<Navigation> {
         accessToken: widget.accessToken,
         appTitle: widget.title,
         userId: widget.userId,
+        showAppBar: false,
       ),
     ];
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../DataProvider/actor_provider.dart';
 import '../Models/ActivityPub/actor.dart';
+import '../Views/NavigationViews/profile.dart';
 
 class UserHeader extends StatefulWidget {
   const UserHeader({
@@ -108,10 +109,11 @@ class _UserHeaderState extends State<UserHeader> {
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
-        pageBuilder: (context, animation, animation2) => ProfileView(
+        pageBuilder: (context, animation, animation2) => Profile(
           accessToken: widget.accessToken,
           userId: widget.userId,
           appTitle: widget.appTitle,
+          showAppBar: true,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(
