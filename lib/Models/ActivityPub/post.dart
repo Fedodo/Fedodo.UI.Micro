@@ -12,8 +12,18 @@ class Post {
   final DateTime published;
   final String attributedTo;
 
-  Post(this.to, this.name, this.summary, this.sensitive, this.inReplyTo,
-      this.content, this.id, this.type, this.published, this.attributedTo);
+  Post(
+    this.to,
+    this.name,
+    this.summary,
+    this.sensitive,
+    this.inReplyTo,
+    this.content,
+    this.id,
+    this.type,
+    this.published,
+    this.attributedTo,
+  );
 
   Post.fromJson(Map<String, dynamic> json)
       : to = convertToStringList(json["to"]),
@@ -30,7 +40,7 @@ class Post {
   static List<String> convertToStringList(json) {
     List<String> jsonList = [];
 
-    for (var element in json){
+    for (var element in json) {
       jsonList.add(element as String);
     }
 

@@ -1,7 +1,7 @@
 import 'ordered_collection.dart';
 
 class OrderedCollectionPage<T> {
-  final String context;
+  final dynamic context;
   final String type;
   final String next;
   final String prev;
