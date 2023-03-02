@@ -1,5 +1,7 @@
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 
+import 'activity.dart';
+
 class OrderedCollection<T> {
   final String context;
   final String? summary;
@@ -18,13 +20,18 @@ class OrderedCollection<T> {
         orderedItems = generatePosts<T>(json["orderedItems"]);
 
   static List<T> generatePosts<T>(json) {
+
+    if (json == null){
+      return [];
+    }
+
     var list = json as List;
 
-    if (T == Post) {
-      List<Post> returnList = [];
+    if (T == Activity<Post>) {
+      List<Activity<Post>> returnList = [];
 
       for (var element in list) {
-        returnList.add(Post.fromJson(element));
+        returnList.add(Activity<Post>.fromJson(element));
       }
 
       return returnList as List<T>;

@@ -4,6 +4,7 @@ import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class Home extends StatefulWidget {
@@ -41,13 +42,20 @@ class _HomeState extends State<Home> {
     try {
       InboxProvider provider = InboxProvider(widget.accessToken);
 
-      final newItems = await provider.getPosts(pageKey);
-      final isLastPage = newItems.orderedItems.length < _pageSize;
+      final orderedItems = (await provider.getPosts(pageKey)).orderedItems;
+
+      List<Post> newItems = [];
+
+      for (Activity<Post> activity in orderedItems){
+        newItems.add(activity.object);
+      }
+
+      final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems.orderedItems);
+        _pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems.orderedItems, nextPageKey);
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;
