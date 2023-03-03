@@ -6,15 +6,14 @@ import '../Models/ActivityPub/ordered_collection.dart';
 class FollowersProvider {
   FollowersProvider();
 
-  Future<OrderedCollection<Actor>> getFollowers(String followerEndpoint) async {
+  Future<OrderedCollection> getFollowers(String followerEndpoint) async {
     http.Response response = await http.get(
       Uri.parse(followerEndpoint),
       headers: <String, String>{"Accept": "application/json"},
     );
 
     String jsonString = response.body;
-    OrderedCollection<Actor> collection =
-        OrderedCollection<Actor>.fromJson(jsonDecode(jsonString));
+    OrderedCollection collection = OrderedCollection.fromJson(jsonDecode(jsonString));
     return collection;
   }
 }

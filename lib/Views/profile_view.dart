@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../DataProvider/actor_provider.dart';
 import '../DataProvider/outbox_provider.dart';
+import '../Models/ActivityPub/activity.dart';
 import '../Models/ActivityPub/actor.dart';
 import '../Models/ActivityPub/ordered_collection.dart';
 import '../Models/ActivityPub/post.dart';
@@ -58,13 +59,30 @@ class _ProfileViewState extends State<ProfileView>
     try {
       OutboxProvider provider = OutboxProvider();
 
-      final newItems = await provider.getPosts(pageKey);
-      final isLastPage = newItems.orderedItems.length < _pageSize;
+      final collection = await provider.getPosts(pageKey);
+
+      List<Activity<Post>> postActivities = [];
+
+      for (Activity activity in collection.orderedItems){
+        if (activity.type == "Create"){
+          postActivities.add(activity as Activity<Post>);
+        }
+      }
+
+      final orderedItems = postActivities;
+
+      List<Post> newItems = [];
+
+      for (Activity<Post> activity in orderedItems){
+        newItems.add(activity.object);
+      }
+
+      final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems.orderedItems);
+        _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = newItems.next;
-        _pagingController.appendPage(newItems.orderedItems, nextPageKey);
+        final nextPageKey = collection.next;
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -73,8 +91,7 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowers(String followersString) async {
     FollowersProvider followersProvider = FollowersProvider();
-    OrderedCollection<Actor> followersCollection =
-        await followersProvider.getFollowers(followersString);
+    OrderedCollection followersCollection = await followersProvider.getFollowers(followersString);
 
     setState(() {
       widget.followersCount = followersCollection.totalItems;
@@ -83,8 +100,7 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowings(String followingsString) async {
     FollowingProvider followersProvider = FollowingProvider();
-    OrderedCollection<Actor> followingCollection =
-        await followersProvider.getFollowings(followingsString);
+    OrderedCollection followingCollection = await followersProvider.getFollowings(followingsString);
 
     setState(() {
       widget.followingCount = followingCollection.totalItems;

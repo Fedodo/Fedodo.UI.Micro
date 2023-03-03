@@ -7,7 +7,7 @@ class LikesProvider{
 
   LikesProvider(this.accessToken);
 
-  Future<OrderedCollection<String>> getLikes(String postId) async {
+  Future<OrderedCollection> getLikes(String postId) async {
     
     String formattedUrl = "https://dev.fedodo.social/likes/" + Uri.encodeQueryComponent(postId); // TODO
     
@@ -18,12 +18,12 @@ class LikesProvider{
         });
 
     String jsonString = response.body;
-    OrderedCollection<String> collection = OrderedCollection<String>.fromJson(jsonDecode(jsonString));
+    OrderedCollection collection = OrderedCollection.fromJson(jsonDecode(jsonString));
     return collection;
   }
 
   Future<bool> isPostLiked(String postId, String actorId) async{
-    OrderedCollection<String> likes = await getLikes(postId);
+    OrderedCollection likes = await getLikes(postId);
     if (likes.orderedItems.where((element) => element == actorId).isEmpty){
      return false;
     } else{

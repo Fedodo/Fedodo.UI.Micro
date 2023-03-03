@@ -43,7 +43,11 @@ class Activity<T> {
   static generateObject<T>(object) {
     if (T == Post){
       return Post.fromJson(object);
-    }else {
+    }
+    else if (T == String){
+      return object as String;
+    }
+    else {
       return null;
     }
   }

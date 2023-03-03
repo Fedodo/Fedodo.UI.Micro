@@ -9,7 +9,7 @@ class InboxProvider {
 
   InboxProvider(this.accessToken);
 
-  Future<OrderedCollectionPage<Activity<Post>>> getPosts(int pageKey) async {
+  Future<OrderedCollectionPage> getPosts(int pageKey) async {
     http.Response pageResponse = await http.get(
       Uri.parse(
           "https://dev.fedodo.social/inbox/e287834b-0564-4ece-b793-0ef323344959/page/$pageKey"), //TODO
@@ -20,7 +20,7 @@ class InboxProvider {
 
     String jsonString = pageResponse.body;
 
-    OrderedCollectionPage<Activity<Post>> collection = OrderedCollectionPage.fromJson(jsonDecode(jsonString));
+    OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(jsonString));
 
     return collection;
   }

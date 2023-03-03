@@ -52,10 +52,10 @@ class _FullPostViewState extends State<FullPostView> {
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
           child: Column(
             children: [
-              FutureBuilder<OrderedCollection<String>>(
+              FutureBuilder<OrderedCollection>(
                 future: sharesFuture,
                 builder: (BuildContext context,
-                    AsyncSnapshot<OrderedCollection<String>> snapshot) {
+                    AsyncSnapshot<OrderedCollection> snapshot) {
                   Widget child;
                   if (snapshot.hasData) {
                     child = IconBar(
@@ -79,10 +79,10 @@ class _FullPostViewState extends State<FullPostView> {
                   return child;
                 },
               ),
-              FutureBuilder<OrderedCollection<String>>(
+              FutureBuilder<OrderedCollection>(
                 future: likesFuture,
                 builder: (BuildContext context,
-                    AsyncSnapshot<OrderedCollection<String>> snapshot) {
+                    AsyncSnapshot<OrderedCollection> snapshot) {
                   Widget child;
                   if (snapshot.hasData) {
                     child = IconBar(

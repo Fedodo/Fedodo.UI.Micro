@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   final PagingController<int, Post> _pagingController =
       PagingController(firstPageKey: 0);
 
-  late Future<OrderedCollection<Post>> collectionFuture;
+  late Future<OrderedCollection> collectionFuture;
 
   @override
   void initState() {
@@ -42,7 +42,17 @@ class _HomeState extends State<Home> {
     try {
       InboxProvider provider = InboxProvider(widget.accessToken);
 
-      final orderedItems = (await provider.getPosts(pageKey)).orderedItems;
+      var response = (await provider.getPosts(pageKey)).orderedItems;
+
+      List<Activity<Post>> postActivities = [];
+
+      for (Activity activity in response){
+        if (activity.type == "Create"){
+          postActivities.add(activity as Activity<Post>);
+        }
+      }
+
+      final orderedItems = postActivities;
 
       List<Post> newItems = [];
 

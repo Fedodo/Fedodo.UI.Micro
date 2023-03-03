@@ -7,7 +7,7 @@ class SharesProvider{
 
   SharesProvider(this.accessToken);
 
-  Future<OrderedCollection<String>> getShares(String postId) async {
+  Future<OrderedCollection> getShares(String postId) async {
 
     String formattedUrl = "https://dev.fedodo.social/shares/" + Uri.encodeQueryComponent(postId); // TODO
 
@@ -18,12 +18,12 @@ class SharesProvider{
         });
 
     String jsonString = response.body;
-    OrderedCollection<String> collection = OrderedCollection<String>.fromJson(jsonDecode(jsonString));
+    OrderedCollection collection = OrderedCollection.fromJson(jsonDecode(jsonString));
     return collection;
   }
 
   Future<bool> isPostShared(String postId, String actorId) async{
-    OrderedCollection<String> shares = await getShares(postId);
+    OrderedCollection shares = await getShares(postId);
     if (shares.orderedItems.where((element) => element == actorId).isEmpty){
       return false;
     } else{
