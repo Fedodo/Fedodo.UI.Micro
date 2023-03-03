@@ -1,8 +1,8 @@
 class OrderedPagedCollection {
-  final String context;
+  final String? context;
   final String type;
   final String first;
-  final String last;
+  final String? last;
   final int totalItems;
   final String id;
 

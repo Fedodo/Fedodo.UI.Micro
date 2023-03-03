@@ -3,6 +3,7 @@ import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart'
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:fedodo_micro/DataProvider/followers_provider.dart';
 import 'package:fedodo_micro/DataProvider/followings_provider.dart';
+import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../DataProvider/actor_provider.dart';
@@ -91,7 +92,7 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowers(String followersString) async {
     FollowersProvider followersProvider = FollowersProvider();
-    OrderedCollection followersCollection = await followersProvider.getFollowers(followersString);
+    OrderedPagedCollection followersCollection = await followersProvider.getFollowers(followersString);
 
     setState(() {
       widget.followersCount = followersCollection.totalItems;
@@ -100,7 +101,7 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowings(String followingsString) async {
     FollowingProvider followersProvider = FollowingProvider();
-    OrderedCollection followingCollection = await followersProvider.getFollowings(followingsString);
+    OrderedPagedCollection followingCollection = await followersProvider.getFollowings(followingsString);
 
     setState(() {
       widget.followingCount = followingCollection.totalItems;
