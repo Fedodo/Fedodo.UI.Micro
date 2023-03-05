@@ -29,7 +29,7 @@ class ProfileView extends StatefulWidget {
   final String appTitle;
   final String outboxUrl;
 
-  int postCount = 0;
+  int? postCount;
   int? followingCount;
   int? followersCount;
   bool showAppBar = true;
@@ -42,7 +42,8 @@ class _ProfileViewState extends State<ProfileView>
     with TickerProviderStateMixin {
   late TabController _tabController;
   static const _pageSize = 20;
-  late final PagingController<String, Post> _pagingController = PagingController(firstPageKey: widget.outboxUrl);
+  late final PagingController<String, Post> _pagingController =
+      PagingController(firstPageKey: widget.outboxUrl);
   late final ActorProvider actorProvider = ActorProvider(widget.accessToken);
   late final Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
 
@@ -64,8 +65,8 @@ class _ProfileViewState extends State<ProfileView>
 
       List<Activity<Post>> postActivities = [];
 
-      for (Activity activity in collection.orderedItems){
-        if (activity.type == "Create"){
+      for (Activity activity in collection.orderedItems) {
+        if (activity.type == "Create") {
           postActivities.add(activity as Activity<Post>);
         }
       }
@@ -74,7 +75,7 @@ class _ProfileViewState extends State<ProfileView>
 
       List<Post> newItems = [];
 
-      for (Activity<Post> activity in orderedItems){
+      for (Activity<Post> activity in orderedItems) {
         newItems.add(activity.object);
       }
 
@@ -92,7 +93,8 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowers(String followersString) async {
     FollowersProvider followersProvider = FollowersProvider();
-    OrderedPagedCollection followersCollection = await followersProvider.getFollowers(followersString);
+    OrderedPagedCollection followersCollection =
+        await followersProvider.getFollowers(followersString);
 
     setState(() {
       widget.followersCount = followersCollection.totalItems;
@@ -101,10 +103,22 @@ class _ProfileViewState extends State<ProfileView>
 
   void setFollowings(String followingsString) async {
     FollowingProvider followersProvider = FollowingProvider();
-    OrderedPagedCollection followingCollection = await followersProvider.getFollowings(followingsString);
+    OrderedPagedCollection followingCollection =
+        await followersProvider.getFollowings(followingsString);
 
     setState(() {
       widget.followingCount = followingCollection.totalItems;
+    });
+  }
+
+  void setPosts(String outboxUrl) async {
+    OutboxProvider outboxProvider = OutboxProvider();
+
+    OrderedPagedCollection orderedPagedCollection =
+        await outboxProvider.getFirstPage(outboxUrl);
+
+    setState(() {
+      widget.postCount = orderedPagedCollection.totalItems;
     });
   }
 
@@ -115,11 +129,16 @@ class _ProfileViewState extends State<ProfileView>
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          if (widget.followersCount == null && snapshot.data?.followers != null) {
+          if (widget.followersCount == null &&
+              snapshot.data?.followers != null) {
             setFollowers(snapshot.data!.followers!);
           }
-          if (widget.followingCount == null && snapshot.data?.following != null) {
+          if (widget.followingCount == null &&
+              snapshot.data?.following != null) {
             setFollowings(snapshot.data!.following!);
+          }
+          if (widget.postCount == null){
+            setPosts(snapshot.data!.outbox!);
           }
 
           var slivers = <Widget>[
@@ -130,7 +149,7 @@ class _ProfileViewState extends State<ProfileView>
                     followersCount: widget.followersCount ?? 0,
                     followingCount: widget.followingCount ?? 0,
                     iconUrl: snapshot.data!.icon?.url,
-                    postsCount: widget.postCount,
+                    postsCount: widget.postCount ?? 0,
                   ),
                   ProfileNameRow(
                       preferredUsername: snapshot.data!.preferredUsername!,
@@ -204,10 +223,17 @@ class _ProfileViewState extends State<ProfileView>
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.blueAccent,
+                  PagedListView<String, Post>(
+                    pagingController: _pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<Post>(
+                      itemBuilder: (context, item, index) => PostView(
+                        post: item,
+                        accessToken: widget.accessToken,
+                        appTitle: widget.appTitle,
+                        replies: const [],
+                        // TODO
+                        userId: widget.userId,
+                      ),
                     ),
                   ),
                   Container(
