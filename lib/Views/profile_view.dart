@@ -30,8 +30,8 @@ class ProfileView extends StatefulWidget {
   final String outboxUrl;
 
   int postCount = 0;
-  int followingCount = 0;
-  int followersCount = 0;
+  int? followingCount;
+  int? followersCount;
   bool showAppBar = true;
 
   @override
@@ -44,7 +44,7 @@ class _ProfileViewState extends State<ProfileView>
   static const _pageSize = 20;
   late final PagingController<String, Post> _pagingController = PagingController(firstPageKey: widget.outboxUrl);
   late final ActorProvider actorProvider = ActorProvider(widget.accessToken);
-  late Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
+  late final Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
 
   @override
   void initState() {
@@ -115,10 +115,10 @@ class _ProfileViewState extends State<ProfileView>
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          if (snapshot.data?.followers != null) {
+          if (widget.followersCount == null && snapshot.data?.followers != null) {
             setFollowers(snapshot.data!.followers!);
           }
-          if (snapshot.data?.following != null) {
+          if (widget.followingCount == null && snapshot.data?.following != null) {
             setFollowings(snapshot.data!.following!);
           }
 
@@ -127,8 +127,8 @@ class _ProfileViewState extends State<ProfileView>
               delegate: SliverChildListDelegate(
                 [
                   ProfilePictureDetail(
-                    followersCount: widget.followersCount,
-                    followingCount: widget.followingCount,
+                    followersCount: widget.followersCount ?? 0,
+                    followingCount: widget.followingCount ?? 0,
                     iconUrl: snapshot.data!.icon?.url,
                     postsCount: widget.postCount,
                   ),
@@ -248,8 +248,8 @@ class _ProfileViewState extends State<ProfileView>
 
   @override
   void dispose() {
-    _tabController.dispose();
     _pagingController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 }
