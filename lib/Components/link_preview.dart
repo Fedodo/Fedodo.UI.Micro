@@ -33,7 +33,10 @@ class _LinkPreviewState extends State<LinkPreview> {
         future: dataFuture,
         builder: (BuildContext context, AsyncSnapshot<Metadata?> snapshot) {
           Widget child;
-          if (snapshot.hasData) {
+          if (snapshot.hasData &&
+              snapshot.data!.title != null &&
+              snapshot.data!.url != null &&
+              snapshot.data!.image != null) {
             child = InkWell(
               onTap: linkPreviewPressed,
               child: Stack(
@@ -77,11 +80,20 @@ class _LinkPreviewState extends State<LinkPreview> {
                 ],
               ),
             );
-          } else if (snapshot.hasError) {
-            child = const Icon(
-              Icons.error_outline,
-              color: Colors.red,
-              size: 60,
+          } else if (snapshot.hasError || snapshot.hasData) {
+            child = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 100,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Could not load Link Preview"),
+                ),
+              ],
             );
           } else {
             child = const Center(
