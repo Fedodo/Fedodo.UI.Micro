@@ -2,6 +2,7 @@ import 'package:fedodo_micro/Components/icon_bar.dart';
 import 'package:fedodo_micro/DataProvider/likes_provider.dart';
 import 'package:fedodo_micro/DataProvider/shares_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
+import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -52,10 +53,10 @@ class _FullPostViewState extends State<FullPostView> {
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
           child: Column(
             children: [
-              FutureBuilder<OrderedCollection>(
+              FutureBuilder<OrderedPagedCollection>(
                 future: sharesFuture,
                 builder: (BuildContext context,
-                    AsyncSnapshot<OrderedCollection> snapshot) {
+                    AsyncSnapshot<OrderedPagedCollection> snapshot) {
                   Widget child;
                   if (snapshot.hasData) {
                     child = IconBar(
