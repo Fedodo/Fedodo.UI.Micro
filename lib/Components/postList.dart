@@ -1,7 +1,12 @@
+import 'package:fedodo_micro/DataProvider/actor_provider.dart';
+import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
+import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
+import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../DataProvider/outbox_provider.dart';
 import '../Models/ActivityPub/activity.dart';
+import '../Models/ActivityPub/actor.dart';
 import '../Models/ActivityPub/post.dart';
 import '../Views/PostViews/post.dart';
 
@@ -11,28 +16,30 @@ class PostList extends StatefulWidget {
     required this.accessToken,
     required this.appTitle,
     required this.userId,
-    required this.outboxUrl,
+    required this.firstPage,
     this.noReplies = false,
+    this.isInbox = true,
   }) : super(key: key);
 
   final String accessToken;
   final String appTitle;
   final String userId;
-  final String outboxUrl;
+  final String firstPage;
   final bool noReplies;
+  final bool isInbox;
 
   @override
   State<PostList> createState() => _PostListState();
 }
 
 class _PostListState extends State<PostList> with TickerProviderStateMixin {
-  late final PagingController<String, Post> _noRepliesController =
-      PagingController(firstPageKey: widget.outboxUrl);
+  late final PagingController<String, Post> _paginationController;
   static const _pageSize = 20;
 
   @override
   void initState() {
-    _noRepliesController.addPageRequestListener((pageKey) {
+    _paginationController = PagingController(firstPageKey: widget.firstPage);
+    _paginationController.addPageRequestListener((pageKey) {
       _fetchPageNoReplies(pageKey);
     });
 
@@ -41,13 +48,19 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
 
   Future<void> _fetchPageNoReplies(String pageKey) async {
     try {
-      OutboxProvider provider = OutboxProvider();
+      OrderedCollectionPage orderedCollectionPage;
 
-      final collection = await provider.getPosts(pageKey);
+      if (widget.isInbox){
+        InboxProvider inboxProvider = InboxProvider(widget.accessToken);
+        orderedCollectionPage = await inboxProvider.getPosts(pageKey);
+      }else {
+        OutboxProvider provider = OutboxProvider();
+        orderedCollectionPage = await provider.getPosts(pageKey);
+      }
 
       List<Activity<Post>> postActivities = [];
 
-      for (Activity activity in collection.orderedItems) {
+      for (Activity activity in orderedCollectionPage.orderedItems) {
         if (widget.noReplies){
           if (activity.type == "Create" && activity.object.inReplyTo == null) {
             postActivities.add(activity as Activity<Post>);
@@ -67,30 +80,35 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
         newItems.add(activity.object);
       }
 
-      final isLastPage = collection.orderedItems.length < _pageSize;
+      final isLastPage = orderedCollectionPage.orderedItems.length < _pageSize;
       if (isLastPage) {
-        _noRepliesController.appendLastPage(newItems);
+        _paginationController.appendLastPage(newItems);
       } else {
-        final nextPageKey = collection.next;
-        _noRepliesController.appendPage(newItems, nextPageKey);
+        final nextPageKey = orderedCollectionPage.next;
+        _paginationController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      _noRepliesController.error = error;
+      _paginationController.error = error;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<String, Post>(
-      pagingController: _noRepliesController,
-      builderDelegate: PagedChildBuilderDelegate<Post>(
-        itemBuilder: (context, item, index) => PostView(
-          post: item,
-          accessToken: widget.accessToken,
-          appTitle: widget.appTitle,
-          replies: const [],
-          // TODO
-          userId: widget.userId,
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(
+        () => _paginationController.refresh(),
+      ),
+      child: PagedListView<String, Post>(
+        pagingController: _paginationController,
+        builderDelegate: PagedChildBuilderDelegate<Post>(
+          itemBuilder: (context, item, index) => PostView(
+            post: item,
+            accessToken: widget.accessToken,
+            appTitle: widget.appTitle,
+            replies: const [],
+            // TODO
+            userId: widget.userId,
+          ),
         ),
       ),
     );
@@ -98,7 +116,7 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _noRepliesController.dispose();
+    _paginationController.dispose();
     super.dispose();
   }
 }

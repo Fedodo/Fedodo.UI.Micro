@@ -174,14 +174,16 @@ class _ProfileViewState extends State<ProfileView>
                     accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
                     userId: widget.userId,
-                    outboxUrl: widget.outboxUrl,
+                    firstPage: widget.outboxUrl,
                     noReplies: true,
+                    isInbox: false,
                   ),
                   PostList(
                     accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
                     userId: widget.userId,
-                    outboxUrl: widget.outboxUrl,
+                    firstPage: widget.outboxUrl,
+                    isInbox: false,
                   ),
                   Container(
                     decoration: BoxDecoration(
