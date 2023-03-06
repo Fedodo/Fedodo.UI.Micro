@@ -4,8 +4,8 @@ import 'ordered_collection.dart';
 class OrderedCollectionPage {
   final dynamic context;
   final String type;
-  final String next;
-  final String prev;
+  final String? next;
+  final String? prev;
   final String partOf;
   final String id;
   final List<Activity> orderedItems;
