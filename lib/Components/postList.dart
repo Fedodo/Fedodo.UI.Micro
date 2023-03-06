@@ -67,7 +67,7 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
         newItems.add(activity.object);
       }
 
-      final isLastPage = newItems.length < _pageSize;
+      final isLastPage = collection.orderedItems.length < _pageSize;
       if (isLastPage) {
         _noRepliesController.appendLastPage(newItems);
       } else {
