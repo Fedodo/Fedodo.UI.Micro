@@ -1,12 +1,9 @@
-import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../DataProvider/outbox_provider.dart';
 import '../Models/ActivityPub/activity.dart';
-import '../Models/ActivityPub/actor.dart';
 import '../Models/ActivityPub/post.dart';
 import '../Views/PostViews/post.dart';
 
