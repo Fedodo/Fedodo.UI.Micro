@@ -16,7 +16,7 @@ import "package:html/dom.dart" as dom;
 import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart'; // For using CSS
+import 'package:url_launcher/url_launcher.dart';
 
 class PostView extends StatefulWidget {
   const PostView({
