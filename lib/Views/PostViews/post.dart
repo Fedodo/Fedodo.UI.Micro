@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/Components/reply_indicator.dart';
 import 'package:fedodo_micro/Components/user_header.dart';
 import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
@@ -116,130 +117,160 @@ class _PostViewState extends State<PostView> {
       bottomChildren.add(linkPreview);
     }
 
+    List<Widget> children = [
+      UserHeader(
+        userId: widget.post.attributedTo,
+        accessToken: widget.accessToken,
+        publishedDateTime: widget.post.published,
+        appTitle: widget.appTitle,
+      ),
+      Html(
+        data: document.outerHtml,
+        style: {
+          "p": Style(fontSize: const FontSize(16)),
+          "a": Style(
+            fontSize: const FontSize(16),
+            textDecoration: TextDecoration.none,
+          ),
+        },
+        customRender: {
+          "a": (RenderContext context, Widget child) {
+            return InkWell(
+              onTap: () => {
+                launchUrl(Uri.parse(context.tree.element!.attributes["href"]!))
+              },
+              child: child,
+            );
+          },
+        },
+      ),
+      Row(
+        children: bottomChildren,
+      ),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                IconButton(
+                  onPressed: chatOnPressed,
+                  icon: const Icon(FontAwesomeIcons.comments),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                FutureBuilder<bool>(
+                  future: isPostSharedFuture,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    Widget child;
+                    if (snapshot.hasData) {
+                      child = IconButton(
+                          onPressed: announce,
+                          icon: snapshot.data!
+                              ? const Icon(
+                                  FontAwesomeIcons.retweet,
+                                  color: Colors.blue,
+                                )
+                              : const Icon(FontAwesomeIcons.retweet));
+                    } else if (snapshot.hasError) {
+                      child = const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      );
+                    } else {
+                      child = const Icon(FontAwesomeIcons.retweet);
+                    }
+                    return child;
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                FutureBuilder<bool>(
+                  future: isPostLikedFuture,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    Widget child;
+                    if (snapshot.hasData) {
+                      child = IconButton(
+                          onPressed: like,
+                          icon: snapshot.data!
+                              ? const Icon(
+                                  FontAwesomeIcons.solidStar,
+                                  color: Colors.orangeAccent,
+                                )
+                              : const Icon(FontAwesomeIcons.star));
+                    } else if (snapshot.hasError) {
+                      child = const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      );
+                    } else {
+                      child = const Icon(FontAwesomeIcons.star);
+                    }
+                    return child;
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                  onPressed: share,
+                  icon: const Icon(FontAwesomeIcons.shareNodes),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+      const Divider(
+        thickness: 1,
+        height: 0,
+      ),
+    ];
+
+    ActorProvider actorProvider = ActorProvider(widget.accessToken);
+    Future<Actor> actorFuture =
+        actorProvider.getActor(widget.post.attributedTo);
+
+    if (widget.post.inReplyTo != null) {
+      children.insert(
+        0,
+        FutureBuilder<Actor>(
+          future: actorFuture,
+          builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+            Widget child;
+            if (snapshot.hasData) {
+              child = ReplyIndicator(
+                  actorName: snapshot.data!.preferredUsername ?? "Unknown");
+            } else if (snapshot.hasError) {
+              child = const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              );
+            } else {
+              child = const ReplyIndicator(actorName: "Unknown");
+            }
+            return child;
+          },
+        ),
+      );
+    }
+
     return InkWell(
       onTap: openPost,
       child: Ink(
         child: Column(
-          children: [
-            UserHeader(
-              userId: widget.post.attributedTo,
-              accessToken: widget.accessToken,
-              publishedDateTime: widget.post.published,
-              appTitle: widget.appTitle,
-            ),
-            Html(
-              data: document.outerHtml,
-              style: {
-                "p": Style(fontSize: const FontSize(16)),
-                "a": Style(
-                  fontSize: const FontSize(16),
-                  textDecoration: TextDecoration.none,
-                ),
-              },
-              customRender: {
-                "a": (RenderContext context, Widget child) {
-                  return InkWell(
-                    onTap: () => {
-                      launchUrl(
-                          Uri.parse(context.tree.element!.attributes["href"]!))
-                    },
-                    child: child,
-                  );
-                },
-              },
-            ),
-            Row(
-              children: bottomChildren,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: chatOnPressed,
-                        icon: const Icon(FontAwesomeIcons.comments),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      FutureBuilder<bool>(
-                        future: isPostSharedFuture,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<bool> snapshot) {
-                          Widget child;
-                          if (snapshot.hasData) {
-                            child = IconButton(
-                                onPressed: announce,
-                                icon: snapshot.data!
-                                    ? const Icon(
-                                        FontAwesomeIcons.retweet,
-                                        color: Colors.blue,
-                                      )
-                                    : const Icon(FontAwesomeIcons.retweet));
-                          } else if (snapshot.hasError) {
-                            child = const Icon(
-                              Icons.error_outline,
-                              color: Colors.red,
-                              size: 60,
-                            );
-                          } else {
-                            child = const Icon(FontAwesomeIcons.retweet);
-                          }
-                          return child;
-                        },
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      FutureBuilder<bool>(
-                        future: isPostLikedFuture,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<bool> snapshot) {
-                          Widget child;
-                          if (snapshot.hasData) {
-                            child = IconButton(
-                                onPressed: like,
-                                icon: snapshot.data!
-                                    ? const Icon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: Colors.orangeAccent,
-                                      )
-                                    : const Icon(FontAwesomeIcons.star));
-                          } else if (snapshot.hasError) {
-                            child = const Icon(
-                              Icons.error_outline,
-                              color: Colors.red,
-                              size: 60,
-                            );
-                          } else {
-                            child = const Icon(FontAwesomeIcons.star);
-                          }
-                          return child;
-                        },
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: share,
-                        icon: const Icon(FontAwesomeIcons.shareNodes),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              thickness: 1,
-              height: 0,
-            ),
-          ],
+          children: children,
         ),
       ),
     );

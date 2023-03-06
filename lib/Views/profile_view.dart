@@ -1,6 +1,7 @@
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
+import 'package:fedodo_micro/Components/postList.dart';
 import 'package:fedodo_micro/DataProvider/followers_provider.dart';
 import 'package:fedodo_micro/DataProvider/followings_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
@@ -41,54 +42,13 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  static const _pageSize = 20;
-  late final PagingController<String, Post> _pagingController =
-      PagingController(firstPageKey: widget.outboxUrl);
   late final ActorProvider actorProvider = ActorProvider(widget.accessToken);
   late final Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
     _tabController = TabController(length: 4, vsync: this);
-
     super.initState();
-  }
-
-  Future<void> _fetchPage(String pageKey) async {
-    try {
-      OutboxProvider provider = OutboxProvider();
-
-      final collection = await provider.getPosts(pageKey);
-
-      List<Activity<Post>> postActivities = [];
-
-      for (Activity activity in collection.orderedItems) {
-        if (activity.type == "Create") {
-          postActivities.add(activity as Activity<Post>);
-        }
-      }
-
-      final orderedItems = postActivities;
-
-      List<Post> newItems = [];
-
-      for (Activity<Post> activity in orderedItems) {
-        newItems.add(activity.object);
-      }
-
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = collection.next;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
   }
 
   void setFollowers(String followersString) async {
@@ -137,7 +97,7 @@ class _ProfileViewState extends State<ProfileView>
               snapshot.data?.following != null) {
             setFollowings(snapshot.data!.following!);
           }
-          if (widget.postCount == null){
+          if (widget.postCount == null) {
             setPosts(snapshot.data!.outbox!);
           }
 
@@ -210,31 +170,18 @@ class _ProfileViewState extends State<ProfileView>
               body: TabBarView(
                 controller: _tabController,
                 children: [
-                  PagedListView<String, Post>(
-                    pagingController: _pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<Post>(
-                      itemBuilder: (context, item, index) => PostView(
-                        post: item,
-                        accessToken: widget.accessToken,
-                        appTitle: widget.appTitle,
-                        replies: const [],
-                        // TODO
-                        userId: widget.userId,
-                      ),
-                    ),
+                  PostList(
+                    accessToken: widget.accessToken,
+                    appTitle: widget.appTitle,
+                    userId: widget.userId,
+                    outboxUrl: widget.outboxUrl,
+                    noReplies: true,
                   ),
-                  PagedListView<String, Post>(
-                    pagingController: _pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<Post>(
-                      itemBuilder: (context, item, index) => PostView(
-                        post: item,
-                        accessToken: widget.accessToken,
-                        appTitle: widget.appTitle,
-                        replies: const [],
-                        // TODO
-                        userId: widget.userId,
-                      ),
-                    ),
+                  PostList(
+                    accessToken: widget.accessToken,
+                    appTitle: widget.appTitle,
+                    userId: widget.userId,
+                    outboxUrl: widget.outboxUrl,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -274,7 +221,6 @@ class _ProfileViewState extends State<ProfileView>
 
   @override
   void dispose() {
-    _pagingController.dispose();
     _tabController.dispose();
     super.dispose();
   }
