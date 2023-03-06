@@ -80,10 +80,10 @@ class _FullPostViewState extends State<FullPostView> {
                   return child;
                 },
               ),
-              FutureBuilder<OrderedCollection>(
+              FutureBuilder<OrderedPagedCollection>(
                 future: likesFuture,
                 builder: (BuildContext context,
-                    AsyncSnapshot<OrderedCollection> snapshot) {
+                    AsyncSnapshot<OrderedPagedCollection> snapshot) {
                   Widget child;
                   if (snapshot.hasData) {
                     child = IconBar(
