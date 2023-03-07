@@ -17,6 +17,7 @@ import 'package:html/parser.dart' as htmlparser;
 import 'package:flutter_html/style.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class PostView extends StatefulWidget {
   const PostView({
@@ -69,7 +70,18 @@ class _PostViewState extends State<PostView> {
     return null;
   }
 
+  void feedbackSelect() async{
+    bool canVibrate = await Vibrate.canVibrate;
+
+    if (canVibrate){
+      Vibrate.feedback(FeedbackType.selection);
+    }
+  }
+
   void openPost() {
+
+    feedbackSelect();
+
     if (widget.isClickable) {
       Navigator.push(
         context,
@@ -276,7 +288,17 @@ class _PostViewState extends State<PostView> {
     );
   }
 
+  void feedbackLight() async {
+    bool canVibrate = await Vibrate.canVibrate;
+
+    if (canVibrate){
+      Vibrate.feedback(FeedbackType.light);
+    }
+  }
+
   void chatOnPressed() {
+    feedbackLight();
+
     Navigator.push(
       context,
       PageRouteBuilder(
@@ -300,11 +322,25 @@ class _PostViewState extends State<PostView> {
     );
   }
 
-  void share() {
+  void share() async {
+
+    bool canVibrate = await Vibrate.canVibrate;
+
+    if (canVibrate){
+      Vibrate.feedback(FeedbackType.light);
+    }
+
     Share.share("Checkout this post on Fedodo. ${widget.post.id} \n\n");
   }
 
-  void like() {
+  void like() async {
+
+    bool canVibrate = await Vibrate.canVibrate;
+
+    if (canVibrate){
+      Vibrate.feedback(FeedbackType.light);
+    }
+
     setState(() {
       isPostLikedFuture = Future.value(true);
     });
@@ -313,7 +349,14 @@ class _PostViewState extends State<PostView> {
     activityHandler.like(widget.post.id);
   }
 
-  void announce() {
+  void announce() async {
+
+    bool canVibrate = await Vibrate.canVibrate;
+
+    if (canVibrate){
+      Vibrate.feedback(FeedbackType.light);
+    }
+
     setState(() {
       isPostSharedFuture = Future.value(true);
     });
