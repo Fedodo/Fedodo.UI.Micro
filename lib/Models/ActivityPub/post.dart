@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'collection_page.dart';
 
 class Post {
   final List<String> to;
@@ -11,6 +12,7 @@ class Post {
   final String type;
   final DateTime published;
   final String attributedTo;
+  final CollectionPage? replies;
 
   Post(
     this.to,
@@ -23,6 +25,7 @@ class Post {
     this.type,
     this.published,
     this.attributedTo,
+    this.replies,
   );
 
   Post.fromJson(Map<String, dynamic> json)
@@ -35,7 +38,8 @@ class Post {
         id = json["id"],
         type = json["type"],
         published = DateTime.parse(json["published"]),
-        attributedTo = json["attributedTo"];
+        attributedTo = json["attributedTo"],
+        replies = json["replies"] == null ? null : CollectionPage.fromJson(json["replies"]);
 
   static List<String> convertToStringList(json) {
     List<String> jsonList = [];

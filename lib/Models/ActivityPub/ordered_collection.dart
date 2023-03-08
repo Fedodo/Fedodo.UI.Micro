@@ -30,7 +30,7 @@ class OrderedCollection {
 
     for (dynamic element in list) {
       if (element["type"] == "Create"){
-        returnList.add(Activity<Post>.fromJson(element));
+        returnList. add(Activity<Post>.fromJson(element));
       }else if (element["type"] == "Announce" || element["type"] == "Like"){
         returnList.add(Activity<String>.fromJson(element));
       }

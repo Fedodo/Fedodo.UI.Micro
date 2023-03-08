@@ -102,8 +102,6 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
             post: item,
             accessToken: widget.accessToken,
             appTitle: widget.appTitle,
-            replies: const [],
-            // TODO
             userId: widget.userId,
           ),
         ),

@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import '../Models/ActivityPub/activity.dart';
+
 class ActivityHandler {
   final String accessToken;
 
@@ -83,5 +85,18 @@ class ActivityHandler {
     );
 
     var bodyString = result.body;
+  }
+
+  Future<Activity> getActivity(String activityId) async{
+    http.Response response = await http.get(Uri.parse(activityId),
+      headers: <String, String>{
+        "Accept": "application/json",
+      },
+    );
+
+    String jsonString = response.body;
+    Activity activity = Activity.fromJson(jsonDecode(jsonString));
+
+    return activity;
   }
 }

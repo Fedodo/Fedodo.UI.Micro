@@ -47,6 +47,9 @@ class Activity<T> {
     else if (T == String){
       return object as String;
     }
+    else if (object["type"] == "Note"){
+      return Post.fromJson(object);
+    }
     else {
       return null;
     }

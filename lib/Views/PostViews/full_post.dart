@@ -1,12 +1,15 @@
 import 'package:fedodo_micro/Components/icon_bar.dart';
+import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/likes_provider.dart';
 import 'package:fedodo_micro/DataProvider/shares_provider.dart';
+import 'package:fedodo_micro/Models/ActivityPub/activity.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import '../../Models/ActivityPub/link.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class FullPostView extends StatefulWidget {
@@ -15,14 +18,12 @@ class FullPostView extends StatefulWidget {
     required this.post,
     required this.accessToken,
     required this.appTitle,
-    required this.replies,
     required this.userId,
   }) : super(key: key);
 
   final Post post;
   final String accessToken;
   final String appTitle;
-  final List<Post> replies;
   final String userId;
 
   @override
@@ -46,7 +47,6 @@ class _FullPostViewState extends State<FullPostView> {
           post: widget.post,
           accessToken: widget.accessToken,
           appTitle: widget.appTitle,
-          replies: const [], // TODO
           userId: widget.userId,
         ),
         Padding(
@@ -110,8 +110,9 @@ class _FullPostViewState extends State<FullPostView> {
               Row(
                 children: [
                   Text(
-                    DateFormat("MMMM d, yyyy HH:mm", "en_us").format(
-                        widget.post.published.toLocal()), // TODO Internationalization
+                    DateFormat("MMMM d, yyyy HH:mm", "en_us")
+                        .format(widget.post.published.toLocal()),
+                    // TODO Internationalization
                     style: const TextStyle(
                       color: Colors.white54,
                     ),
@@ -128,16 +129,42 @@ class _FullPostViewState extends State<FullPostView> {
       ],
     );
 
-    for (var element in widget.replies) {
-      children.add(
-        PostView(
-          post: element,
-          accessToken: widget.accessToken,
-          appTitle: widget.appTitle,
-          userId: widget.userId,
-          replies: const [], // TODO
-        ),
-      );
+    if (widget.post.replies != null) {
+      for (Link link in widget.post.replies!.items) {
+        ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
+        Future<Activity> activityFuture =
+            activityHandler.getActivity(link.href);
+
+        children.add(
+          FutureBuilder<Activity>(
+            future: activityFuture,
+            builder: (BuildContext context, AsyncSnapshot<Activity> snapshot) {
+              Widget child;
+              if (snapshot.hasData) {
+                child = PostView(
+                  post: snapshot.data?.object,
+                  accessToken: widget.accessToken,
+                  appTitle: widget.appTitle,
+                  userId: widget.userId,
+                );
+              } else if (snapshot.hasError) {
+                child = const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                );
+              } else {
+                child = const SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return child;
+            },
+          ),
+        );
+      }
     }
 
     return Scaffold(
