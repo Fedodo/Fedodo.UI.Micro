@@ -89,12 +89,47 @@ class _UserHeaderState extends State<UserHeader> {
               size: 60,
             );
           } else {
-            child = const Center(
-              child: SizedBox(
-                width: 45,
-                height: 45,
-                child: CircularProgressIndicator(),
-              ),
+
+            String text =
+                "Unknown";
+
+            if (widget.publishedDateTime != null) {
+              text +=
+              " · ${timeago.format(widget.publishedDateTime!, locale: "en_short").replaceAll("~", "")}";
+            }
+
+            child = Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.network(
+                    width: 45,
+                    height: 45,
+                    "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Unknown",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      Text(
+                        text,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           }
           return child;
