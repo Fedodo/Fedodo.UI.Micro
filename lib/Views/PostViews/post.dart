@@ -68,16 +68,15 @@ class _PostViewState extends State<PostView> {
     return null;
   }
 
-  void feedbackSelect() async{
+  void feedbackSelect() async {
     bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate){
+    if (canVibrate) {
       Vibrate.feedback(FeedbackType.selection);
     }
   }
 
   void openPost() {
-
     feedbackSelect();
 
     if (widget.isClickable) {
@@ -192,7 +191,12 @@ class _PostViewState extends State<PostView> {
                         size: 60,
                       );
                     } else {
-                      child = const Icon(FontAwesomeIcons.retweet);
+                      child = IconButton(
+                        onPressed: announce,
+                        icon: const Icon(
+                          FontAwesomeIcons.retweet,
+                        ),
+                      );
                     }
                     return child;
                   },
@@ -222,7 +226,12 @@ class _PostViewState extends State<PostView> {
                         size: 60,
                       );
                     } else {
-                      child = const Icon(FontAwesomeIcons.star);
+                      child = IconButton(
+                        onPressed: like,
+                        icon: const Icon(
+                          FontAwesomeIcons.star,
+                        ),
+                      );
                     }
                     return child;
                   },
@@ -288,7 +297,7 @@ class _PostViewState extends State<PostView> {
   void feedbackLight() async {
     bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate){
+    if (canVibrate) {
       Vibrate.feedback(FeedbackType.light);
     }
   }
@@ -320,10 +329,9 @@ class _PostViewState extends State<PostView> {
   }
 
   void share() async {
-
     bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate){
+    if (canVibrate) {
       Vibrate.feedback(FeedbackType.light);
     }
 
@@ -331,10 +339,9 @@ class _PostViewState extends State<PostView> {
   }
 
   void like() async {
-
     bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate){
+    if (canVibrate) {
       Vibrate.feedback(FeedbackType.light);
     }
 
@@ -347,10 +354,9 @@ class _PostViewState extends State<PostView> {
   }
 
   void announce() async {
-
     bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate){
+    if (canVibrate) {
       Vibrate.feedback(FeedbackType.light);
     }
 
