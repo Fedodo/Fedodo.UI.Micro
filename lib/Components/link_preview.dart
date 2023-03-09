@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,7 +48,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                     height: 200,
                     alignment: Alignment.center,
                     fit: BoxFit.cover,
-                    image: NetworkImage(snapshot.data!.image!),
+                    image: CachedNetworkImageProvider(snapshot.data!.image!),
                   ),
                   Container(
                     width: width,
@@ -96,11 +97,47 @@ class _LinkPreviewState extends State<LinkPreview> {
               ],
             );
           } else {
-            child = const Center(
-              child: SizedBox(
-                width: 200,
-                height: 200,
-                child: CircularProgressIndicator(),
+            child =InkWell(
+              onTap: linkPreviewPressed,
+              child: Stack(
+                alignment: AlignmentDirectional.bottomStart,
+                children: [
+                  Ink.image(
+                    width: width,
+                    height: 200,
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                    image: const CachedNetworkImageProvider("https://upload.wikimedia.org/wikipedia/commons/0/0e/DefaultImage.png"),
+                  ),
+                  Container(
+                    width: width,
+                    height: 50,
+                    color: const Color.fromARGB(210, 7, 5, 5),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                      child: ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          Text(
+                            Uri.parse(widget.link).authority,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            Uri.parse(widget.link).authority,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Colors.white54,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           }
