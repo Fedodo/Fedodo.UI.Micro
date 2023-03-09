@@ -51,7 +51,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
             children: [
               ElevatedButton(
                 onPressed: () {},
-                child: Text("Do Something"),
+                child: const Text("Do Something"),
               ),
             ],
           ),

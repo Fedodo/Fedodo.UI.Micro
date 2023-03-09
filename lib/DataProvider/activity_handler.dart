@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
-
 import '../Models/ActivityPub/activity.dart';
 
 class ActivityHandler {

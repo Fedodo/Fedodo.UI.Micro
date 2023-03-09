@@ -1,4 +1,3 @@
-import 'package:fedodo_micro/Views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../DataProvider/actor_provider.dart';
