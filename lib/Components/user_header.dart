@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../DataProvider/actor_provider.dart';
 import '../Models/ActivityPub/actor.dart';
 import '../Views/NavigationViews/profile.dart';
 
-class UserHeader extends StatefulWidget {
+class UserHeader extends StatelessWidget {
   const UserHeader({
     Key? key,
     required this.userId,
@@ -19,14 +20,9 @@ class UserHeader extends StatefulWidget {
   final String appTitle;
 
   @override
-  State<UserHeader> createState() => _UserHeaderState();
-}
-
-class _UserHeaderState extends State<UserHeader> {
-  @override
   Widget build(BuildContext context) {
-    ActorProvider actorProvider = ActorProvider(widget.accessToken);
-    Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
+    ActorProvider actorProvider = ActorProvider(accessToken);
+    Future<Actor> actorFuture = actorProvider.getActor(userId);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
@@ -38,23 +34,23 @@ class _UserHeaderState extends State<UserHeader> {
             String text =
                 "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}";
 
-            if (widget.publishedDateTime != null) {
+            if (publishedDateTime != null) {
               text +=
-                  " · ${timeago.format(widget.publishedDateTime!, locale: "en_short").replaceAll("~", "")}";
+                  " · ${timeago.format(publishedDateTime!, locale: "en_short").replaceAll("~", "")}";
             }
 
             child = InkWell(
               borderRadius: BorderRadius.circular(20),
-              onTap: openProfile,
+              onTap: () => {openProfile(context)},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
+                    child: CachedNetworkImage(
                       width: 45,
                       height: 45,
-                      snapshot.data?.icon?.url ??
+                      imageUrl: snapshot.data?.icon?.url ??
                           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
                     ),
                   ),
@@ -88,13 +84,11 @@ class _UserHeaderState extends State<UserHeader> {
               size: 60,
             );
           } else {
+            String text = "Unknown";
 
-            String text =
-                "Unknown";
-
-            if (widget.publishedDateTime != null) {
+            if (publishedDateTime != null) {
               text +=
-              " · ${timeago.format(widget.publishedDateTime!, locale: "en_short").replaceAll("~", "")}";
+                  " · ${timeago.format(publishedDateTime!, locale: "en_short").replaceAll("~", "")}";
             }
 
             child = Row(
@@ -102,10 +96,11 @@ class _UserHeaderState extends State<UserHeader> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: Image.network(
+                  child: CachedNetworkImage(
                     width: 45,
                     height: 45,
-                    "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
+                    imageUrl:
+                        "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
                   ),
                 ),
                 Padding(
@@ -137,16 +132,16 @@ class _UserHeaderState extends State<UserHeader> {
     );
   }
 
-  void openProfile() {
+  void openProfile(BuildContext context) {
     Navigator.push(
       context,
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => Profile(
-          accessToken: widget.accessToken,
-          userId: widget.userId,
-          appTitle: widget.appTitle,
+          accessToken: accessToken,
+          userId: userId,
+          appTitle: appTitle,
           showAppBar: true,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>

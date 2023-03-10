@@ -48,7 +48,11 @@ class _LinkPreviewState extends State<LinkPreview> {
                     height: 200,
                     alignment: Alignment.center,
                     fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(snapshot.data!.image!),
+                    image: CachedNetworkImageProvider(
+                      snapshot.data!.image!,
+                      maxHeight: 200,
+                      maxWidth: width.round(),
+                    ),
                   ),
                   Container(
                     width: width,
@@ -97,7 +101,7 @@ class _LinkPreviewState extends State<LinkPreview> {
               ],
             );
           } else {
-            child =InkWell(
+            child = InkWell(
               onTap: linkPreviewPressed,
               child: Stack(
                 alignment: AlignmentDirectional.bottomStart,
@@ -107,7 +111,11 @@ class _LinkPreviewState extends State<LinkPreview> {
                     height: 200,
                     alignment: Alignment.center,
                     fit: BoxFit.cover,
-                    image: const CachedNetworkImageProvider("https://upload.wikimedia.org/wikipedia/commons/0/0e/DefaultImage.png"),
+                    image: CachedNetworkImageProvider(
+                      "https://upload.wikimedia.org/wikipedia/commons/0/0e/DefaultImage.png",
+                      maxWidth: width.round(),
+                      maxHeight: 200,
+                    ),
                   ),
                   Container(
                     width: width,

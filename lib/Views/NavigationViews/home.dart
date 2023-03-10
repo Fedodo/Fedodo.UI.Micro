@@ -9,7 +9,7 @@ import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class Home extends StatefulWidget {
-  Home({
+  const Home({
     Key? key,
     required this.accessToken,
     required this.appTitle,
