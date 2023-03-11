@@ -20,7 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:html/parser.dart' as htmlparser;
 
-class PostView extends StatefulWidget {
+class PostView extends StatelessWidget {
   const PostView({
     Key? key,
     this.isClickable = true,
@@ -35,14 +35,6 @@ class PostView extends StatefulWidget {
   final String appTitle;
   final bool isClickable;
   final String userId;
-
-  @override
-  State<PostView> createState() => _PostViewState();
-}
-
-class _PostViewState extends State<PostView> {
-  List<Widget> bottomChildren = [];
-  late dom.Document document;
 
   Widget? getLinkPreview(dom.Document document) {
     List<dom.Element> elements = document.getElementsByTagName("html a");
@@ -77,20 +69,20 @@ class _PostViewState extends State<PostView> {
     }
   }
 
-  void openPost() {
+  void openPost(BuildContext context) {
     feedbackSelect();
 
-    if (widget.isClickable) {
+    if (isClickable) {
       Navigator.push(
         context,
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, animation2) => FullPostView(
-            post: widget.post,
-            userId: widget.userId,
-            accessToken: widget.accessToken,
-            appTitle: widget.appTitle,
+            post: post,
+            userId: userId,
+            accessToken: accessToken,
+            appTitle: appTitle,
           ),
           transitionsBuilder: (context, animation, animation2, widget) =>
               SlideTransition(
@@ -105,24 +97,20 @@ class _PostViewState extends State<PostView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    document = htmlparser.parse(widget.post.content);
+  Widget build(BuildContext context) {
+    List<Widget> bottomChildren = [];
+    dom.Document document = htmlparser.parse(post.content);
     Widget? linkPreview = getLinkPreview(document);
     if (linkPreview != null) {
       bottomChildren.add(linkPreview);
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
     List<Widget> children = [
       UserHeader(
-        userId: widget.post.attributedTo,
-        accessToken: widget.accessToken,
-        publishedDateTime: widget.post.published,
-        appTitle: widget.appTitle,
+        userId: post.attributedTo,
+        accessToken: accessToken,
+        publishedDateTime: post.published,
+        appTitle: appTitle,
       ),
       Html(
         data: document.outerHtml,
@@ -148,10 +136,10 @@ class _PostViewState extends State<PostView> {
         children: bottomChildren,
       ),
       PostBottom(
-        accessToken: widget.accessToken,
-        post: widget.post,
-        userId: widget.userId,
-        appTitle: widget.appTitle,
+        accessToken: accessToken,
+        post: post,
+        userId: userId,
+        appTitle: appTitle,
       ),
       const Divider(
         thickness: 1,
@@ -159,11 +147,10 @@ class _PostViewState extends State<PostView> {
       ),
     ];
 
-    ActorProvider actorProvider = ActorProvider(widget.accessToken);
-    Future<Actor> actorFuture =
-        actorProvider.getActor(widget.post.attributedTo);
+    ActorProvider actorProvider = ActorProvider(accessToken);
+    Future<Actor> actorFuture = actorProvider.getActor(post.attributedTo);
 
-    if (widget.post.inReplyTo != null) {
+    if (post.inReplyTo != null) {
       children.insert(
         0,
         FutureBuilder<Actor>(
@@ -189,7 +176,7 @@ class _PostViewState extends State<PostView> {
     }
 
     return InkWell(
-      onTap: openPost,
+      onTap: () => {openPost(context)},
       child: Ink(
         child: Column(
           children: children,

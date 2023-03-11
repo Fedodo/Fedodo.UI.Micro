@@ -3,27 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LinkPreview extends StatefulWidget {
+class LinkPreview extends StatelessWidget {
   const LinkPreview({Key? key, required this.link}) : super(key: key);
 
   final String link;
 
-  @override
-  State<LinkPreview> createState() => _LinkPreviewState();
-}
-
-class _LinkPreviewState extends State<LinkPreview> {
   linkPreviewPressed() async {
-    bool couldLaunchUrl = await canLaunchUrl(Uri.parse(widget.link));
+    bool couldLaunchUrl = await canLaunchUrl(Uri.parse(link));
 
     if (couldLaunchUrl) {
-      launchUrl(Uri.parse(widget.link));
+      launchUrl(Uri.parse(link));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Future<Metadata?> dataFuture = MetadataFetch.extract(widget.link);
+    Future<Metadata?> dataFuture = MetadataFetch.extract(link);
 
     var width = MediaQuery.of(context).size.width;
 
@@ -71,7 +66,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                             ),
                           ),
                           Text(
-                            Uri.parse(widget.link).authority,
+                            Uri.parse(link).authority,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 13,
@@ -127,14 +122,14 @@ class _LinkPreviewState extends State<LinkPreview> {
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           Text(
-                            Uri.parse(widget.link).authority,
+                            Uri.parse(link).authority,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 16,
                             ),
                           ),
                           Text(
-                            Uri.parse(widget.link).authority,
+                            Uri.parse(link).authority,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 13,

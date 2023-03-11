@@ -37,13 +37,13 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
   void initState() {
     _paginationController = PagingController(firstPageKey: widget.firstPage);
     _paginationController.addPageRequestListener((pageKey) {
-      _fetchPageNoReplies(pageKey);
+      _fetchPage(pageKey);
     });
 
     super.initState();
   }
 
-  Future<void> _fetchPageNoReplies(String pageKey) async {
+  Future<void> _fetchPage(String pageKey) async {
     try {
       OrderedCollectionPage orderedCollectionPage;
 
@@ -96,6 +96,7 @@ class _PostListState extends State<PostList> with TickerProviderStateMixin {
         () => _paginationController.refresh(),
       ),
       child: PagedListView<String, Post>(
+        clipBehavior: Clip.none,
         pagingController: _paginationController,
         builderDelegate: PagedChildBuilderDelegate<Post>(
           itemBuilder: (context, item, index) => PostView(
