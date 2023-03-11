@@ -56,6 +56,7 @@ class LinkPreview extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                       child: ListView(
+                        primary: false,
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           Text(

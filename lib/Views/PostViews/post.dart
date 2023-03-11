@@ -147,10 +147,9 @@ class PostView extends StatelessWidget {
       ),
     ];
 
-    ActorProvider actorProvider = ActorProvider(accessToken);
-    Future<Actor> actorFuture = actorProvider.getActor(post.attributedTo);
-
     if (post.inReplyTo != null) {
+      ActorProvider actorProvider = ActorProvider(accessToken);
+      Future<Actor> actorFuture = actorProvider.getActor(post.attributedTo);
       children.insert(
         0,
         FutureBuilder<Actor>(

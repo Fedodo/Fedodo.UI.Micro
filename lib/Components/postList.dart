@@ -95,6 +95,7 @@ class _PostListState extends State<PostList> {
         () => _paginationController.refresh(),
       ),
       child: PagedListView<String, Post>(
+        cacheExtent: 0,
         clipBehavior: Clip.none,
         pagingController: _paginationController,
         builderDelegate: PagedChildBuilderDelegate<Post>(
