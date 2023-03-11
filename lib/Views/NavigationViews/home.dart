@@ -8,7 +8,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({
     Key? key,
     required this.accessToken,
@@ -21,16 +21,11 @@ class Home extends StatefulWidget {
   final String userId;
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
   Widget build(BuildContext context) {
     return PostList(
-      accessToken: widget.accessToken,
-      appTitle: widget.appTitle,
-      userId: widget.userId,
+      accessToken: accessToken,
+      appTitle: appTitle,
+      userId: userId,
       isInbox: true,
       noReplies: true,
       firstPage:

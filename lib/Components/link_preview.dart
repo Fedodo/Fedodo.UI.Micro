@@ -96,53 +96,7 @@ class LinkPreview extends StatelessWidget {
               ],
             );
           } else {
-            child = InkWell(
-              onTap: linkPreviewPressed,
-              child: Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                children: [
-                  Ink.image(
-                    width: width,
-                    height: 200,
-                    alignment: Alignment.center,
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                      "https://upload.wikimedia.org/wikipedia/commons/0/0e/DefaultImage.png",
-                      maxWidth: width.round(),
-                      maxHeight: 200,
-                    ),
-                  ),
-                  Container(
-                    width: width,
-                    height: 50,
-                    color: const Color.fromARGB(210, 7, 5, 5),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                      child: ListView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          Text(
-                            Uri.parse(link).authority,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            Uri.parse(link).authority,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.white54,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+            child = const Placeholder();
           }
           return child;
         },

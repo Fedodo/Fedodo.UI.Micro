@@ -29,13 +29,12 @@ class PostList extends StatefulWidget {
   State<PostList> createState() => _PostListState();
 }
 
-class _PostListState extends State<PostList> with TickerProviderStateMixin {
-  late final PagingController<String, Post> _paginationController;
+class _PostListState extends State<PostList> {
+  late final PagingController<String, Post> _paginationController = PagingController(firstPageKey: widget.firstPage);
   static const _pageSize = 20;
 
   @override
   void initState() {
-    _paginationController = PagingController(firstPageKey: widget.firstPage);
     _paginationController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });

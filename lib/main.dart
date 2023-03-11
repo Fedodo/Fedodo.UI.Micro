@@ -11,14 +11,9 @@ void main() {
   runApp(const FedodoMicro());
 }
 
-class FedodoMicro extends StatefulWidget {
+class FedodoMicro extends StatelessWidget {
   const FedodoMicro({Key? key}) : super(key: key);
 
-  @override
-  State<FedodoMicro> createState() => _FedodoMicroState();
-}
-
-class _FedodoMicroState extends State<FedodoMicro> {
   @override
   Widget build(BuildContext context) {
     LoginManager login = LoginManager();
