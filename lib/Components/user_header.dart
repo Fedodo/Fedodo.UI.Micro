@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -96,11 +98,10 @@ class UserHeader extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: CachedNetworkImage(
+                  child: Image.asset(
+                    "assets/profile.png",
                     width: 45,
                     height: 45,
-                    imageUrl:
-                        "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010",
                   ),
                 ),
                 Padding(

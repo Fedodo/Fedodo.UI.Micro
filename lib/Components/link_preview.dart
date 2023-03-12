@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
@@ -18,7 +20,10 @@ class LinkPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<Metadata?> dataFuture = MetadataFetch.extract(link);
+    Future<Metadata?> dataFuture =
+        Future.delayed(const Duration(seconds: 1), () {
+      return MetadataFetch.extract(link);
+    });
 
     var width = MediaQuery.of(context).size.width;
 
@@ -96,7 +101,7 @@ class LinkPreview extends StatelessWidget {
               ],
             );
           } else {
-            child = const Placeholder();
+            child = Image.asset("assets/placeholder.png");
           }
           return child;
         },
