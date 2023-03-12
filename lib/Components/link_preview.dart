@@ -55,9 +55,8 @@ class LinkPreview extends StatelessWidget {
                     color: const Color.fromARGB(210, 7, 5, 5),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                      child: ListView(
-                        primary: false,
-                        physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             snapshot.data!.title!,
