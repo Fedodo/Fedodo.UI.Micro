@@ -16,6 +16,7 @@ class PostList extends StatefulWidget {
     required this.firstPage,
     this.noReplies = false,
     this.isInbox = true,
+    this.scrollController,
   }) : super(key: key);
 
   final String accessToken;
@@ -24,6 +25,7 @@ class PostList extends StatefulWidget {
   final String firstPage;
   final bool noReplies;
   final bool isInbox;
+  final ScrollController? scrollController;
 
   @override
   State<PostList> createState() => _PostListState();
@@ -95,6 +97,7 @@ class _PostListState extends State<PostList> {
         () => _paginationController.refresh(),
       ),
       child: PagedListView<String, Post>(
+        scrollController: widget.scrollController,
         cacheExtent: 0,
         clipBehavior: Clip.none,
         pagingController: _paginationController,

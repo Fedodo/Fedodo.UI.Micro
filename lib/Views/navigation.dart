@@ -22,6 +22,7 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int currentIndex = 0;
+  final ScrollController controller = ScrollController();
 
   void createPost() {
     Navigator.push(
@@ -48,6 +49,14 @@ class _NavigationState extends State<Navigation> {
   }
 
   void changeMenu(int index) {
+    if (currentIndex == 0 && index == 0) {
+      controller.animateTo(
+        0,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    }
+
     setState(() {
       currentIndex = index;
     });
@@ -57,6 +66,7 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     List screens = [
       Home(
+        scrollController: controller,
         accessToken: widget.accessToken,
         appTitle: widget.title,
         userId: widget.userId,

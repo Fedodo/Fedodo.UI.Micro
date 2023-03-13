@@ -14,15 +14,18 @@ class Home extends StatelessWidget {
     required this.accessToken,
     required this.appTitle,
     required this.userId,
+    required this.scrollController,
   }) : super(key: key);
 
   final String accessToken;
   final String appTitle;
   final String userId;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     return PostList(
+      scrollController: scrollController,
       accessToken: accessToken,
       appTitle: appTitle,
       userId: userId,
