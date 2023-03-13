@@ -1,3 +1,5 @@
+import 'package:fedodo_micro/APIs/post_api.dart';
+import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:flutter/material.dart';
@@ -63,9 +65,15 @@ class _PostListState extends State<PostList> {
           if (activity.type == "Create" && activity.object.inReplyTo == null) {
             postActivities.add(activity as Activity<Post>);
           }
+          else if(activity.type == "Announce"){
+            PostAPI postAPI = PostAPI(widget.accessToken);
+            Post post = await postAPI.getPost(activity.object);
+          }
         }else{
           if (activity.type == "Create") {
             postActivities.add(activity as Activity<Post>);
+          }else if(activity.type == "Announce"){
+
           }
         }
       }
