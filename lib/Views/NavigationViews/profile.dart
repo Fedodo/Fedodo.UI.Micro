@@ -1,6 +1,6 @@
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
-import 'package:fedodo_micro/Views/profile_view.dart';
+import 'package:fedodo_micro/Components/ProfileComponents/profile_main.dart';
 import 'package:flutter/material.dart';
 import '../../DataProvider/outbox_provider.dart';
 import '../../Models/ActivityPub/actor.dart';
@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
             builder: (BuildContext outboxContext, AsyncSnapshot<OrderedPagedCollection> outboxSnapshot) {
               Widget child;
               if (outboxSnapshot.hasData) {
-                child = ProfileView(
+                child = ProfileMain(
                   outboxUrl: outboxSnapshot.data?.first ?? "",
                   accessToken: widget.accessToken,
                   userId: widget.userId,

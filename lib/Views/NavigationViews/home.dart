@@ -1,12 +1,5 @@
-import 'package:fedodo_micro/Components/postList.dart';
-import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
-import 'package:fedodo_micro/Views/PostViews/post.dart';
+import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../../Models/ActivityPub/activity.dart';
-import '../../Models/ActivityPub/post.dart';
 
 class Home extends StatelessWidget {
   const Home({

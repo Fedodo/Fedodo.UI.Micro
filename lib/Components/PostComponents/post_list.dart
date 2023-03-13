@@ -2,10 +2,10 @@ import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../DataProvider/outbox_provider.dart';
-import '../Models/ActivityPub/activity.dart';
-import '../Models/ActivityPub/post.dart';
-import '../Views/PostViews/post.dart';
+import '../../DataProvider/outbox_provider.dart';
+import '../../Models/ActivityPub/activity.dart';
+import '../../Models/ActivityPub/post.dart';
+import '../../Views/PostViews/post.dart';
 
 class PostList extends StatefulWidget {
   const PostList({

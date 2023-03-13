@@ -1,22 +1,22 @@
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
-import 'package:fedodo_micro/Components/postList.dart';
+import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:fedodo_micro/DataProvider/followers_provider.dart';
 import 'package:fedodo_micro/DataProvider/followings_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../DataProvider/actor_provider.dart';
-import '../DataProvider/outbox_provider.dart';
-import '../Models/ActivityPub/activity.dart';
-import '../Models/ActivityPub/actor.dart';
-import '../Models/ActivityPub/ordered_collection.dart';
-import '../Models/ActivityPub/post.dart';
-import 'PostViews/post.dart';
+import '../../DataProvider/actor_provider.dart';
+import '../../DataProvider/outbox_provider.dart';
+import '../../Models/ActivityPub/activity.dart';
+import '../../Models/ActivityPub/actor.dart';
+import '../../Models/ActivityPub/ordered_collection.dart';
+import '../../Models/ActivityPub/post.dart';
+import '../../Views/PostViews/post.dart';
 
-class ProfileView extends StatefulWidget {
-  ProfileView({
+class ProfileMain extends StatefulWidget {
+  ProfileMain({
     Key? key,
     this.showAppBar = true,
     required this.accessToken,
@@ -36,10 +36,10 @@ class ProfileView extends StatefulWidget {
   bool showAppBar = true;
 
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  State<ProfileMain> createState() => _ProfileMainState();
 }
 
-class _ProfileViewState extends State<ProfileView>
+class _ProfileMainState extends State<ProfileMain>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late final ActorProvider actorProvider = ActorProvider(widget.accessToken);
