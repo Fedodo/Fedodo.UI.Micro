@@ -47,8 +47,9 @@ class _ProfileMainState extends State<ProfileMain>
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
     super.initState();
+
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   void setFollowers(String followersString) async {

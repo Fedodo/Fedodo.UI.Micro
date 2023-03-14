@@ -39,11 +39,11 @@ class _PostListState extends State<PostList> {
 
   @override
   void initState() {
+    super.initState();
+
     _paginationController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-
-    super.initState();
   }
 
   Future<void> _fetchPage(String pageKey) async {
