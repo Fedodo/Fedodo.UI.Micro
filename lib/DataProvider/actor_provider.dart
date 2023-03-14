@@ -17,8 +17,7 @@ class ActorProvider {
       },
     );
 
-    String jsonString = response.body;
-    Actor actor = Actor.fromJson(jsonDecode(jsonString));
+    Actor actor = Actor.fromJson(jsonDecode(response.body));
 
     return actor;
   }

@@ -106,7 +106,9 @@ class _PostListState extends State<PostList> {
       ),
       child: PagedListView<String, Post>(
         scrollController: widget.scrollController,
-        cacheExtent: 0,
+        addSemanticIndexes: false,
+        addAutomaticKeepAlives: true,
+        addRepaintBoundaries: true,
         clipBehavior: Clip.none,
         pagingController: _paginationController,
         builderDelegate: PagedChildBuilderDelegate<Post>(

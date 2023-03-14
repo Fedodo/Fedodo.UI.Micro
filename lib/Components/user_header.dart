@@ -48,7 +48,7 @@ class UserHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(45),
                     child: CachedNetworkImage(
                       width: 45,
                       height: 45,
@@ -97,7 +97,7 @@ class UserHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: BorderRadius.circular(45),
                   child: Image.asset(
                     "assets/profile.png",
                     width: 45,
