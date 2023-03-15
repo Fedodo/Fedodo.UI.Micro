@@ -1,7 +1,7 @@
 import 'package:fedodo_micro/Components/icon_bar.dart';
-import 'package:fedodo_micro/APIs/activity_api.dart';
-import 'package:fedodo_micro/APIs/likes_api.dart';
-import 'package:fedodo_micro/APIs/shares_api.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/shares_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/activity.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';

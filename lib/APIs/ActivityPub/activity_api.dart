@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../Models/ActivityPub/activity.dart';
-import '../Models/ActivityPub/post.dart';
+import '../../Models/ActivityPub/activity.dart';
+import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
   final String accessToken;

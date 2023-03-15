@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../Models/ActivityPub/ordered_collection.dart';
-import '../Models/ActivityPub/ordered_collection_page.dart';
-import '../Models/ActivityPub/ordered_paged_collection.dart';
+import '../../Models/ActivityPub/ordered_collection.dart';
+import '../../Models/ActivityPub/ordered_collection_page.dart';
+import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class LikesAPI{
   final String accessToken;
