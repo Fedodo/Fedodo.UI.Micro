@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:http/http.dart' as http;
 

@@ -86,9 +86,7 @@ class _CreatePostViewState extends State<CreatePostView> {
             if (snapshot.hasData) {
               child = PostHeadIndicator(
                 icon: FontAwesomeIcons.reply,
-                text: snapshot.data?.name ??
-                    snapshot.data?.preferredUsername ??
-                    "Unknown User",
+                text: "In reply to ${snapshot.data?.name}",
               );
             } else if (snapshot.hasError) {
               child = const Icon(
