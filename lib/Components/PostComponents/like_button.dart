@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../DataProvider/activity_handler.dart';
-import '../../DataProvider/likes_provider.dart';
-import '../../Models/ActivityPub/post.dart';
+import '../../APIs/likes_api.dart';
+import '../../Models/ActivityPub/activity.dart';
 
 class LikeButton extends StatefulWidget {
   const LikeButton({
     Key? key,
-    required this.post,
+    required this.activity,
     required this.accessToken, required this.userId,
   }) : super(key: key);
 
-  final Post post;
+  final Activity activity;
   final String accessToken;
   final String userId;
 
@@ -26,10 +25,10 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   void initState() {
     super.initState();
-    LikesProvider likesProvider = LikesProvider(widget.accessToken);
+    LikesAPI likesProvider = LikesAPI(widget.accessToken);
 
     isPostLikedFuture =
-        likesProvider.isPostLiked(widget.post.id, widget.userId);
+        likesProvider.isPostLiked(widget.activity.object.id, widget.userId);
   }
 
   @override
@@ -77,7 +76,7 @@ class _LikeButtonState extends State<LikeButton> {
       isPostLikedFuture = Future.value(true);
     });
 
-    ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
-    activityHandler.like(widget.post.id);
+    LikesAPI likesAPI = LikesAPI(widget.accessToken);
+    likesAPI.like(widget.activity.object.id);
   }
 }

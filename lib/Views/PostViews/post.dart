@@ -73,7 +73,7 @@ class PostView extends StatelessWidget {
       ),
       PostBottom(
         accessToken: accessToken,
-        post: activity.object,
+        activity: activity,
         userId: userId,
         appTitle: appTitle,
       ),

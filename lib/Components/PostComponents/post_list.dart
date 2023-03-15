@@ -1,5 +1,5 @@
 import 'package:fedodo_micro/APIs/post_api.dart';
-import 'package:fedodo_micro/DataProvider/activity_handler.dart';
+import 'package:fedodo_micro/APIs/activity_api.dart';
 import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:flutter/material.dart';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 import '../../Views/PostViews/create_post.dart';
 
@@ -11,13 +12,13 @@ class PostBottom extends StatelessWidget {
   const PostBottom({
     Key? key,
     required this.accessToken,
-    required this.post,
+    required this.activity,
     required this.userId,
     required this.appTitle,
   }) : super(key: key);
 
   final String accessToken;
-  final Post post;
+  final Activity activity;
   final String userId;
   final String appTitle;
 
@@ -32,8 +33,8 @@ class PostBottom extends StatelessWidget {
             onPressed: () => {chatOnPressed(context)},
             icon: const Icon(FontAwesomeIcons.comments),
           ),
-          ShareButton(post: post, accessToken: accessToken, userId: userId),
-          LikeButton(post: post, accessToken: accessToken, userId: userId),
+          ShareButton(activity: activity, accessToken: accessToken, userId: userId),
+          LikeButton(activity: activity, accessToken: accessToken, userId: userId),
           IconButton(
             onPressed: share,
             icon: const Icon(FontAwesomeIcons.shareNodes),
@@ -62,8 +63,8 @@ class PostBottom extends StatelessWidget {
         pageBuilder: (context, animation, animation2) => CreatePostView(
           accessToken: accessToken,
           userId: userId,
-          inReplyToActor: post.attributedTo,
-          inReplyToPost: post.id,
+          inReplyToActor: activity.object.attributedTo,
+          inReplyToPost: activity.object.id,
           appTitle: appTitle,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
@@ -84,6 +85,6 @@ class PostBottom extends StatelessWidget {
       Vibrate.feedback(FeedbackType.light);
     }
 
-    Share.share("Checkout this post on Fedodo. ${post.id} \n\n");
+    Share.share("Checkout this post on Fedodo. ${activity.object.id} \n\n");
   }
 }

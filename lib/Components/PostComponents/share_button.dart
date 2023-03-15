@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../DataProvider/activity_handler.dart';
-import '../../DataProvider/shares_provider.dart';
+import '../../APIs/activity_api.dart';
+import '../../APIs/shares_api.dart';
+import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class ShareButton extends StatefulWidget {
-  const ShareButton(
-      {Key? key, required this.post, required this.accessToken, required this.userId})
-      : super(key: key);
+  const ShareButton({
+    Key? key,
+    required this.activity,
+    required this.accessToken,
+    required this.userId,
+  }) : super(key: key);
 
-  final Post post;
+  final Activity activity;
   final String accessToken;
   final String userId;
 
@@ -24,10 +28,10 @@ class _ShareButtonState extends State<ShareButton> {
   @override
   void initState() {
     super.initState();
-    SharesProvider sharesProvider = SharesProvider(widget.accessToken);
+    SharesAPI sharesProvider = SharesAPI(widget.accessToken);
 
     isPostSharedFuture =
-        sharesProvider.isPostShared(widget.post.id, widget.userId);
+        sharesProvider.isPostShared(widget.activity.object.id, widget.userId);
   }
 
   @override
@@ -75,7 +79,7 @@ class _ShareButtonState extends State<ShareButton> {
       isPostSharedFuture = Future.value(true);
     });
 
-    ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
-    activityHandler.share(widget.post.id);
+    SharesAPI sharesAPI = SharesAPI(widget.accessToken);
+    sharesAPI.share(widget.activity.object.id);
   }
 }

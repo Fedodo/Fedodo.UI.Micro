@@ -1,7 +1,7 @@
 import 'package:fedodo_micro/Components/icon_bar.dart';
-import 'package:fedodo_micro/DataProvider/activity_handler.dart';
-import 'package:fedodo_micro/DataProvider/likes_provider.dart';
-import 'package:fedodo_micro/DataProvider/shares_provider.dart';
+import 'package:fedodo_micro/APIs/activity_api.dart';
+import 'package:fedodo_micro/APIs/likes_api.dart';
+import 'package:fedodo_micro/APIs/shares_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/activity.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
@@ -33,8 +33,8 @@ class FullPostView extends StatefulWidget {
 class _FullPostViewState extends State<FullPostView> {
   @override
   Widget build(BuildContext context) {
-    LikesProvider likesProv = LikesProvider(widget.accessToken);
-    SharesProvider sharesProvider = SharesProvider(widget.accessToken);
+    LikesAPI likesProv = LikesAPI(widget.accessToken);
+    SharesAPI sharesProvider = SharesAPI(widget.accessToken);
 
     var likesFuture = likesProv.getLikes(widget.activity.object.id);
     var sharesFuture = sharesProvider.getShares(widget.activity.object.id);
@@ -131,18 +131,18 @@ class _FullPostViewState extends State<FullPostView> {
 
     if (widget.activity.object.replies != null) {
       for (Link link in widget.activity.object.replies!.items) {
-        ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
-        Future<Activity> activityFuture =
+        ActivityAPI activityHandler = ActivityAPI(widget.accessToken);
+        Future<Activity<Post>> activityFuture =
             activityHandler.getActivity(link.href);
 
         children.add(
-          FutureBuilder<Activity>(
+          FutureBuilder<Activity<Post>>(
             future: activityFuture,
-            builder: (BuildContext context, AsyncSnapshot<Activity> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<Activity<Post>> snapshot) {
               Widget child;
               if (snapshot.hasData) {
                 child = PostView(
-                  activity: snapshot.data?.object,
+                  activity: snapshot.data!,
                   accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
                   userId: widget.userId,
