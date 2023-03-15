@@ -34,7 +34,8 @@ class PostList extends StatefulWidget {
 }
 
 class _PostListState extends State<PostList> {
-  late final PagingController<String, Post> _paginationController = PagingController(firstPageKey: widget.firstPage);
+  late final PagingController<String, Activity<Post>> _paginationController =
+      PagingController(firstPageKey: widget.firstPage);
   static const _pageSize = 20;
 
   @override
@@ -50,48 +51,68 @@ class _PostListState extends State<PostList> {
     try {
       OrderedCollectionPage orderedCollectionPage;
 
-      if (widget.isInbox){
+      if (widget.isInbox) {
         InboxProvider inboxProvider = InboxProvider(widget.accessToken);
         orderedCollectionPage = await inboxProvider.getPosts(pageKey);
-      }else {
+      } else {
         OutboxProvider provider = OutboxProvider();
         orderedCollectionPage = await provider.getPosts(pageKey);
       }
 
-      List<Activity<Post>> postActivities = [];
+      List<Activity<Post>> activities = [];
 
       for (Activity activity in orderedCollectionPage.orderedItems) {
-        if (widget.noReplies){
+        if (widget.noReplies) {
           if (activity.type == "Create" && activity.object.inReplyTo == null) {
-            postActivities.add(activity as Activity<Post>);
-          }
-          else if(activity.type == "Announce"){
+            activities.add(activity as Activity<Post>);
+          } else if (activity.type == "Announce") {
             PostAPI postAPI = PostAPI(widget.accessToken);
             Post post = await postAPI.getPost(activity.object);
+            Activity<Post> addActivity = Activity(
+              activity.to,
+              post,
+              activity.id,
+              activity.type,
+              activity.published,
+              activity.actor,
+              activity.context,
+              activity.bto,
+              activity.cc,
+              activity.bcc,
+              activity.audience,
+            );
+            activities.add(addActivity);
           }
-        }else{
+        } else {
           if (activity.type == "Create") {
-            postActivities.add(activity as Activity<Post>);
-          }else if(activity.type == "Announce"){
-
+            activities.add(activity as Activity<Post>);
+          } else if (activity.type == "Announce") {
+            PostAPI postAPI = PostAPI(widget.accessToken);
+            Post post = await postAPI.getPost(activity.object);
+            Activity<Post> addActivity = Activity(
+              activity.to,
+              post,
+              activity.id,
+              activity.type,
+              activity.published,
+              activity.actor,
+              activity.context,
+              activity.bto,
+              activity.cc,
+              activity.bcc,
+              activity.audience,
+            );
+            activities.add(addActivity);
           }
         }
       }
 
-      final orderedItems = postActivities;
-
-      List<Post> newItems = [];
-
-      for (Activity<Post> activity in orderedItems) {
-        newItems.add(activity.object);
-      }
-
       final isLastPage = orderedCollectionPage.orderedItems.length < _pageSize;
       if (isLastPage) {
-        _paginationController.appendLastPage(newItems);
+        _paginationController.appendLastPage(activities);
       } else {
         final nextPageKey = orderedCollectionPage.next;
-        _paginationController.appendPage(newItems, nextPageKey);
+        _paginationController.appendPage(activities, nextPageKey);
       }
     } catch (error) {
       _paginationController.error = error;
@@ -104,16 +125,16 @@ class _PostListState extends State<PostList> {
       onRefresh: () => Future.sync(
         () => _paginationController.refresh(),
       ),
-      child: PagedListView<String, Post>(
+      child: PagedListView<String, Activity<Post>>(
         scrollController: widget.scrollController,
         addSemanticIndexes: false,
         addAutomaticKeepAlives: false,
         addRepaintBoundaries: true,
         clipBehavior: Clip.none,
         pagingController: _paginationController,
-        builderDelegate: PagedChildBuilderDelegate<Post>(
+        builderDelegate: PagedChildBuilderDelegate<Activity<Post>>(
           itemBuilder: (context, item, index) => PostView(
-            post: item,
+            activity: item,
             accessToken: widget.accessToken,
             appTitle: widget.appTitle,
             userId: widget.userId,

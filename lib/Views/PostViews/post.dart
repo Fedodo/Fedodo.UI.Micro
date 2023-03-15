@@ -1,13 +1,9 @@
 import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
-import 'package:fedodo_micro/Components/reply_indicator.dart';
+import 'package:fedodo_micro/Components/post_head_indicator.dart';
 import 'package:fedodo_micro/Components/user_header.dart';
-import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
-import 'package:fedodo_micro/DataProvider/likes_provider.dart';
-import 'package:fedodo_micro/DataProvider/shares_provider.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
-import 'package:fedodo_micro/Views/PostViews/create_post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
 import 'package:fedodo_micro/Components/link_preview.dart';
 import 'package:flutter/material.dart';
@@ -15,26 +11,152 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:html/dom.dart" as dom;
 import 'package:flutter_html/style.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:html/parser.dart' as htmlparser;
+import '../../Models/ActivityPub/activity.dart';
 
 class PostView extends StatelessWidget {
   const PostView({
     Key? key,
     this.isClickable = true,
-    required this.post,
+    required this.activity,
     required this.accessToken,
     required this.appTitle,
     required this.userId,
   }) : super(key: key);
 
-  final Post post;
+  final Activity<Post> activity;
   final String accessToken;
   final String appTitle;
   final bool isClickable;
   final String userId;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> bottomChildren = [];
+    dom.Document document = htmlparser.parse(activity.object.content);
+    Widget? linkPreview = getLinkPreview(document);
+    if (linkPreview != null) {
+      bottomChildren.add(linkPreview);
+    }
+
+    List<Widget> children = [
+      UserHeader(
+        userId: activity.object.attributedTo,
+        accessToken: accessToken,
+        publishedDateTime: activity.published,
+        appTitle: appTitle,
+      ),
+      Html(
+        data: document.outerHtml,
+        style: {
+          "p": Style(fontSize: const FontSize(16)),
+          "a": Style(
+            fontSize: const FontSize(16),
+            textDecoration: TextDecoration.none,
+          ),
+        },
+        customRender: {
+          "a": (RenderContext context, Widget child) {
+            return InkWell(
+              onTap: () => {
+                launchUrl(Uri.parse(context.tree.element!.attributes["href"]!))
+              },
+              child: child,
+            );
+          },
+        },
+      ),
+      Row(
+        children: bottomChildren,
+      ),
+      PostBottom(
+        accessToken: accessToken,
+        post: activity.object,
+        userId: userId,
+        appTitle: appTitle,
+      ),
+      const Divider(
+        thickness: 1,
+        height: 0,
+      ),
+    ];
+
+    if (activity.object.inReplyTo != null) {
+      ActorProvider actorProvider = ActorProvider(accessToken);
+      Future<Actor> actorFuture =
+          actorProvider.getActor(activity.object.attributedTo);
+      children.insert(
+        0,
+        FutureBuilder<Actor>(
+          future: actorFuture,
+          builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+            Widget child;
+            if (snapshot.hasData) {
+              child = PostHeadIndicator(
+                  icon: FontAwesomeIcons.reply,
+                  text:
+                      "In reply to ${snapshot.data!.preferredUsername ?? "Unknown"}");
+            } else if (snapshot.hasError) {
+              child = const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              );
+            } else {
+              child = const PostHeadIndicator(
+                text: "In reply to Unknown",
+                icon: FontAwesomeIcons.reply,
+              );
+            }
+            return child;
+          },
+        ),
+      );
+    }
+
+    if (activity.type == "Announce") {
+      ActorProvider actorProvider = ActorProvider(accessToken);
+      Future<Actor> actorFuture = actorProvider.getActor(activity.actor);
+      children.insert(
+        0,
+        FutureBuilder<Actor>(
+          future: actorFuture,
+          builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+            Widget child;
+            if (snapshot.hasData) {
+              child = PostHeadIndicator(
+                  icon: FontAwesomeIcons.retweet,
+                  text:
+                      "${snapshot.data!.preferredUsername ?? "Unknown"} reposted this");
+            } else if (snapshot.hasError) {
+              child = const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              );
+            } else {
+              child = const PostHeadIndicator(
+                text: "Unknown reposted this",
+                icon: FontAwesomeIcons.retweet,
+              );
+            }
+            return child;
+          },
+        ),
+      );
+    }
+
+    return InkWell(
+      onTap: () => {openPost(context)},
+      child: Ink(
+        child: Column(
+          children: children,
+        ),
+      ),
+    );
+  }
 
   Widget? getLinkPreview(dom.Document document) {
     List<dom.Element> elements = document.getElementsByTagName("html a");
@@ -79,7 +201,7 @@ class PostView extends StatelessWidget {
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, animation2) => FullPostView(
-            post: post,
+            activity: activity,
             userId: userId,
             accessToken: accessToken,
             appTitle: appTitle,
@@ -94,93 +216,5 @@ class PostView extends StatelessWidget {
         ),
       );
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> bottomChildren = [];
-    dom.Document document = htmlparser.parse(post.content);
-    Widget? linkPreview = getLinkPreview(document);
-    if (linkPreview != null) {
-      bottomChildren.add(linkPreview);
-    }
-
-    List<Widget> children = [
-      UserHeader(
-        userId: post.attributedTo,
-        accessToken: accessToken,
-        publishedDateTime: post.published,
-        appTitle: appTitle,
-      ),
-      Html(
-        data: document.outerHtml,
-        style: {
-          "p": Style(fontSize: const FontSize(16)),
-          "a": Style(
-            fontSize: const FontSize(16),
-            textDecoration: TextDecoration.none,
-          ),
-        },
-        customRender: {
-          "a": (RenderContext context, Widget child) {
-            return InkWell(
-              onTap: () => {
-                launchUrl(Uri.parse(context.tree.element!.attributes["href"]!))
-              },
-              child: child,
-            );
-          },
-        },
-      ),
-      Row(
-        children: bottomChildren,
-      ),
-      PostBottom(
-        accessToken: accessToken,
-        post: post,
-        userId: userId,
-        appTitle: appTitle,
-      ),
-      const Divider(
-        thickness: 1,
-        height: 0,
-      ),
-    ];
-
-    if (post.inReplyTo != null) {
-      ActorProvider actorProvider = ActorProvider(accessToken);
-      Future<Actor> actorFuture = actorProvider.getActor(post.attributedTo);
-      children.insert(
-        0,
-        FutureBuilder<Actor>(
-          future: actorFuture,
-          builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
-            Widget child;
-            if (snapshot.hasData) {
-              child = ReplyIndicator(
-                  actorName: snapshot.data!.preferredUsername ?? "Unknown");
-            } else if (snapshot.hasError) {
-              child = const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
-              );
-            } else {
-              child = const ReplyIndicator(actorName: "Unknown");
-            }
-            return child;
-          },
-        ),
-      );
-    }
-
-    return InkWell(
-      onTap: () => {openPost(context)},
-      child: Ink(
-        child: Column(
-          children: children,
-        ),
-      ),
-    );
   }
 }

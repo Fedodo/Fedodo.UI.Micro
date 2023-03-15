@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:fedodo_micro/Components/reply_indicator.dart';
+import 'package:fedodo_micro/Components/post_head_indicator.dart';
 import 'package:fedodo_micro/DataProvider/activity_handler.dart';
 import 'package:fedodo_micro/DataProvider/actor_provider.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,11 @@ class _CreatePostViewState extends State<CreatePostView> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [
-      UserHeader(userId: widget.userId, accessToken: widget.accessToken, appTitle: widget.appTitle,),
+      UserHeader(
+        userId: widget.userId,
+        accessToken: widget.accessToken,
+        appTitle: widget.appTitle,
+      ),
       Expanded(
         child: SingleChildScrollView(
           child: Padding(
@@ -71,7 +75,8 @@ class _CreatePostViewState extends State<CreatePostView> {
 
     if (widget.inReplyToActor != null) {
       ActorProvider actorProvider = ActorProvider(widget.accessToken);
-      Future<Actor> actorFuture = actorProvider.getActor(widget.inReplyToActor!);
+      Future<Actor> actorFuture =
+          actorProvider.getActor(widget.inReplyToActor!);
       widgets.insert(
         0,
         FutureBuilder<Actor>(
@@ -79,9 +84,11 @@ class _CreatePostViewState extends State<CreatePostView> {
           builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
             Widget child;
             if (snapshot.hasData) {
-              child = ReplyIndicator(
-                actorName:
-                    snapshot.data?.name ?? snapshot.data?.preferredUsername ?? "Unknown User",
+              child = PostHeadIndicator(
+                icon: FontAwesomeIcons.reply,
+                text: snapshot.data?.name ??
+                    snapshot.data?.preferredUsername ??
+                    "Unknown User",
               );
             } else if (snapshot.hasError) {
               child = const Icon(

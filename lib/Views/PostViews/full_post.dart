@@ -15,13 +15,13 @@ import '../../Models/ActivityPub/post.dart';
 class FullPostView extends StatefulWidget {
   const FullPostView({
     Key? key,
-    required this.post,
+    required this.activity,
     required this.accessToken,
     required this.appTitle,
     required this.userId,
   }) : super(key: key);
 
-  final Post post;
+  final Activity<Post> activity;
   final String accessToken;
   final String appTitle;
   final String userId;
@@ -36,15 +36,15 @@ class _FullPostViewState extends State<FullPostView> {
     LikesProvider likesProv = LikesProvider(widget.accessToken);
     SharesProvider sharesProvider = SharesProvider(widget.accessToken);
 
-    var likesFuture = likesProv.getLikes(widget.post.id);
-    var sharesFuture = sharesProvider.getShares(widget.post.id);
+    var likesFuture = likesProv.getLikes(widget.activity.object.id);
+    var sharesFuture = sharesProvider.getShares(widget.activity.object.id);
 
     List<Widget> children = [];
     children.addAll(
       [
         PostView(
           isClickable: false,
-          post: widget.post,
+          activity: widget.activity,
           accessToken: widget.accessToken,
           appTitle: widget.appTitle,
           userId: widget.userId,
@@ -111,7 +111,7 @@ class _FullPostViewState extends State<FullPostView> {
                 children: [
                   Text(
                     DateFormat("MMMM d, yyyy HH:mm", "en_us")
-                        .format(widget.post.published.toLocal()),
+                        .format(widget.activity.object.published.toLocal()),
                     // TODO Internationalization
                     style: const TextStyle(
                       color: Colors.white54,
@@ -129,8 +129,8 @@ class _FullPostViewState extends State<FullPostView> {
       ],
     );
 
-    if (widget.post.replies != null) {
-      for (Link link in widget.post.replies!.items) {
+    if (widget.activity.object.replies != null) {
+      for (Link link in widget.activity.object.replies!.items) {
         ActivityHandler activityHandler = ActivityHandler(widget.accessToken);
         Future<Activity> activityFuture =
             activityHandler.getActivity(link.href);
@@ -142,7 +142,7 @@ class _FullPostViewState extends State<FullPostView> {
               Widget child;
               if (snapshot.hasData) {
                 child = PostView(
-                  post: snapshot.data?.object,
+                  activity: snapshot.data?.object,
                   accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
                   userId: widget.userId,

@@ -1,17 +1,17 @@
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 
 class Activity<T> {
-  final Object? context;
-  final List<String>? to;
-  final List<String>? bto;
-  final List<String>? cc;
-  final List<String>? bcc;
-  final List<String>? audience;
-  final T object;
-  final String id;
-  final String type;
-  final DateTime? published;
-  final String actor;
+  Object? context;
+  List<String>? to;
+  List<String>? bto;
+  List<String>? cc;
+  List<String>? bcc;
+  List<String>? audience;
+  T object;
+  String id;
+  String type;
+  DateTime? published;
+  String actor;
 
   Activity(
     this.to,
