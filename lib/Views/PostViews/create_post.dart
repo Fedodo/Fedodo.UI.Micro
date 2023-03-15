@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:fedodo_micro/Components/post_head_indicator.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
-import 'package:fedodo_micro/DataProvider/actor_provider.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -74,7 +74,7 @@ class _CreatePostViewState extends State<CreatePostView> {
     ];
 
     if (widget.inReplyToActor != null) {
-      ActorProvider actorProvider = ActorProvider(widget.accessToken);
+      ActorAPI actorProvider = ActorAPI(widget.accessToken);
       Future<Actor> actorFuture =
           actorProvider.getActor(widget.inReplyToActor!);
       widgets.insert(

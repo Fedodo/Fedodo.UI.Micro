@@ -1,7 +1,7 @@
 import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
 import 'package:fedodo_micro/Components/post_head_indicator.dart';
 import 'package:fedodo_micro/Components/user_header.dart';
-import 'package:fedodo_micro/DataProvider/actor_provider.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
@@ -84,7 +84,7 @@ class PostView extends StatelessWidget {
     ];
 
     if (activity.object.inReplyTo != null) {
-      ActorProvider actorProvider = ActorProvider(accessToken);
+      ActorAPI actorProvider = ActorAPI(accessToken);
       Future<Actor> actorFuture =
           actorProvider.getActor(activity.object.attributedTo);
       children.insert(
@@ -117,7 +117,7 @@ class PostView extends StatelessWidget {
     }
 
     if (activity.type == "Announce") {
-      ActorProvider actorProvider = ActorProvider(accessToken);
+      ActorAPI actorProvider = ActorAPI(accessToken);
       Future<Actor> actorFuture = actorProvider.getActor(activity.actor);
       children.insert(
         0,

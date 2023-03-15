@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import '../DataProvider/actor_provider.dart';
+import '../APIs/ActivityPub/actor_api.dart';
 import '../Models/ActivityPub/actor.dart';
 import '../Views/NavigationViews/profile.dart';
 
@@ -23,7 +23,7 @@ class UserHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActorProvider actorProvider = ActorProvider(accessToken);
+    ActorAPI actorProvider = ActorAPI(accessToken);
     Future<Actor> actorFuture = actorProvider.getActor(userId);
 
     return Padding(

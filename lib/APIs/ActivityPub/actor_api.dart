@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:http/http.dart' as http;
 
-class ActorProvider {
+class ActorAPI {
   final String accessToken;
 
-  ActorProvider(this.accessToken);
+  ActorAPI(this.accessToken);
 
   Future<Actor> getActor(String actorId) async {
     http.Response response = await http.get(

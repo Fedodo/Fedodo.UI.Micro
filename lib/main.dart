@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:fedodo_micro/DataProvider/application_registration.dart';
-import 'package:fedodo_micro/DataProvider/login_manager.dart';
+import 'package:fedodo_micro/APIs/OAuth/application_registration.dart';
+import 'package:fedodo_micro/APIs/OAuth/login_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Views/navigation.dart';

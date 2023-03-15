@@ -2,13 +2,13 @@ import 'package:fedodo_micro/Components/ProfileComponents/profile_description.da
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
-import 'package:fedodo_micro/DataProvider/followers_provider.dart';
-import 'package:fedodo_micro/DataProvider/followings_provider.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/followers_api.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/followings_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../DataProvider/actor_provider.dart';
-import '../../DataProvider/outbox_provider.dart';
+import '../../APIs/ActivityPub/actor_api.dart';
+import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/actor.dart';
 import '../../Models/ActivityPub/ordered_collection.dart';
@@ -42,7 +42,7 @@ class ProfileMain extends StatefulWidget {
 class _ProfileMainState extends State<ProfileMain>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late final ActorProvider actorProvider = ActorProvider(widget.accessToken);
+  late final ActorAPI actorProvider = ActorAPI(widget.accessToken);
   late final Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
 
   @override
@@ -53,7 +53,7 @@ class _ProfileMainState extends State<ProfileMain>
   }
 
   void setFollowers(String followersString) async {
-    FollowersProvider followersProvider = FollowersProvider();
+    FollowersAPI followersProvider = FollowersAPI();
     OrderedPagedCollection followersCollection =
         await followersProvider.getFollowers(followersString);
 
@@ -63,7 +63,7 @@ class _ProfileMainState extends State<ProfileMain>
   }
 
   void setFollowings(String followingsString) async {
-    FollowingProvider followersProvider = FollowingProvider();
+    FollowingsAPI followersProvider = FollowingsAPI();
     OrderedPagedCollection followingCollection =
         await followersProvider.getFollowings(followingsString);
 
@@ -73,7 +73,7 @@ class _ProfileMainState extends State<ProfileMain>
   }
 
   void setPosts(String outboxUrl) async {
-    OutboxProvider outboxProvider = OutboxProvider();
+    OutboxAPI outboxProvider = OutboxAPI();
 
     OrderedPagedCollection orderedPagedCollection =
         await outboxProvider.getFirstPage(outboxUrl);

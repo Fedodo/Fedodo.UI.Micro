@@ -1,4 +1,4 @@
-import 'package:fedodo_micro/DataProvider/application_registration.dart';
+import 'package:fedodo_micro/APIs/OAuth/application_registration.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';

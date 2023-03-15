@@ -1,10 +1,10 @@
 import 'package:fedodo_micro/APIs/ActivityPub/post_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
-import 'package:fedodo_micro/DataProvider/inbox_provider.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/inbox_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../DataProvider/outbox_provider.dart';
+import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 import '../../Views/PostViews/post.dart';
@@ -52,10 +52,10 @@ class _PostListState extends State<PostList> {
       OrderedCollectionPage orderedCollectionPage;
 
       if (widget.isInbox) {
-        InboxProvider inboxProvider = InboxProvider(widget.accessToken);
+        InboxAPI inboxProvider = InboxAPI(widget.accessToken);
         orderedCollectionPage = await inboxProvider.getPosts(pageKey);
       } else {
-        OutboxProvider provider = OutboxProvider();
+        OutboxAPI provider = OutboxAPI();
         orderedCollectionPage = await provider.getPosts(pageKey);
       }
 

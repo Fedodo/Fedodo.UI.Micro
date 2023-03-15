@@ -1,8 +1,8 @@
-import 'package:fedodo_micro/DataProvider/actor_provider.dart';
+import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_main.dart';
 import 'package:flutter/material.dart';
-import '../../DataProvider/outbox_provider.dart';
+import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/actor.dart';
 
 class Profile extends StatefulWidget {
@@ -26,14 +26,14 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    ActorProvider actorProvider = ActorProvider(widget.accessToken);
+    ActorAPI actorProvider = ActorAPI(widget.accessToken);
 
     return FutureBuilder<Actor>(
       future: actorProvider.getActor(widget.userId),
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          OutboxProvider provider = OutboxProvider();
+          OutboxAPI provider = OutboxAPI();
 
           child = FutureBuilder<OrderedPagedCollection>(
             future: provider.getFirstPage(snapshot.data?.outbox ?? ""),
