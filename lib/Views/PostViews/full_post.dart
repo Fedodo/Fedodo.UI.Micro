@@ -1,4 +1,4 @@
-import 'package:fedodo_micro/Components/icon_bar.dart';
+import 'package:fedodo_micro/Components/PostComponents/icon_bar.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/shares_api.dart';

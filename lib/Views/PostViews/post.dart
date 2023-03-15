@@ -1,11 +1,11 @@
 import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
-import 'package:fedodo_micro/Components/post_head_indicator.dart';
-import 'package:fedodo_micro/Components/user_header.dart';
+import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
+import 'package:fedodo_micro/Components/PostComponents/user_header.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
-import 'package:fedodo_micro/Components/link_preview.dart';
+import 'package:fedodo_micro/Components/PostComponents/link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

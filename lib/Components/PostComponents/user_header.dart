@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import '../APIs/ActivityPub/actor_api.dart';
-import '../Models/ActivityPub/actor.dart';
-import '../Views/NavigationViews/profile.dart';
+import '../../APIs/ActivityPub/actor_api.dart';
+import '../../Models/ActivityPub/actor.dart';
+import '../../Views/NavigationViews/profile.dart';
 
 class UserHeader extends StatelessWidget {
   const UserHeader({

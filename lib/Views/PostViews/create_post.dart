@@ -1,12 +1,12 @@
 import 'dart:ffi';
 
-import 'package:fedodo_micro/Components/post_head_indicator.dart';
+import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../Components/user_header.dart';
+import '../../Components/PostComponents/user_header.dart';
 import '../../Models/ActivityPub/actor.dart';
 
 class CreatePostView extends StatefulWidget {
