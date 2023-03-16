@@ -96,25 +96,21 @@ class _ProfileMainState extends State<ProfileMain>
               primary: false,
               pinned: true,
               automaticallyImplyLeading: false,
-              title: Row(
-                children: <Widget>[
-                  TabBar(
-                    isScrollable: true,
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(
-                        text: "Posts",
-                      ),
-                      Tab(
-                        text: "Posts and Replies",
-                      ),
-                      Tab(
-                        text: "Media",
-                      ),
-                      Tab(
-                        text: "About",
-                      ),
-                    ],
+              title: TabBar(
+                isScrollable: true,
+                controller: _tabController,
+                tabs: const [
+                  Tab(
+                    text: "Posts",
+                  ),
+                  Tab(
+                    text: "Posts and Replies",
+                  ),
+                  Tab(
+                    text: "Media",
+                  ),
+                  Tab(
+                    text: "About",
                   ),
                 ],
               ),
@@ -194,7 +190,7 @@ class _ProfileMainState extends State<ProfileMain>
   void setFollowers(String followersString) async {
     FollowersAPI followersProvider = FollowersAPI();
     OrderedPagedCollection followersCollection =
-    await followersProvider.getFollowers(followersString);
+        await followersProvider.getFollowers(followersString);
 
     setState(() {
       widget.followersCount = followersCollection.totalItems;
@@ -204,7 +200,7 @@ class _ProfileMainState extends State<ProfileMain>
   void setFollowings(String followingsString) async {
     FollowingsAPI followersProvider = FollowingsAPI();
     OrderedPagedCollection followingCollection =
-    await followersProvider.getFollowings(followingsString);
+        await followersProvider.getFollowings(followingsString);
 
     setState(() {
       widget.followingCount = followingCollection.totalItems;
@@ -215,7 +211,7 @@ class _ProfileMainState extends State<ProfileMain>
     OutboxAPI outboxProvider = OutboxAPI();
 
     OrderedPagedCollection orderedPagedCollection =
-    await outboxProvider.getFirstPage(outboxUrl);
+        await outboxProvider.getFirstPage(outboxUrl);
 
     setState(() {
       widget.postCount = orderedPagedCollection.totalItems;
