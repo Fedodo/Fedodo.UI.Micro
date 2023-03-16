@@ -52,37 +52,6 @@ class _ProfileMainState extends State<ProfileMain>
     _tabController = TabController(length: 4, vsync: this);
   }
 
-  void setFollowers(String followersString) async {
-    FollowersAPI followersProvider = FollowersAPI();
-    OrderedPagedCollection followersCollection =
-        await followersProvider.getFollowers(followersString);
-
-    setState(() {
-      widget.followersCount = followersCollection.totalItems;
-    });
-  }
-
-  void setFollowings(String followingsString) async {
-    FollowingsAPI followersProvider = FollowingsAPI();
-    OrderedPagedCollection followingCollection =
-        await followersProvider.getFollowings(followingsString);
-
-    setState(() {
-      widget.followingCount = followingCollection.totalItems;
-    });
-  }
-
-  void setPosts(String outboxUrl) async {
-    OutboxAPI outboxProvider = OutboxAPI();
-
-    OrderedPagedCollection orderedPagedCollection =
-        await outboxProvider.getFirstPage(outboxUrl);
-
-    setState(() {
-      widget.postCount = orderedPagedCollection.totalItems;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Actor>(
@@ -220,6 +189,37 @@ class _ProfileMainState extends State<ProfileMain>
         return child;
       },
     );
+  }
+
+  void setFollowers(String followersString) async {
+    FollowersAPI followersProvider = FollowersAPI();
+    OrderedPagedCollection followersCollection =
+    await followersProvider.getFollowers(followersString);
+
+    setState(() {
+      widget.followersCount = followersCollection.totalItems;
+    });
+  }
+
+  void setFollowings(String followingsString) async {
+    FollowingsAPI followersProvider = FollowingsAPI();
+    OrderedPagedCollection followingCollection =
+    await followersProvider.getFollowings(followingsString);
+
+    setState(() {
+      widget.followingCount = followingCollection.totalItems;
+    });
+  }
+
+  void setPosts(String outboxUrl) async {
+    OutboxAPI outboxProvider = OutboxAPI();
+
+    OrderedPagedCollection orderedPagedCollection =
+    await outboxProvider.getFirstPage(outboxUrl);
+
+    setState(() {
+      widget.postCount = orderedPagedCollection.totalItems;
+    });
   }
 
   @override

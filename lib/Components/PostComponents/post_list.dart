@@ -67,7 +67,12 @@ class _PostListState extends State<PostList> {
             activities.add(activity as Activity<Post>);
           } else if (activity.type == "Announce") {
             PostAPI postAPI = PostAPI(widget.accessToken);
-            Post post = await postAPI.getPost(activity.object);
+            Post? post = await postAPI.getPost(activity.object);
+
+            if (post == null){
+              continue;
+            }
+
             Activity<Post> addActivity = Activity(
               activity.to,
               post,
@@ -88,7 +93,12 @@ class _PostListState extends State<PostList> {
             activities.add(activity as Activity<Post>);
           } else if (activity.type == "Announce") {
             PostAPI postAPI = PostAPI(widget.accessToken);
-            Post post = await postAPI.getPost(activity.object);
+            Post? post = await postAPI.getPost(activity.object);
+
+            if (post == null){
+              continue;
+            }
+
             Activity<Post> addActivity = Activity(
               activity.to,
               post,

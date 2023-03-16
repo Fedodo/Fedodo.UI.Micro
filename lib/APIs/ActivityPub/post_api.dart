@@ -3,22 +3,24 @@ import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
-class PostAPI{
-
+class PostAPI {
   final String accessToken;
 
   PostAPI(this.accessToken);
 
-  Future<Post> getPost(String activityId) async{
-    http.Response response = await http.get(Uri.parse(activityId),
-      headers: <String, String>{
-      "Accept": "application/json"
-      },
-    );
+  Future<Post?> getPost(String activityId) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse(activityId),
+        headers: <String, String>{"Accept": "application/json"},
+      );
 
-    String jsonString = response.body;
-    Post post = Post.fromJson(jsonDecode(jsonString));
+      String jsonString = response.body;
 
-    return post;
+      Post post = Post.fromJson(jsonDecode(jsonString));
+      return post;
+    } catch (ex) {
+      return null;
+    }
   }
 }
