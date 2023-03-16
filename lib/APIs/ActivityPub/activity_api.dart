@@ -8,6 +8,29 @@ class ActivityAPI {
 
   ActivityAPI(this.accessToken);
 
+  void follow(String object) async {
+    Map<String, dynamic> body = {
+      "to": ["as:Public"],
+      "type": "Follow",
+      "object": object
+    };
+
+    String json = jsonEncode(body);
+
+    var result = await http.post(
+      Uri.parse(
+          "https://dev.fedodo.social/outbox/e287834b-0564-4ece-b793-0ef323344959"),
+      // TODO
+      headers: <String, String>{
+        "Authorization": "Bearer $accessToken",
+        "content-type": "application/json",
+      },
+      body: json,
+    );
+
+    var bodyString = result.body;
+  }
+
   void post(String content, String? inReplyTo) async {
     Map<String, dynamic> body = {
       "to": ["as:Public"],

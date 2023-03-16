@@ -3,15 +3,10 @@ import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:http/http.dart' as http;
 
 class ActorAPI {
-  final String accessToken;
-
-  ActorAPI(this.accessToken);
-
   Future<Actor> getActor(String actorId) async {
     http.Response response = await http.get(
       Uri.parse(actorId),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
         "Accept": "application/json",
       },
     );

@@ -43,7 +43,8 @@ class PostView extends StatelessWidget {
 
     List<Widget> children = [
       UserHeader(
-        userId: activity.object.attributedTo,
+        userId: userId,
+        profileId: activity.object.attributedTo,
         accessToken: accessToken,
         publishedDateTime: activity.published,
         appTitle: appTitle,
@@ -84,7 +85,7 @@ class PostView extends StatelessWidget {
     ];
 
     if (activity.object.inReplyTo != null) {
-      ActorAPI actorProvider = ActorAPI(accessToken);
+      ActorAPI actorProvider = ActorAPI();
       Future<Actor> actorFuture =
           actorProvider.getActor(activity.object.attributedTo);
       children.insert(
@@ -117,7 +118,7 @@ class PostView extends StatelessWidget {
     }
 
     if (activity.type == "Announce") {
-      ActorAPI actorProvider = ActorAPI(accessToken);
+      ActorAPI actorProvider = ActorAPI();
       Future<Actor> actorFuture = actorProvider.getActor(activity.actor);
       children.insert(
         0,

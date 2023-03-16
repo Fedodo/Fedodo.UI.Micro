@@ -10,21 +10,23 @@ import '../../Views/NavigationViews/profile.dart';
 class UserHeader extends StatelessWidget {
   const UserHeader({
     Key? key,
-    required this.userId,
+    required this.profileId,
     required this.accessToken,
     required this.appTitle,
     this.publishedDateTime,
+    required this.userId,
   }) : super(key: key);
 
   final String accessToken;
+  final String profileId;
   final String userId;
   final DateTime? publishedDateTime;
   final String appTitle;
 
   @override
   Widget build(BuildContext context) {
-    ActorAPI actorProvider = ActorAPI(accessToken);
-    Future<Actor> actorFuture = actorProvider.getActor(userId);
+    ActorAPI actorProvider = ActorAPI();
+    Future<Actor> actorFuture = actorProvider.getActor(profileId);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
@@ -140,8 +142,9 @@ class UserHeader extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => Profile(
-          accessToken: accessToken,
           userId: userId,
+          accessToken: accessToken,
+          profileId: profileId,
           appTitle: appTitle,
           showAppBar: true,
         ),

@@ -37,6 +37,7 @@ class _CreatePostViewState extends State<CreatePostView> {
     List<Widget> widgets = [
       UserHeader(
         userId: widget.userId,
+        profileId: widget.userId,
         accessToken: widget.accessToken,
         appTitle: widget.appTitle,
       ),
@@ -74,7 +75,7 @@ class _CreatePostViewState extends State<CreatePostView> {
     ];
 
     if (widget.inReplyToActor != null) {
-      ActorAPI actorProvider = ActorAPI(widget.accessToken);
+      ActorAPI actorProvider = ActorAPI();
       Future<Actor> actorFuture =
           actorProvider.getActor(widget.inReplyToActor!);
       widgets.insert(

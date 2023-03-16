@@ -74,9 +74,10 @@ class _NavigationState extends State<Navigation> {
       Search(accessToken: widget.accessToken),
       Search(accessToken: widget.accessToken), // TODO
       Profile(
+        userId: widget.userId,
         accessToken: widget.accessToken,
         appTitle: widget.title,
-        userId: widget.userId,
+        profileId: widget.userId,
         showAppBar: false,
       ),
     ];

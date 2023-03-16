@@ -10,12 +10,14 @@ class Profile extends StatefulWidget {
     Key? key,
     required this.accessToken,
     required this.appTitle,
-    required this.userId,
+    required this.profileId,
     required this.showAppBar,
+    required this.userId,
   }) : super(key: key);
 
   final String accessToken;
   final String appTitle;
+  final String profileId;
   final String userId;
   final bool showAppBar;
 
@@ -26,10 +28,10 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    ActorAPI actorProvider = ActorAPI(widget.accessToken);
+    ActorAPI actorProvider = ActorAPI();
 
     return FutureBuilder<Actor>(
-      future: actorProvider.getActor(widget.userId),
+      future: actorProvider.getActor(widget.profileId),
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
@@ -37,13 +39,15 @@ class _ProfileState extends State<Profile> {
 
           child = FutureBuilder<OrderedPagedCollection>(
             future: provider.getFirstPage(snapshot.data?.outbox ?? ""),
-            builder: (BuildContext outboxContext, AsyncSnapshot<OrderedPagedCollection> outboxSnapshot) {
+            builder: (BuildContext outboxContext,
+                AsyncSnapshot<OrderedPagedCollection> outboxSnapshot) {
               Widget child;
               if (outboxSnapshot.hasData) {
                 child = ProfileMain(
+                  userId: widget.userId,
                   outboxUrl: outboxSnapshot.data?.first ?? "",
                   accessToken: widget.accessToken,
-                  userId: widget.userId,
+                  profileId: widget.profileId,
                   appTitle: widget.appTitle,
                   showAppBar: widget.showAppBar,
                 );

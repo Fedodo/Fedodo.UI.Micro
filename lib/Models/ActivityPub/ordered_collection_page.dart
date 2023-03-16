@@ -1,14 +1,13 @@
-import 'activity.dart';
 import 'ordered_collection.dart';
 
-class OrderedCollectionPage {
+class OrderedCollectionPage<T> {
   final dynamic context;
   final String type;
   final String? next;
   final String? prev;
   final String partOf;
   final String id;
-  final List<Activity> orderedItems;
+  final List<T> orderedItems;
 
   OrderedCollectionPage(
     this.context,

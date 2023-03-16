@@ -1,9 +1,11 @@
+import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/followers_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/followings_api.dart';
+import 'package:fedodo_micro/Enums/profile_button_state.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -20,12 +22,14 @@ class ProfileMain extends StatefulWidget {
     Key? key,
     this.showAppBar = true,
     required this.accessToken,
-    required this.userId,
+    required this.profileId,
     required this.appTitle,
     required this.outboxUrl,
+    required this.userId,
   }) : super(key: key);
 
   final String accessToken;
+  final String profileId;
   final String userId;
   final String appTitle;
   final String outboxUrl;
@@ -42,8 +46,9 @@ class ProfileMain extends StatefulWidget {
 class _ProfileMainState extends State<ProfileMain>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late final ActorAPI actorProvider = ActorAPI(widget.accessToken);
-  late final Future<Actor> actorFuture = actorProvider.getActor(widget.userId);
+  late final ActorAPI actorProvider = ActorAPI();
+  late final Future<Actor> actorFuture =
+      actorProvider.getActor(widget.profileId);
 
   @override
   void initState() {
@@ -82,6 +87,8 @@ class _ProfileMainState extends State<ProfileMain>
                     postsCount: widget.postCount ?? 0,
                   ),
                   ProfileNameRow(
+                      accessToken: widget.accessToken,
+                      profileButtonState: getProfileButtonState(snapshot.data!),
                       preferredUsername: snapshot.data!.preferredUsername!,
                       userId: snapshot.data!.id!,
                       name: snapshot.data!.name),
@@ -139,7 +146,7 @@ class _ProfileMainState extends State<ProfileMain>
                   PostList(
                     accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
-                    userId: widget.userId,
+                    userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     noReplies: true,
                     isInbox: false,
@@ -147,7 +154,7 @@ class _ProfileMainState extends State<ProfileMain>
                   PostList(
                     accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
-                    userId: widget.userId,
+                    userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     isInbox: false,
                   ),
@@ -185,6 +192,21 @@ class _ProfileMainState extends State<ProfileMain>
         return child;
       },
     );
+  }
+
+  Future<ProfileButtonState> getProfileButtonState(Actor actor) async {
+    if (widget.profileId == widget.userId) {
+      return ProfileButtonState.ownProfile;
+    } else {
+      FollowingsAPI followingsAPI = FollowingsAPI();
+      var isFollowed =
+          await followingsAPI.isFollowed(widget.profileId, widget.userId);
+      if (isFollowed) {
+        return ProfileButtonState.subscribed;
+      } else {
+        return ProfileButtonState.notSubscribed;
+      }
+    }
   }
 
   void setFollowers(String followersString) async {
