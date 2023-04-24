@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginManager {
   Future<String?> login() async {
     OAuth2Client client = OAuth2Client(
-        authorizeUrl: "https://dev.fedodo.social/oauth/authorize",
-        tokenUrl: "https://dev.fedodo.social/oauth/token",
+        authorizeUrl: "https://auth.dev.fedodo.social/oauth/authorize",
+        tokenUrl: "https://auth.dev.fedodo.social/oauth/token",
         redirectUri: "my.test.app:/oauth2redirect",
         customUriScheme: "my.test.app");
 
