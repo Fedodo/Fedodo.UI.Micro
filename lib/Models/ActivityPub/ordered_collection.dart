@@ -1,11 +1,12 @@
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
+import 'activity.dart';
 
-class OrderedCollection<T> {
-  final String context;
-  final String summary;
+class OrderedCollection {
+  final String? context;
+  final String? summary;
   final String type;
   final int totalItems;
-  final List<T> orderedItems;
+  final List<Activity> orderedItems;
 
   OrderedCollection(this.context, this.summary, this.type, this.totalItems,
       this.orderedItems);
@@ -15,16 +16,30 @@ class OrderedCollection<T> {
         summary = json["summary"],
         type = json["type"],
         totalItems = json["totalItems"],
-        orderedItems = generatePosts<T>(json["orderedItems"]);
+        orderedItems = generatePosts(json["orderedItems"]);
 
   static List<T> generatePosts<T>(json) {
-    var list = json as List;
-    List<Post> returnList = [];
 
-    for (var element in list) {
-      returnList.add(Post.fromJson(element));
+    if (json == null){
+      return [];
     }
 
-    return returnList as List<T>;
+    var list = json as List;
+    List<T> returnList = [];
+
+    for (dynamic element in list) {
+      if (element is String){
+        returnList.add(element as T);
+      }
+      else if (element["type"] == "Create"){
+        returnList.add(Activity<Post>.fromJson(element) as T);
+      }else if (element["type"] == "Announce" || element["type"] == "Like"){
+        returnList.add(Activity<String>.fromJson(element) as T);
+      }else if (element["type"] == "Follow"){
+        returnList.add(element["object"]);
+      }
+    }
+
+    return returnList;
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:fedodo_micro/DataProvider/application_registration.dart';
-import 'package:fedodo_micro/DataProvider/login_manager.dart';
+import 'package:fedodo_micro/APIs/OAuth/application_registration.dart';
+import 'package:fedodo_micro/APIs/OAuth/login_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Views/navigation.dart';
@@ -11,17 +11,16 @@ void main() {
   runApp(const FedodoMicro());
 }
 
-class FedodoMicro extends StatefulWidget {
+class FedodoMicro extends StatelessWidget {
   const FedodoMicro({Key? key}) : super(key: key);
 
   @override
-  State<FedodoMicro> createState() => _FedodoMicroState();
-}
-
-class _FedodoMicroState extends State<FedodoMicro> {
-  @override
   Widget build(BuildContext context) {
-    LoginManager login = LoginManager();
+
+    String domainName = "dev.fedodo.social"; // TODO
+    String userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+
+    LoginManager login = LoginManager(domainName);
     Future<String?> accessTokenFuture = login.login();
 
     return MaterialApp(
@@ -65,6 +64,8 @@ class _FedodoMicroState extends State<FedodoMicro> {
           Widget child;
           if (snapshot.hasData) {
             child = Navigation(
+              domainName: domainName,
+              userId: userId,
               title: "Fedodo Micro",
               accessToken: snapshot.data!,
             );
@@ -75,10 +76,12 @@ class _FedodoMicroState extends State<FedodoMicro> {
               size: 60,
             );
           } else {
-            child = const SizedBox(
-              width: 60,
-              height: 60,
-              child: CircularProgressIndicator(),
+            child = const Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           return child;
