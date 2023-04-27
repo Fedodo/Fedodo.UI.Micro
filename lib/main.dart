@@ -65,7 +65,7 @@ class FedodoMicro extends StatelessWidget {
           if (snapshot.hasData) {
             child = Navigation(
               domainName: domainName,
-              userId: "https://$domainName/actor/$userId",
+              userId: userId,
               title: "Fedodo Micro",
               accessToken: snapshot.data!,
             );
