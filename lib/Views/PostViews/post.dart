@@ -24,6 +24,7 @@ class PostView extends StatelessWidget {
     required this.accessToken,
     required this.appTitle,
     required this.userId,
+    required this.domainName,
   }) : super(key: key);
 
   final Activity<Post> activity;
@@ -31,6 +32,7 @@ class PostView extends StatelessWidget {
   final String appTitle;
   final bool isClickable;
   final String userId;
+  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class PostView extends StatelessWidget {
         accessToken: accessToken,
         publishedDateTime: activity.published,
         appTitle: appTitle,
+        domainName: domainName,
       ),
       Html(
         data: document.outerHtml,
@@ -77,6 +80,7 @@ class PostView extends StatelessWidget {
         activity: activity,
         userId: userId,
         appTitle: appTitle,
+        domainName: domainName,
       ),
       const Divider(
         thickness: 1,
@@ -206,6 +210,7 @@ class PostView extends StatelessWidget {
             userId: userId,
             accessToken: accessToken,
             appTitle: appTitle,
+            domainName: domainName,
           ),
           transitionsBuilder: (context, animation, animation2, widget) =>
               SlideTransition(

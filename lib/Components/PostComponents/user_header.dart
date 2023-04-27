@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -15,6 +13,7 @@ class UserHeader extends StatelessWidget {
     required this.appTitle,
     this.publishedDateTime,
     required this.userId,
+    required this.domainName,
   }) : super(key: key);
 
   final String accessToken;
@@ -22,6 +21,7 @@ class UserHeader extends StatelessWidget {
   final String userId;
   final DateTime? publishedDateTime;
   final String appTitle;
+  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +147,7 @@ class UserHeader extends StatelessWidget {
           profileId: profileId,
           appTitle: appTitle,
           showAppBar: true,
+          domainName: domainName,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

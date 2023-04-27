@@ -7,12 +7,14 @@ class Home extends StatelessWidget {
     required this.accessToken,
     required this.appTitle,
     required this.userId,
+    required this.domainName,
     required this.scrollController,
   }) : super(key: key);
 
   final String accessToken;
   final String appTitle;
   final String userId;
+  final String domainName;
   final ScrollController scrollController;
 
   @override
@@ -24,8 +26,8 @@ class Home extends StatelessWidget {
       userId: userId,
       isInbox: true,
       noReplies: true,
-      firstPage:
-          "https://dev.fedodo.social/inbox/e287834b-0564-4ece-b793-0ef323344959/page/0", //TODO
+      firstPage: "https://$domainName/inbox/$userId/page/0",
+      domainName: domainName,
     );
   }
 }

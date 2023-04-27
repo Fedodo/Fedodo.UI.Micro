@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:http/http.dart' as http;
-import '../../Models/ActivityPub/actor.dart';
-import '../../Models/ActivityPub/ordered_collection.dart';
 
 class FollowersAPI {
   FollowersAPI();

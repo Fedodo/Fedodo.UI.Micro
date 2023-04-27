@@ -16,7 +16,11 @@ class FedodoMicro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginManager login = LoginManager();
+
+    String domainName = "dev.fedodo.social"; // TODO
+    String userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+
+    LoginManager login = LoginManager(domainName);
     Future<String?> accessTokenFuture = login.login();
 
     return MaterialApp(
@@ -60,7 +64,8 @@ class FedodoMicro extends StatelessWidget {
           Widget child;
           if (snapshot.hasData) {
             child = Navigation(
-              userId: "https://dev.fedodo.social/actor/e287834b-0564-4ece-b793-0ef323344959", //TODO
+              domainName: domainName,
+              userId: "https://$domainName/actor/$userId",
               title: "Fedodo Micro",
               accessToken: snapshot.data!,
             );

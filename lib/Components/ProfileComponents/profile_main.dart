@@ -1,4 +1,3 @@
-import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
@@ -8,14 +7,9 @@ import 'package:fedodo_micro/APIs/ActivityPub/followings_api.dart';
 import 'package:fedodo_micro/Enums/profile_button_state.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
-import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/actor.dart';
-import '../../Models/ActivityPub/ordered_collection.dart';
-import '../../Models/ActivityPub/post.dart';
-import '../../Views/PostViews/post.dart';
 
 class ProfileMain extends StatefulWidget {
   ProfileMain({
@@ -26,6 +20,7 @@ class ProfileMain extends StatefulWidget {
     required this.appTitle,
     required this.outboxUrl,
     required this.userId,
+    required this.domainName,
   }) : super(key: key);
 
   final String accessToken;
@@ -33,6 +28,7 @@ class ProfileMain extends StatefulWidget {
   final String userId;
   final String appTitle;
   final String outboxUrl;
+  final String domainName;
 
   int? postCount;
   int? followingCount;
@@ -87,11 +83,13 @@ class _ProfileMainState extends State<ProfileMain>
                     postsCount: widget.postCount ?? 0,
                   ),
                   ProfileNameRow(
-                      accessToken: widget.accessToken,
-                      profileButtonState: getProfileButtonState(snapshot.data!),
-                      preferredUsername: snapshot.data!.preferredUsername!,
-                      userId: snapshot.data!.id!,
-                      name: snapshot.data!.name),
+                    accessToken: widget.accessToken,
+                    profileButtonState: getProfileButtonState(snapshot.data!),
+                    preferredUsername: snapshot.data!.preferredUsername!,
+                    userId: snapshot.data!.id!,
+                    name: snapshot.data!.name,
+                    domainName: widget.domainName,
+                  ),
                   ProfileDescription(
                     htmlData: snapshot.data!.summary ?? "",
                   ),
@@ -150,6 +148,7 @@ class _ProfileMainState extends State<ProfileMain>
                     firstPage: widget.outboxUrl,
                     noReplies: true,
                     isInbox: false,
+                    domainName: widget.domainName,
                   ),
                   PostList(
                     accessToken: widget.accessToken,
@@ -157,6 +156,7 @@ class _ProfileMainState extends State<ProfileMain>
                     userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     isInbox: false,
+                    domainName: widget.domainName,
                   ),
                   Container(
                     decoration: BoxDecoration(

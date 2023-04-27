@@ -1,24 +1,24 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../Models/ActivityPub/ordered_collection.dart';
 import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class LikesAPI{
   final String accessToken;
+  final String domainName;
+  final String actorId;
 
-  LikesAPI(this.accessToken);
+  LikesAPI(this.accessToken, this.domainName, this.actorId);
 
   Future<OrderedPagedCollection> getLikes(String postId) async {
-    String formattedUrl = "https://dev.fedodo.social/likes/" +
-        Uri.encodeQueryComponent(postId); // TODO
+    String formattedUrl = "https://$domainName/likes/${Uri.encodeQueryComponent(postId)}";
 
     http.Response response =
     await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
 
     String jsonString = response.body;
     OrderedPagedCollection collection =
-    OrderedPagedCollection.fromJson(jsonDecode(response.body));
+    OrderedPagedCollection.fromJson(jsonDecode(jsonString));
     return collection;
   }
 
@@ -57,9 +57,7 @@ class LikesAPI{
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse(
-          "https://dev.fedodo.social/outbox/e287834b-0564-4ece-b793-0ef323344959"),
-      // TODO
+      Uri.parse("https://$domainName/outbox/$actorId"),
       headers: <String, String>{
         "Authorization": "Bearer $accessToken",
         "content-type": "application/json",

@@ -10,11 +10,13 @@ class Navigation extends StatefulWidget {
     required this.title,
     required this.accessToken,
     required this.userId,
+    required this.domainName,
   });
 
   final String title;
   final String accessToken;
   final String userId;
+  final String domainName;
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -35,6 +37,7 @@ class _NavigationState extends State<Navigation> {
           accessToken: widget.accessToken,
           userId: widget.userId,
           appTitle: widget.title,
+          domainName: widget.domainName,
           // replies: widget.replies,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
@@ -70,6 +73,7 @@ class _NavigationState extends State<Navigation> {
         accessToken: widget.accessToken,
         appTitle: widget.title,
         userId: widget.userId,
+        domainName: widget.domainName,
       ),
       Search(accessToken: widget.accessToken),
       Search(accessToken: widget.accessToken), // TODO
@@ -79,6 +83,7 @@ class _NavigationState extends State<Navigation> {
         appTitle: widget.title,
         profileId: widget.userId,
         showAppBar: false,
+        domainName: widget.domainName,
       ),
     ];
 

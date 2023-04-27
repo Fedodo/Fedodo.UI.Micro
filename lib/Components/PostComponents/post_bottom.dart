@@ -5,7 +5,6 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../Models/ActivityPub/activity.dart';
-import '../../Models/ActivityPub/post.dart';
 import '../../Views/PostViews/create_post.dart';
 
 class PostBottom extends StatelessWidget {
@@ -15,12 +14,14 @@ class PostBottom extends StatelessWidget {
     required this.activity,
     required this.userId,
     required this.appTitle,
+    required this.domainName,
   }) : super(key: key);
 
   final String accessToken;
   final Activity activity;
   final String userId;
   final String appTitle;
+  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,18 @@ class PostBottom extends StatelessWidget {
             onPressed: () => {chatOnPressed(context)},
             icon: const Icon(FontAwesomeIcons.comments),
           ),
-          ShareButton(activity: activity, accessToken: accessToken, userId: userId),
-          LikeButton(activity: activity, accessToken: accessToken, userId: userId),
+          ShareButton(
+            activity: activity,
+            accessToken: accessToken,
+            userId: userId,
+            domainName: domainName,
+          ),
+          LikeButton(
+            activity: activity,
+            accessToken: accessToken,
+            userId: userId,
+            domainName: domainName,
+          ),
           IconButton(
             onPressed: share,
             icon: const Icon(FontAwesomeIcons.shareNodes),
@@ -66,6 +77,7 @@ class PostBottom extends StatelessWidget {
           inReplyToActor: activity.object.attributedTo,
           inReplyToPost: activity.object.id,
           appTitle: appTitle,
+          domainName: domainName,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

@@ -15,6 +15,7 @@ class CreatePostView extends StatefulWidget {
     required this.userId,
     required this.accessToken,
     required this.appTitle,
+    required this.domainName,
     this.inReplyToActor,
     this.inReplyToPost,
   }) : super(key: key);
@@ -22,6 +23,7 @@ class CreatePostView extends StatefulWidget {
   final String userId;
   final String accessToken;
   final String appTitle;
+  final String domainName;
 
   String? inReplyToPost;
   String? inReplyToActor;
@@ -40,6 +42,7 @@ class _CreatePostViewState extends State<CreatePostView> {
         profileId: widget.userId,
         accessToken: widget.accessToken,
         appTitle: widget.appTitle,
+        domainName: widget.domainName,
       ),
       Expanded(
         child: SingleChildScrollView(
@@ -51,8 +54,11 @@ class _CreatePostViewState extends State<CreatePostView> {
                 if (text != "") {
                   setState(() {
                     widget.buttonFunction = () {
-                      ActivityAPI activityHandler =
-                          ActivityAPI(widget.accessToken);
+                      ActivityAPI activityHandler = ActivityAPI(
+                        widget.accessToken,
+                        widget.userId,
+                        widget.domainName,
+                      );
                       activityHandler.post(text, widget.inReplyToPost);
 
                       Navigator.pop(context);

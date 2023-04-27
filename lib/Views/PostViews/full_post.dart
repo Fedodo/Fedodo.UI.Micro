@@ -3,7 +3,6 @@ import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/shares_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/activity.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_collection.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +18,14 @@ class FullPostView extends StatefulWidget {
     required this.accessToken,
     required this.appTitle,
     required this.userId,
+    required this.domainName,
   }) : super(key: key);
 
   final Activity<Post> activity;
   final String accessToken;
   final String appTitle;
   final String userId;
+  final String domainName;
 
   @override
   State<FullPostView> createState() => _FullPostViewState();
@@ -33,8 +34,16 @@ class FullPostView extends StatefulWidget {
 class _FullPostViewState extends State<FullPostView> {
   @override
   Widget build(BuildContext context) {
-    LikesAPI likesProv = LikesAPI(widget.accessToken);
-    SharesAPI sharesProvider = SharesAPI(widget.accessToken);
+    LikesAPI likesProv = LikesAPI(
+      widget.accessToken,
+      widget.domainName,
+      widget.userId,
+    );
+    SharesAPI sharesProvider = SharesAPI(
+      widget.accessToken,
+      widget.domainName,
+      widget.userId,
+    );
 
     var likesFuture = likesProv.getLikes(widget.activity.object.id);
     var sharesFuture = sharesProvider.getShares(widget.activity.object.id);
@@ -48,6 +57,7 @@ class _FullPostViewState extends State<FullPostView> {
           accessToken: widget.accessToken,
           appTitle: widget.appTitle,
           userId: widget.userId,
+          domainName: widget.domainName,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
@@ -131,14 +141,19 @@ class _FullPostViewState extends State<FullPostView> {
 
     if (widget.activity.object.replies != null) {
       for (Link link in widget.activity.object.replies!.items) {
-        ActivityAPI activityHandler = ActivityAPI(widget.accessToken);
+        ActivityAPI activityHandler = ActivityAPI(
+          widget.accessToken,
+          widget.userId,
+          widget.domainName,
+        );
         Future<Activity<Post>> activityFuture =
             activityHandler.getActivity(link.href);
 
         children.add(
           FutureBuilder<Activity<Post>>(
             future: activityFuture,
-            builder: (BuildContext context, AsyncSnapshot<Activity<Post>> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<Activity<Post>> snapshot) {
               Widget child;
               if (snapshot.hasData) {
                 child = PostView(
@@ -146,6 +161,7 @@ class _FullPostViewState extends State<FullPostView> {
                   accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
                   userId: widget.userId,
+                  domainName: widget.domainName,
                 );
               } else if (snapshot.hasError) {
                 child = const Icon(

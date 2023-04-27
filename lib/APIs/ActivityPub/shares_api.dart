@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:http/http.dart' as http;
-import '../../Models/ActivityPub/ordered_collection.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class SharesAPI {
   final String accessToken;
+  final String domainName;
+  final String actorId;
 
-  SharesAPI(this.accessToken);
+  SharesAPI(this.accessToken, this.domainName, this.actorId);
 
   Future<OrderedPagedCollection> getShares(String postId) async {
-    String formattedUrl = "https://dev.fedodo.social/shares/" +
-        Uri.encodeQueryComponent(postId); // TODO
+    String formattedUrl =
+        "https://$domainName/shares/${Uri.encodeQueryComponent(postId)}";
 
     http.Response response =
         await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
@@ -60,9 +61,7 @@ class SharesAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse(
-          "https://dev.fedodo.social/outbox/e287834b-0564-4ece-b793-0ef323344959"),
-      // TODO
+      Uri.parse("https://$domainName/outbox/$actorId"),
       headers: <String, String>{
         "Authorization": "Bearer $accessToken",
         "content-type": "application/json",

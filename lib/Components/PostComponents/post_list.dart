@@ -16,6 +16,7 @@ class PostList extends StatefulWidget {
     required this.appTitle,
     required this.userId,
     required this.firstPage,
+    required this.domainName,
     this.noReplies = false,
     this.isInbox = true,
     this.scrollController,
@@ -25,6 +26,7 @@ class PostList extends StatefulWidget {
   final String appTitle;
   final String userId;
   final String firstPage;
+  final String domainName;
   final bool noReplies;
   final bool isInbox;
   final ScrollController? scrollController;
@@ -148,6 +150,7 @@ class _PostListState extends State<PostList> {
             accessToken: widget.accessToken,
             appTitle: widget.appTitle,
             userId: widget.userId,
+            domainName: widget.domainName,
           ),
         ),
       ),

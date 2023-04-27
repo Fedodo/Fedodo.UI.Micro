@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:http/http.dart' as http;
-import '../../Models/ActivityPub/activity.dart';
-import '../../Models/ActivityPub/post.dart';
 
 class OutboxAPI {
   Future<OrderedPagedCollection> getFirstPage(String outboxUrl) async {
