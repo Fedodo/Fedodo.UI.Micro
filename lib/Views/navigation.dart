@@ -81,7 +81,7 @@ class _NavigationState extends State<Navigation> {
         userId: widget.userId,
         accessToken: widget.accessToken,
         appTitle: widget.title,
-        profileId: widget.userId,
+        profileId: "https://${widget.domainName}/actor/${widget.userId}",
         showAppBar: false,
         domainName: widget.domainName,
       ),

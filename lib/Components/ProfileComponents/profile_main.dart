@@ -200,7 +200,7 @@ class _ProfileMainState extends State<ProfileMain>
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
       var isFollowed =
-          await followingsAPI.isFollowed(widget.profileId, widget.userId);
+          await followingsAPI.isFollowed(widget.profileId, "https://${widget.domainName}/actor/${widget.userId}");
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {
