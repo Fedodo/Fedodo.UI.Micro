@@ -2,6 +2,7 @@ import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
@@ -9,13 +10,11 @@ class Navigation extends StatefulWidget {
     super.key,
     required this.title,
     required this.accessToken,
-    required this.userId,
     required this.domainName,
   });
 
   final String title;
   final String accessToken;
-  final String userId;
   final String domainName;
 
   @override
@@ -35,7 +34,6 @@ class _NavigationState extends State<Navigation> {
         pageBuilder: (context, animation, animation2) => CreatePostView(
           // post: widget.post,
           accessToken: widget.accessToken,
-          userId: widget.userId,
           appTitle: widget.title,
           domainName: widget.domainName,
           // replies: widget.replies,
@@ -72,16 +70,14 @@ class _NavigationState extends State<Navigation> {
         scrollController: controller,
         accessToken: widget.accessToken,
         appTitle: widget.title,
-        userId: widget.userId,
         domainName: widget.domainName,
       ),
       Search(accessToken: widget.accessToken),
       Search(accessToken: widget.accessToken), // TODO
       Profile(
-        userId: widget.userId,
         accessToken: widget.accessToken,
         appTitle: widget.title,
-        profileId: "https://${widget.domainName}/actor/${widget.userId}",
+        profileId: "https://${widget.domainName}/actor/${GlobalSettings.userId}",
         showAppBar: false,
         domainName: widget.domainName,
       ),

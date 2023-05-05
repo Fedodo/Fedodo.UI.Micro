@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/actor.dart';
+import '../../global_settings.dart';
 
 class ProfileMain extends StatefulWidget {
   ProfileMain({
@@ -19,13 +20,11 @@ class ProfileMain extends StatefulWidget {
     required this.profileId,
     required this.appTitle,
     required this.outboxUrl,
-    required this.userId,
     required this.domainName,
   }) : super(key: key);
 
   final String accessToken;
   final String profileId;
-  final String userId;
   final String appTitle;
   final String outboxUrl;
   final String domainName;
@@ -144,7 +143,6 @@ class _ProfileMainState extends State<ProfileMain>
                   PostList(
                     accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
-                    userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     noReplies: true,
                     isInbox: false,
@@ -153,7 +151,6 @@ class _ProfileMainState extends State<ProfileMain>
                   PostList(
                     accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
-                    userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     isInbox: false,
                     domainName: widget.domainName,
@@ -195,12 +192,12 @@ class _ProfileMainState extends State<ProfileMain>
   }
 
   Future<ProfileButtonState> getProfileButtonState(Actor actor) async {
-    if (widget.profileId == widget.userId) {
+    if (widget.profileId == GlobalSettings.actorId) {
       return ProfileButtonState.ownProfile;
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
       var isFollowed =
-          await followingsAPI.isFollowed(widget.profileId, "https://${widget.domainName}/actor/${widget.userId}");
+          await followingsAPI.isFollowed(widget.profileId, "https://${widget.domainName}/actor/${GlobalSettings.userId}");
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {

@@ -1,5 +1,4 @@
 import 'package:fedodo_micro/APIs/ActivityPub/post_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/inbox_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ class PostList extends StatefulWidget {
     Key? key,
     required this.accessToken,
     required this.appTitle,
-    required this.userId,
     required this.firstPage,
     required this.domainName,
     this.noReplies = false,
@@ -24,7 +22,6 @@ class PostList extends StatefulWidget {
 
   final String accessToken;
   final String appTitle;
-  final String userId;
   final String firstPage;
   final String domainName;
   final bool noReplies;
@@ -149,7 +146,6 @@ class _PostListState extends State<PostList> {
             activity: item,
             accessToken: widget.accessToken,
             appTitle: widget.appTitle,
-            userId: widget.userId,
             domainName: widget.domainName,
           ),
         ),

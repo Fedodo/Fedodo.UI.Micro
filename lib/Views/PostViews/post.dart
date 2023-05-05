@@ -23,7 +23,6 @@ class PostView extends StatelessWidget {
     required this.activity,
     required this.accessToken,
     required this.appTitle,
-    required this.userId,
     required this.domainName,
   }) : super(key: key);
 
@@ -31,7 +30,6 @@ class PostView extends StatelessWidget {
   final String accessToken;
   final String appTitle;
   final bool isClickable;
-  final String userId;
   final String domainName;
 
   @override
@@ -45,7 +43,6 @@ class PostView extends StatelessWidget {
 
     List<Widget> children = [
       UserHeader(
-        userId: userId,
         profileId: activity.object.attributedTo,
         accessToken: accessToken,
         publishedDateTime: activity.published,
@@ -78,7 +75,6 @@ class PostView extends StatelessWidget {
       PostBottom(
         accessToken: accessToken,
         activity: activity,
-        userId: userId,
         appTitle: appTitle,
         domainName: domainName,
       ),
@@ -207,7 +203,6 @@ class PostView extends StatelessWidget {
           reverseTransitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, animation2) => FullPostView(
             activity: activity,
-            userId: userId,
             accessToken: accessToken,
             appTitle: appTitle,
             domainName: domainName,

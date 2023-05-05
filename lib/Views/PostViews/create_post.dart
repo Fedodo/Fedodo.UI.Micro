@@ -1,18 +1,15 @@
-import 'dart:ffi';
-
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../Components/PostComponents/user_header.dart';
 import '../../Models/ActivityPub/actor.dart';
 
 class CreatePostView extends StatefulWidget {
   CreatePostView({
     Key? key,
-    required this.userId,
     required this.accessToken,
     required this.appTitle,
     required this.domainName,
@@ -20,7 +17,6 @@ class CreatePostView extends StatefulWidget {
     this.inReplyToPost,
   }) : super(key: key);
 
-  final String userId;
   final String accessToken;
   final String appTitle;
   final String domainName;
@@ -38,8 +34,7 @@ class _CreatePostViewState extends State<CreatePostView> {
   Widget build(BuildContext context) {
     List<Widget> widgets = [
       UserHeader(
-        userId: widget.userId,
-        profileId: widget.userId,
+        profileId: GlobalSettings.actorId,
         accessToken: widget.accessToken,
         appTitle: widget.appTitle,
         domainName: widget.domainName,
@@ -56,7 +51,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                     widget.buttonFunction = () {
                       ActivityAPI activityHandler = ActivityAPI(
                         widget.accessToken,
-                        widget.userId,
+                        GlobalSettings.userId,
                         widget.domainName,
                       );
                       activityHandler.post(text, widget.inReplyToPost);

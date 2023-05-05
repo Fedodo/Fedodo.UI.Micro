@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../Models/ActivityPub/link.dart';
 import '../../Models/ActivityPub/post.dart';
+import '../../global_settings.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({
@@ -17,14 +18,12 @@ class FullPostView extends StatefulWidget {
     required this.activity,
     required this.accessToken,
     required this.appTitle,
-    required this.userId,
     required this.domainName,
   }) : super(key: key);
 
   final Activity<Post> activity;
   final String accessToken;
   final String appTitle;
-  final String userId;
   final String domainName;
 
   @override
@@ -37,12 +36,12 @@ class _FullPostViewState extends State<FullPostView> {
     LikesAPI likesProv = LikesAPI(
       widget.accessToken,
       widget.domainName,
-      widget.userId,
+      GlobalSettings.userId,
     );
     SharesAPI sharesProvider = SharesAPI(
       widget.accessToken,
       widget.domainName,
-      widget.userId,
+      GlobalSettings.userId,
     );
 
     var likesFuture = likesProv.getLikes(widget.activity.object.id);
@@ -56,7 +55,6 @@ class _FullPostViewState extends State<FullPostView> {
           activity: widget.activity,
           accessToken: widget.accessToken,
           appTitle: widget.appTitle,
-          userId: widget.userId,
           domainName: widget.domainName,
         ),
         Padding(
@@ -143,7 +141,7 @@ class _FullPostViewState extends State<FullPostView> {
       for (Link link in widget.activity.object.replies!.items) {
         ActivityAPI activityHandler = ActivityAPI(
           widget.accessToken,
-          widget.userId,
+          GlobalSettings.userId,
           widget.domainName,
         );
         Future<Activity<Post>> activityFuture =
@@ -160,7 +158,6 @@ class _FullPostViewState extends State<FullPostView> {
                   activity: snapshot.data!,
                   accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
-                  userId: widget.userId,
                   domainName: widget.domainName,
                 );
               } else if (snapshot.hasError) {

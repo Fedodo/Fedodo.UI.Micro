@@ -5,10 +5,10 @@ import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
   final String accessToken;
-  final String actorId;
+  final String userId;
   final String domainName;
 
-  ActivityAPI(this.accessToken, this.actorId, this.domainName);
+  ActivityAPI(this.accessToken, this.userId, this.domainName);
 
   void follow(String object) async {
     Map<String, dynamic> body = {
@@ -20,7 +20,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://$domainName/outbox/$userId"),
       headers: <String, String>{
         "Authorization": "Bearer $accessToken",
         "content-type": "application/json",
@@ -50,7 +50,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://$domainName/outbox/$userId"),
       headers: <String, String>{
         "Authorization": "Bearer $accessToken",
         "content-type": "application/json",

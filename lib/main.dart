@@ -1,11 +1,8 @@
-import 'dart:math';
-import 'package:fedodo_micro/APIs/OAuth/application_registration.dart';
 import 'package:fedodo_micro/APIs/OAuth/login_manager.dart';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Views/navigation.dart';
-import 'dart:collection';
-import 'package:flutter/material.dart';
 
 void main() {
   runApp(const FedodoMicro());
@@ -18,7 +15,8 @@ class FedodoMicro extends StatelessWidget {
   Widget build(BuildContext context) {
 
     String domainName = "dev.fedodo.social"; // TODO
-    String userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+    GlobalSettings.userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+    GlobalSettings.actorId = "https://dev.fedodo.social/actor/b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
 
     LoginManager login = LoginManager(domainName);
     Future<String?> accessTokenFuture = login.login();
@@ -65,7 +63,6 @@ class FedodoMicro extends StatelessWidget {
           if (snapshot.hasData) {
             child = Navigation(
               domainName: domainName,
-              userId: userId,
               title: "Fedodo Micro",
               accessToken: snapshot.data!,
             );
