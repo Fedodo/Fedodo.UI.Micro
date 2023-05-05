@@ -16,14 +16,12 @@ class ProfileMain extends StatefulWidget {
   ProfileMain({
     Key? key,
     this.showAppBar = true,
-    required this.accessToken,
     required this.profileId,
     required this.appTitle,
     required this.outboxUrl,
     required this.domainName,
   }) : super(key: key);
 
-  final String accessToken;
   final String profileId;
   final String appTitle;
   final String outboxUrl;
@@ -82,7 +80,6 @@ class _ProfileMainState extends State<ProfileMain>
                     postsCount: widget.postCount ?? 0,
                   ),
                   ProfileNameRow(
-                    accessToken: widget.accessToken,
                     profileButtonState: getProfileButtonState(snapshot.data!),
                     preferredUsername: snapshot.data!.preferredUsername!,
                     userId: snapshot.data!.id!,
@@ -141,7 +138,6 @@ class _ProfileMainState extends State<ProfileMain>
                 controller: _tabController,
                 children: [
                   PostList(
-                    accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
                     firstPage: widget.outboxUrl,
                     noReplies: true,
@@ -149,7 +145,6 @@ class _ProfileMainState extends State<ProfileMain>
                     domainName: widget.domainName,
                   ),
                   PostList(
-                    accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
                     firstPage: widget.outboxUrl,
                     isInbox: false,

@@ -61,10 +61,12 @@ class FedodoMicro extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
           Widget child;
           if (snapshot.hasData) {
+
+            GlobalSettings.accessToken = snapshot.data!;
+
             child = Navigation(
               domainName: domainName,
               title: "Fedodo Micro",
-              accessToken: snapshot.data!,
             );
           } else if (snapshot.hasError) {
             child = const Icon(

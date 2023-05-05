@@ -1,14 +1,14 @@
 import 'dart:convert';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
-  final String accessToken;
   final String userId;
   final String domainName;
 
-  ActivityAPI(this.accessToken, this.userId, this.domainName);
+  ActivityAPI(this.userId, this.domainName);
 
   void follow(String object) async {
     Map<String, dynamic> body = {
@@ -22,7 +22,7 @@ class ActivityAPI {
     var result = await http.post(
       Uri.parse("https://$domainName/outbox/$userId"),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
+        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,
@@ -52,7 +52,7 @@ class ActivityAPI {
     var result = await http.post(
       Uri.parse("https://$domainName/outbox/$userId"),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
+        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,

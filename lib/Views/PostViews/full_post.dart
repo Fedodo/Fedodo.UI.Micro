@@ -16,13 +16,11 @@ class FullPostView extends StatefulWidget {
   const FullPostView({
     Key? key,
     required this.activity,
-    required this.accessToken,
     required this.appTitle,
     required this.domainName,
   }) : super(key: key);
 
   final Activity<Post> activity;
-  final String accessToken;
   final String appTitle;
   final String domainName;
 
@@ -34,12 +32,10 @@ class _FullPostViewState extends State<FullPostView> {
   @override
   Widget build(BuildContext context) {
     LikesAPI likesProv = LikesAPI(
-      widget.accessToken,
       widget.domainName,
       GlobalSettings.userId,
     );
     SharesAPI sharesProvider = SharesAPI(
-      widget.accessToken,
       widget.domainName,
       GlobalSettings.userId,
     );
@@ -53,7 +49,6 @@ class _FullPostViewState extends State<FullPostView> {
         PostView(
           isClickable: false,
           activity: widget.activity,
-          accessToken: widget.accessToken,
           appTitle: widget.appTitle,
           domainName: widget.domainName,
         ),
@@ -140,7 +135,6 @@ class _FullPostViewState extends State<FullPostView> {
     if (widget.activity.object.replies != null) {
       for (Link link in widget.activity.object.replies!.items) {
         ActivityAPI activityHandler = ActivityAPI(
-          widget.accessToken,
           GlobalSettings.userId,
           widget.domainName,
         );
@@ -156,7 +150,6 @@ class _FullPostViewState extends State<FullPostView> {
               if (snapshot.hasData) {
                 child = PostView(
                   activity: snapshot.data!,
-                  accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
                   domainName: widget.domainName,
                 );

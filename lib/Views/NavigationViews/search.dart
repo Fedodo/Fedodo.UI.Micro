@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
-  const Search({Key? key, required this.accessToken}) : super(key: key);
-
-  final String accessToken;
+  const Search({Key? key}) : super(key: key);
 
   @override
   State<Search> createState() => _SearchState();

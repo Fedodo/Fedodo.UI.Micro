@@ -1,14 +1,14 @@
 import 'dart:convert';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class LikesAPI{
-  final String accessToken;
   final String domainName;
   final String actorId;
 
-  LikesAPI(this.accessToken, this.domainName, this.actorId);
+  LikesAPI(this.domainName, this.actorId);
 
   Future<OrderedPagedCollection> getLikes(String postId) async {
     String formattedUrl = "https://$domainName/likes/${Uri.encodeQueryComponent(postId)}";
@@ -59,7 +59,7 @@ class LikesAPI{
     var result = await http.post(
       Uri.parse("https://$domainName/outbox/$actorId"),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
+        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,

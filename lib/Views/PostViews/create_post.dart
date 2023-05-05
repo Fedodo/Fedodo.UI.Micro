@@ -10,14 +10,12 @@ import '../../Models/ActivityPub/actor.dart';
 class CreatePostView extends StatefulWidget {
   CreatePostView({
     Key? key,
-    required this.accessToken,
     required this.appTitle,
     required this.domainName,
     this.inReplyToActor,
     this.inReplyToPost,
   }) : super(key: key);
 
-  final String accessToken;
   final String appTitle;
   final String domainName;
 
@@ -35,7 +33,6 @@ class _CreatePostViewState extends State<CreatePostView> {
     List<Widget> widgets = [
       UserHeader(
         profileId: GlobalSettings.actorId,
-        accessToken: widget.accessToken,
         appTitle: widget.appTitle,
         domainName: widget.domainName,
       ),
@@ -50,7 +47,6 @@ class _CreatePostViewState extends State<CreatePostView> {
                   setState(() {
                     widget.buttonFunction = () {
                       ActivityAPI activityHandler = ActivityAPI(
-                        widget.accessToken,
                         GlobalSettings.userId,
                         widget.domainName,
                       );

@@ -8,14 +8,12 @@ import '../../Models/ActivityPub/actor.dart';
 class Profile extends StatefulWidget {
   const Profile({
     Key? key,
-    required this.accessToken,
     required this.appTitle,
     required this.profileId,
     required this.showAppBar,
     required this.domainName
   }) : super(key: key);
 
-  final String accessToken;
   final String appTitle;
   final String profileId;
   final bool showAppBar;
@@ -45,7 +43,6 @@ class _ProfileState extends State<Profile> {
               if (outboxSnapshot.hasData) {
                 child = ProfileMain(
                   outboxUrl: outboxSnapshot.data?.first ?? "",
-                  accessToken: widget.accessToken,
                   profileId: widget.profileId,
                   appTitle: widget.appTitle,
                   showAppBar: widget.showAppBar,

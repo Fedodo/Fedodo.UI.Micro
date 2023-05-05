@@ -9,12 +9,10 @@ class ShareButton extends StatefulWidget {
   const ShareButton({
     Key? key,
     required this.activity,
-    required this.accessToken,
     required this.domainName,
   }) : super(key: key);
 
   final Activity activity;
-  final String accessToken;
   final String domainName;
 
   @override
@@ -28,7 +26,6 @@ class _ShareButtonState extends State<ShareButton> {
   void initState() {
     super.initState();
     SharesAPI sharesProvider = SharesAPI(
-      widget.accessToken,
       widget.domainName,
       GlobalSettings.userId
     );
@@ -83,7 +80,6 @@ class _ShareButtonState extends State<ShareButton> {
     });
 
     SharesAPI sharesAPI = SharesAPI(
-      widget.accessToken,
       widget.domainName,
       GlobalSettings.userId,
     );

@@ -9,13 +9,11 @@ class UserHeader extends StatelessWidget {
   const UserHeader({
     Key? key,
     required this.profileId,
-    required this.accessToken,
     required this.appTitle,
     this.publishedDateTime,
     required this.domainName,
   }) : super(key: key);
 
-  final String accessToken;
   final String profileId;
   final DateTime? publishedDateTime;
   final String appTitle;
@@ -140,7 +138,6 @@ class UserHeader extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => Profile(
-          accessToken: accessToken,
           profileId: profileId,
           appTitle: appTitle,
           showAppBar: true,

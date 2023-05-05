@@ -3,10 +3,6 @@ import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/post.dart';
 
 class PostAPI {
-  final String accessToken;
-
-  PostAPI(this.accessToken);
-
   Future<Post?> getPost(String activityId) async {
     try {
       http.Response response = await http.get(
