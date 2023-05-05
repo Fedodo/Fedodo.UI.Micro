@@ -16,7 +16,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.actorId}"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
