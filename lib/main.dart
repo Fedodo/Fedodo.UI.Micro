@@ -13,12 +13,12 @@ class FedodoMicro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    String domainName = "dev.fedodo.social"; // TODO
+    GlobalSettings.domainName = "dev.fedodo.social"; // TODO
     GlobalSettings.userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
-    GlobalSettings.actorId = "https://dev.fedodo.social/actor/b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+    GlobalSettings.actorId =
+        "https://dev.fedodo.social/actor/b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
 
-    LoginManager login = LoginManager(domainName);
+    LoginManager login = LoginManager();
     Future<String?> accessTokenFuture = login.login();
 
     return MaterialApp(
@@ -61,11 +61,9 @@ class FedodoMicro extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
           Widget child;
           if (snapshot.hasData) {
-
             GlobalSettings.accessToken = snapshot.data!;
 
             child = Navigation(
-              domainName: domainName,
               title: "Fedodo Micro",
             );
           } else if (snapshot.hasError) {

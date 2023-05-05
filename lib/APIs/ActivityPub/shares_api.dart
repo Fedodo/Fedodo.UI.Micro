@@ -5,14 +5,13 @@ import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class SharesAPI {
-  final String domainName;
   final String actorId;
 
-  SharesAPI(this.domainName, this.actorId);
+  SharesAPI(this.actorId);
 
   Future<OrderedPagedCollection> getShares(String postId) async {
     String formattedUrl =
-        "https://$domainName/shares/${Uri.encodeQueryComponent(postId)}";
+        "https://${GlobalSettings.domainName}/shares/${Uri.encodeQueryComponent(postId)}";
 
     http.Response response =
         await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
@@ -61,7 +60,7 @@ class SharesAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/$actorId"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",

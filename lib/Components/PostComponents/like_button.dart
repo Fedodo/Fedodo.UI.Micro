@@ -9,11 +9,9 @@ class LikeButton extends StatefulWidget {
   const LikeButton({
     Key? key,
     required this.activity,
-    required this.domainName,
   }) : super(key: key);
 
   final Activity activity;
-  final String domainName;
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -25,7 +23,7 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   void initState() {
     super.initState();
-    LikesAPI likesProvider = LikesAPI(widget.domainName, GlobalSettings.userId);
+    LikesAPI likesProvider = LikesAPI(GlobalSettings.userId);
 
     isPostLikedFuture = likesProvider.isPostLiked(
         widget.activity.object.id, GlobalSettings.userId);
@@ -76,10 +74,7 @@ class _LikeButtonState extends State<LikeButton> {
       isPostLikedFuture = Future.value(true);
     });
 
-    LikesAPI likesAPI = LikesAPI(
-      widget.domainName,
-      GlobalSettings.userId,
-    );
+    LikesAPI likesAPI = LikesAPI(GlobalSettings.userId);
     likesAPI.like(widget.activity.object.id);
   }
 }

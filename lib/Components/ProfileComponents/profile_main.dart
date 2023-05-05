@@ -19,13 +19,11 @@ class ProfileMain extends StatefulWidget {
     required this.profileId,
     required this.appTitle,
     required this.outboxUrl,
-    required this.domainName,
   }) : super(key: key);
 
   final String profileId;
   final String appTitle;
   final String outboxUrl;
-  final String domainName;
 
   int? postCount;
   int? followingCount;
@@ -84,7 +82,6 @@ class _ProfileMainState extends State<ProfileMain>
                     preferredUsername: snapshot.data!.preferredUsername!,
                     userId: snapshot.data!.id!,
                     name: snapshot.data!.name,
-                    domainName: widget.domainName,
                   ),
                   ProfileDescription(
                     htmlData: snapshot.data!.summary ?? "",
@@ -142,13 +139,11 @@ class _ProfileMainState extends State<ProfileMain>
                     firstPage: widget.outboxUrl,
                     noReplies: true,
                     isInbox: false,
-                    domainName: widget.domainName,
                   ),
                   PostList(
                     appTitle: widget.appTitle,
                     firstPage: widget.outboxUrl,
                     isInbox: false,
-                    domainName: widget.domainName,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -192,7 +187,7 @@ class _ProfileMainState extends State<ProfileMain>
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
       var isFollowed =
-          await followingsAPI.isFollowed(widget.profileId, "https://${widget.domainName}/actor/${GlobalSettings.userId}");
+          await followingsAPI.isFollowed(widget.profileId, GlobalSettings.actorId);
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {

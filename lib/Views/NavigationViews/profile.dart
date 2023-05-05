@@ -11,13 +11,11 @@ class Profile extends StatefulWidget {
     required this.appTitle,
     required this.profileId,
     required this.showAppBar,
-    required this.domainName
   }) : super(key: key);
 
   final String appTitle;
   final String profileId;
   final bool showAppBar;
-  final String domainName;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -46,7 +44,6 @@ class _ProfileState extends State<Profile> {
                   profileId: widget.profileId,
                   appTitle: widget.appTitle,
                   showAppBar: widget.showAppBar,
-                  domainName: widget.domainName,
                 );
               } else if (outboxSnapshot.hasError) {
                 child = const Icon(

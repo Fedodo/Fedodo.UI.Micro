@@ -17,12 +17,10 @@ class FullPostView extends StatefulWidget {
     Key? key,
     required this.activity,
     required this.appTitle,
-    required this.domainName,
   }) : super(key: key);
 
   final Activity<Post> activity;
   final String appTitle;
-  final String domainName;
 
   @override
   State<FullPostView> createState() => _FullPostViewState();
@@ -31,14 +29,8 @@ class FullPostView extends StatefulWidget {
 class _FullPostViewState extends State<FullPostView> {
   @override
   Widget build(BuildContext context) {
-    LikesAPI likesProv = LikesAPI(
-      widget.domainName,
-      GlobalSettings.userId,
-    );
-    SharesAPI sharesProvider = SharesAPI(
-      widget.domainName,
-      GlobalSettings.userId,
-    );
+    LikesAPI likesProv = LikesAPI(GlobalSettings.userId);
+    SharesAPI sharesProvider = SharesAPI(GlobalSettings.userId);
 
     var likesFuture = likesProv.getLikes(widget.activity.object.id);
     var sharesFuture = sharesProvider.getShares(widget.activity.object.id);
@@ -50,7 +42,6 @@ class _FullPostViewState extends State<FullPostView> {
           isClickable: false,
           activity: widget.activity,
           appTitle: widget.appTitle,
-          domainName: widget.domainName,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
@@ -134,10 +125,7 @@ class _FullPostViewState extends State<FullPostView> {
 
     if (widget.activity.object.replies != null) {
       for (Link link in widget.activity.object.replies!.items) {
-        ActivityAPI activityHandler = ActivityAPI(
-          GlobalSettings.userId,
-          widget.domainName,
-        );
+        ActivityAPI activityHandler = ActivityAPI();
         Future<Activity<Post>> activityFuture =
             activityHandler.getActivity(link.href);
 
@@ -151,7 +139,6 @@ class _FullPostViewState extends State<FullPostView> {
                 child = PostView(
                   activity: snapshot.data!,
                   appTitle: widget.appTitle,
-                  domainName: widget.domainName,
                 );
               } else if (snapshot.hasError) {
                 child = const Icon(

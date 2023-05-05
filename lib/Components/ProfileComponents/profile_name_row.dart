@@ -9,13 +9,11 @@ class ProfileNameRow extends StatefulWidget {
     required this.userId,
     required this.name,
     required this.profileButtonState,
-    required this.domainName,
   }) : super(key: key);
 
   final String preferredUsername;
   final String userId;
   final String? name;
-  final String domainName;
   Future<ProfileButtonState> profileButtonState;
 
   @override
@@ -81,10 +79,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
                       case ProfileButtonState.notSubscribed:
                         child = ElevatedButton(
                           onPressed: () {
-                            ActivityAPI activityApi = ActivityAPI(
-                              widget.userId,
-                              widget.domainName,
-                            );
+                            ActivityAPI activityApi = ActivityAPI();
                             activityApi.follow(widget.userId);
 
                             setState(() {

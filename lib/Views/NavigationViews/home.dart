@@ -7,12 +7,10 @@ class Home extends StatelessWidget {
   const Home({
     Key? key,
     required this.appTitle,
-    required this.domainName,
     required this.scrollController,
   }) : super(key: key);
 
   final String appTitle;
-  final String domainName;
   final ScrollController scrollController;
 
   @override
@@ -22,8 +20,7 @@ class Home extends StatelessWidget {
       appTitle: appTitle,
       isInbox: true,
       noReplies: true,
-      firstPage: "https://$domainName/inbox/${GlobalSettings.userId}/page/0",
-      domainName: domainName,
+      firstPage: "https://${GlobalSettings.domainName}/inbox/${GlobalSettings.userId}/page/0",
     );
   }
 }

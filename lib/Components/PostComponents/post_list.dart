@@ -13,7 +13,6 @@ class PostList extends StatefulWidget {
     Key? key,
     required this.appTitle,
     required this.firstPage,
-    required this.domainName,
     this.noReplies = false,
     this.isInbox = true,
     this.scrollController,
@@ -21,7 +20,6 @@ class PostList extends StatefulWidget {
 
   final String appTitle;
   final String firstPage;
-  final String domainName;
   final bool noReplies;
   final bool isInbox;
   final ScrollController? scrollController;
@@ -143,7 +141,6 @@ class _PostListState extends State<PostList> {
           itemBuilder: (context, item, index) => PostView(
             activity: item,
             appTitle: widget.appTitle,
-            domainName: widget.domainName,
           ),
         ),
       ),

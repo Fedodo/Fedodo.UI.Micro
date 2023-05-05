@@ -11,13 +11,11 @@ class CreatePostView extends StatefulWidget {
   CreatePostView({
     Key? key,
     required this.appTitle,
-    required this.domainName,
     this.inReplyToActor,
     this.inReplyToPost,
   }) : super(key: key);
 
   final String appTitle;
-  final String domainName;
 
   String? inReplyToPost;
   String? inReplyToActor;
@@ -34,7 +32,6 @@ class _CreatePostViewState extends State<CreatePostView> {
       UserHeader(
         profileId: GlobalSettings.actorId,
         appTitle: widget.appTitle,
-        domainName: widget.domainName,
       ),
       Expanded(
         child: SingleChildScrollView(
@@ -46,10 +43,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                 if (text != "") {
                   setState(() {
                     widget.buttonFunction = () {
-                      ActivityAPI activityHandler = ActivityAPI(
-                        GlobalSettings.userId,
-                        widget.domainName,
-                      );
+                      ActivityAPI activityHandler = ActivityAPI();
                       activityHandler.post(text, widget.inReplyToPost);
 
                       Navigator.pop(context);

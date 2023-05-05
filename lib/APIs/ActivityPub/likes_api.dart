@@ -5,13 +5,12 @@ import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class LikesAPI{
-  final String domainName;
   final String actorId;
 
-  LikesAPI(this.domainName, this.actorId);
+  LikesAPI(this.actorId);
 
   Future<OrderedPagedCollection> getLikes(String postId) async {
-    String formattedUrl = "https://$domainName/likes/${Uri.encodeQueryComponent(postId)}";
+    String formattedUrl = "https://${GlobalSettings.domainName}/likes/${Uri.encodeQueryComponent(postId)}";
 
     http.Response response =
     await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
@@ -57,7 +56,7 @@ class LikesAPI{
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/$actorId"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",

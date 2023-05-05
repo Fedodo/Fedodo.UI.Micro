@@ -11,13 +11,11 @@ class UserHeader extends StatelessWidget {
     required this.profileId,
     required this.appTitle,
     this.publishedDateTime,
-    required this.domainName,
   }) : super(key: key);
 
   final String profileId;
   final DateTime? publishedDateTime;
   final String appTitle;
-  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +139,6 @@ class UserHeader extends StatelessWidget {
           profileId: profileId,
           appTitle: appTitle,
           showAppBar: true,
-          domainName: domainName,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

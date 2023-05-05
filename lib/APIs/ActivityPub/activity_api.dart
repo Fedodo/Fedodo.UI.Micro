@@ -5,10 +5,6 @@ import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
-  final String userId;
-  final String domainName;
-
-  ActivityAPI(this.userId, this.domainName);
 
   void follow(String object) async {
     Map<String, dynamic> body = {
@@ -20,7 +16,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$userId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.actorId}"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
@@ -50,7 +46,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$userId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",

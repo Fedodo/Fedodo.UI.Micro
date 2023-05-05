@@ -12,12 +12,10 @@ class PostBottom extends StatelessWidget {
     Key? key,
     required this.activity,
     required this.appTitle,
-    required this.domainName,
   }) : super(key: key);
 
   final Activity activity;
   final String appTitle;
-  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +30,9 @@ class PostBottom extends StatelessWidget {
           ),
           ShareButton(
             activity: activity,
-            domainName: domainName,
           ),
           LikeButton(
             activity: activity,
-            domainName: domainName,
           ),
           IconButton(
             onPressed: share,
@@ -67,7 +63,6 @@ class PostBottom extends StatelessWidget {
           inReplyToActor: activity.object.attributedTo,
           inReplyToPost: activity.object.id,
           appTitle: appTitle,
-          domainName: domainName,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

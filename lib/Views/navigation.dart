@@ -9,11 +9,9 @@ class Navigation extends StatefulWidget {
   const Navigation({
     super.key,
     required this.title,
-    required this.domainName,
   });
 
   final String title;
-  final String domainName;
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -32,7 +30,6 @@ class _NavigationState extends State<Navigation> {
         pageBuilder: (context, animation, animation2) => CreatePostView(
           // post: widget.post,
           appTitle: widget.title,
-          domainName: widget.domainName,
           // replies: widget.replies,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
@@ -66,15 +63,13 @@ class _NavigationState extends State<Navigation> {
       Home(
         scrollController: controller,
         appTitle: widget.title,
-        domainName: widget.domainName,
       ),
       Search(),
       Search(), // TODO
       Profile(
         appTitle: widget.title,
-        profileId: "https://${widget.domainName}/actor/${GlobalSettings.userId}",
+        profileId: "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}",
         showAppBar: false,
-        domainName: widget.domainName,
       ),
     ];
 
