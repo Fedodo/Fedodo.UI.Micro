@@ -29,8 +29,8 @@ class FullPostView extends StatefulWidget {
 class _FullPostViewState extends State<FullPostView> {
   @override
   Widget build(BuildContext context) {
-    LikesAPI likesProv = LikesAPI(GlobalSettings.userId);
-    SharesAPI sharesProvider = SharesAPI(GlobalSettings.userId);
+    LikesAPI likesProv = LikesAPI();
+    SharesAPI sharesProvider = SharesAPI();
 
     var likesFuture = likesProv.getLikes(widget.activity.object.id);
     var sharesFuture = sharesProvider.getShares(widget.activity.object.id);

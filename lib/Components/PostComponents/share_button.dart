@@ -23,12 +23,9 @@ class _ShareButtonState extends State<ShareButton> {
   @override
   void initState() {
     super.initState();
-    SharesAPI sharesProvider = SharesAPI(
-      GlobalSettings.userId
-    );
+    SharesAPI sharesProvider = SharesAPI();
 
-    isPostSharedFuture =
-        sharesProvider.isPostShared(widget.activity.object.id, GlobalSettings.userId);
+    isPostSharedFuture = sharesProvider.isPostShared(widget.activity.object.id);
   }
 
   @override
@@ -76,9 +73,7 @@ class _ShareButtonState extends State<ShareButton> {
       isPostSharedFuture = Future.value(true);
     });
 
-    SharesAPI sharesAPI = SharesAPI(
-      GlobalSettings.userId,
-    );
+    SharesAPI sharesAPI = SharesAPI();
     sharesAPI.share(widget.activity.object.id);
   }
 }

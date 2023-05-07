@@ -23,10 +23,9 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   void initState() {
     super.initState();
-    LikesAPI likesProvider = LikesAPI(GlobalSettings.userId);
+    LikesAPI likesProvider = LikesAPI();
 
-    isPostLikedFuture = likesProvider.isPostLiked(
-        widget.activity.object.id, GlobalSettings.userId);
+    isPostLikedFuture = likesProvider.isPostLiked(widget.activity.object.id);
   }
 
   @override
@@ -74,7 +73,7 @@ class _LikeButtonState extends State<LikeButton> {
       isPostLikedFuture = Future.value(true);
     });
 
-    LikesAPI likesAPI = LikesAPI(GlobalSettings.userId);
+    LikesAPI likesAPI = LikesAPI();
     likesAPI.like(widget.activity.object.id);
   }
 }

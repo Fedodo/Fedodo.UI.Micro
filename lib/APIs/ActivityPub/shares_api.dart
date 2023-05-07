@@ -5,10 +5,6 @@ import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class SharesAPI {
-  final String actorId;
-
-  SharesAPI(this.actorId);
-
   Future<OrderedPagedCollection> getShares(String postId) async {
     String formattedUrl =
         "https://${GlobalSettings.domainName}/shares/${Uri.encodeQueryComponent(postId)}";
@@ -22,7 +18,7 @@ class SharesAPI {
     return collection;
   }
 
-  Future<bool> isPostShared(String postId, String actorId) async {
+  Future<bool> isPostShared(String postId) async {
     OrderedPagedCollection shares = await getShares(postId);
 
     String url = shares.first!;
@@ -39,7 +35,7 @@ class SharesAPI {
       }
 
       if (collection.orderedItems
-          .where((element) => element.actor == actorId)
+          .where((element) => element.actor == GlobalSettings.actorId)
           .isNotEmpty) {
         return true;
       }
@@ -60,7 +56,7 @@ class SharesAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://${GlobalSettings.domainName}/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",

@@ -5,10 +5,6 @@ import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class LikesAPI{
-  final String actorId;
-
-  LikesAPI(this.actorId);
-
   Future<OrderedPagedCollection> getLikes(String postId) async {
     String formattedUrl = "https://${GlobalSettings.domainName}/likes/${Uri.encodeQueryComponent(postId)}";
 
@@ -21,7 +17,7 @@ class LikesAPI{
     return collection;
   }
 
-  Future<bool> isPostLiked(String postId, String actorId) async {
+  Future<bool> isPostLiked(String postId) async {
     OrderedPagedCollection likes = await getLikes(postId);
 
     String url = likes.first!;
@@ -36,7 +32,7 @@ class LikesAPI{
         return false;
       }
 
-      if (collection.orderedItems.where((element) => element.actor == actorId).isNotEmpty){
+      if (collection.orderedItems.where((element) => element.actor == GlobalSettings.actorId).isNotEmpty){
         return true;
       }
 
@@ -56,7 +52,7 @@ class LikesAPI{
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://${GlobalSettings.domainName}/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
         "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",

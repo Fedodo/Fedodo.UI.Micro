@@ -6,11 +6,14 @@ import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
 
-  void follow(String object) async {
+  void follow(Uri object) async {
+
+    var asfd = object.authority;
+
     Map<String, dynamic> body = {
       "to": ["as:Public"],
       "type": "Follow",
-      "object": object
+      "object": object.toString()
     };
 
     String json = jsonEncode(body);

@@ -80,7 +80,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
                         child = ElevatedButton(
                           onPressed: () {
                             ActivityAPI activityApi = ActivityAPI();
-                            activityApi.follow(widget.userId);
+                            activityApi.follow(Uri.parse(widget.userId));
 
                             setState(() {
                               widget.profileButtonState = Future.sync(
