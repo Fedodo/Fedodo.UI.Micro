@@ -1,28 +1,27 @@
 import 'dart:convert';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
-  final String accessToken;
-  final String actorId;
-  final String domainName;
 
-  ActivityAPI(this.accessToken, this.actorId, this.domainName);
+  void follow(Uri object) async {
 
-  void follow(String object) async {
+    var asfd = object.authority;
+
     Map<String, dynamic> body = {
       "to": ["as:Public"],
       "type": "Follow",
-      "object": object
+      "object": object.toString()
     };
 
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
+        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,
@@ -50,9 +49,9 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
+        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,

@@ -8,20 +8,14 @@ import '../../Models/ActivityPub/actor.dart';
 class Profile extends StatefulWidget {
   const Profile({
     Key? key,
-    required this.accessToken,
     required this.appTitle,
     required this.profileId,
     required this.showAppBar,
-    required this.userId,
-    required this.domainName
   }) : super(key: key);
 
-  final String accessToken;
   final String appTitle;
   final String profileId;
-  final String userId;
   final bool showAppBar;
-  final String domainName;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -46,13 +40,10 @@ class _ProfileState extends State<Profile> {
               Widget child;
               if (outboxSnapshot.hasData) {
                 child = ProfileMain(
-                  userId: widget.userId,
                   outboxUrl: outboxSnapshot.data?.first ?? "",
-                  accessToken: widget.accessToken,
                   profileId: widget.profileId,
                   appTitle: widget.appTitle,
                   showAppBar: widget.showAppBar,
-                  domainName: widget.domainName,
                 );
               } else if (outboxSnapshot.hasError) {
                 child = const Icon(

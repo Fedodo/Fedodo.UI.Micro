@@ -10,25 +10,20 @@ import 'package:flutter/material.dart';
 import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/actor.dart';
+import '../../global_settings.dart';
 
 class ProfileMain extends StatefulWidget {
   ProfileMain({
     Key? key,
     this.showAppBar = true,
-    required this.accessToken,
     required this.profileId,
     required this.appTitle,
     required this.outboxUrl,
-    required this.userId,
-    required this.domainName,
   }) : super(key: key);
 
-  final String accessToken;
   final String profileId;
-  final String userId;
   final String appTitle;
   final String outboxUrl;
-  final String domainName;
 
   int? postCount;
   int? followingCount;
@@ -83,12 +78,10 @@ class _ProfileMainState extends State<ProfileMain>
                     postsCount: widget.postCount ?? 0,
                   ),
                   ProfileNameRow(
-                    accessToken: widget.accessToken,
                     profileButtonState: getProfileButtonState(snapshot.data!),
                     preferredUsername: snapshot.data!.preferredUsername!,
                     userId: snapshot.data!.id!,
                     name: snapshot.data!.name,
-                    domainName: widget.domainName,
                   ),
                   ProfileDescription(
                     htmlData: snapshot.data!.summary ?? "",
@@ -142,21 +135,15 @@ class _ProfileMainState extends State<ProfileMain>
                 controller: _tabController,
                 children: [
                   PostList(
-                    accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
-                    userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     noReplies: true,
                     isInbox: false,
-                    domainName: widget.domainName,
                   ),
                   PostList(
-                    accessToken: widget.accessToken,
                     appTitle: widget.appTitle,
-                    userId: widget.profileId,
                     firstPage: widget.outboxUrl,
                     isInbox: false,
-                    domainName: widget.domainName,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -195,12 +182,12 @@ class _ProfileMainState extends State<ProfileMain>
   }
 
   Future<ProfileButtonState> getProfileButtonState(Actor actor) async {
-    if (widget.profileId == widget.userId) {
+    if (widget.profileId == GlobalSettings.actorId) {
       return ProfileButtonState.ownProfile;
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
       var isFollowed =
-          await followingsAPI.isFollowed(widget.profileId, widget.userId);
+          await followingsAPI.isFollowed(widget.profileId, GlobalSettings.actorId);
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {

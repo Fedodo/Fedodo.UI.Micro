@@ -1,18 +1,13 @@
 import 'dart:convert';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class SharesAPI {
-  final String accessToken;
-  final String domainName;
-  final String actorId;
-
-  SharesAPI(this.accessToken, this.domainName, this.actorId);
-
   Future<OrderedPagedCollection> getShares(String postId) async {
     String formattedUrl =
-        "https://$domainName/shares/${Uri.encodeQueryComponent(postId)}";
+        "https://${GlobalSettings.domainName}/shares/${Uri.encodeQueryComponent(postId)}";
 
     http.Response response =
         await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
@@ -23,7 +18,7 @@ class SharesAPI {
     return collection;
   }
 
-  Future<bool> isPostShared(String postId, String actorId) async {
+  Future<bool> isPostShared(String postId) async {
     OrderedPagedCollection shares = await getShares(postId);
 
     String url = shares.first!;
@@ -40,7 +35,7 @@ class SharesAPI {
       }
 
       if (collection.orderedItems
-          .where((element) => element.actor == actorId)
+          .where((element) => element.actor == GlobalSettings.actorId)
           .isNotEmpty) {
         return true;
       }
@@ -61,9 +56,9 @@ class SharesAPI {
     String json = jsonEncode(body);
 
     var result = await http.post(
-      Uri.parse("https://$domainName/outbox/$actorId"),
+      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
-        "Authorization": "Bearer $accessToken",
+        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,

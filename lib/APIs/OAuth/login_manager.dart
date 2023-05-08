@@ -1,16 +1,13 @@
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 
 class LoginManager {
 
-  final String domainName;
-
-  LoginManager(this.domainName);
-
   Future<String?> login() async {
     OAuth2Client client = OAuth2Client(
-        authorizeUrl: "https://auth.$domainName/oauth/authorize",
-        tokenUrl: "https://auth.$domainName/oauth/token",
+        authorizeUrl: "https://auth.${GlobalSettings.domainName}/oauth/authorize",
+        tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
         redirectUri: "my.test.app:/oauth2redirect", // TODO
         customUriScheme: "my.test.app"); // TODO
 

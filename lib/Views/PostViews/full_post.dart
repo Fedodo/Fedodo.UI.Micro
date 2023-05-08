@@ -10,22 +10,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../Models/ActivityPub/link.dart';
 import '../../Models/ActivityPub/post.dart';
+import '../../global_settings.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({
     Key? key,
     required this.activity,
-    required this.accessToken,
     required this.appTitle,
-    required this.userId,
-    required this.domainName,
   }) : super(key: key);
 
   final Activity<Post> activity;
-  final String accessToken;
   final String appTitle;
-  final String userId;
-  final String domainName;
 
   @override
   State<FullPostView> createState() => _FullPostViewState();
@@ -34,16 +29,8 @@ class FullPostView extends StatefulWidget {
 class _FullPostViewState extends State<FullPostView> {
   @override
   Widget build(BuildContext context) {
-    LikesAPI likesProv = LikesAPI(
-      widget.accessToken,
-      widget.domainName,
-      widget.userId,
-    );
-    SharesAPI sharesProvider = SharesAPI(
-      widget.accessToken,
-      widget.domainName,
-      widget.userId,
-    );
+    LikesAPI likesProv = LikesAPI();
+    SharesAPI sharesProvider = SharesAPI();
 
     var likesFuture = likesProv.getLikes(widget.activity.object.id);
     var sharesFuture = sharesProvider.getShares(widget.activity.object.id);
@@ -54,10 +41,7 @@ class _FullPostViewState extends State<FullPostView> {
         PostView(
           isClickable: false,
           activity: widget.activity,
-          accessToken: widget.accessToken,
           appTitle: widget.appTitle,
-          userId: widget.userId,
-          domainName: widget.domainName,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
@@ -141,11 +125,7 @@ class _FullPostViewState extends State<FullPostView> {
 
     if (widget.activity.object.replies != null) {
       for (Link link in widget.activity.object.replies!.items) {
-        ActivityAPI activityHandler = ActivityAPI(
-          widget.accessToken,
-          widget.userId,
-          widget.domainName,
-        );
+        ActivityAPI activityHandler = ActivityAPI();
         Future<Activity<Post>> activityFuture =
             activityHandler.getActivity(link.href);
 
@@ -158,10 +138,7 @@ class _FullPostViewState extends State<FullPostView> {
               if (snapshot.hasData) {
                 child = PostView(
                   activity: snapshot.data!,
-                  accessToken: widget.accessToken,
                   appTitle: widget.appTitle,
-                  userId: widget.userId,
-                  domainName: widget.domainName,
                 );
               } else if (snapshot.hasError) {
                 child = const Icon(

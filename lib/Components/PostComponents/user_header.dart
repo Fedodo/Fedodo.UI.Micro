@@ -9,19 +9,13 @@ class UserHeader extends StatelessWidget {
   const UserHeader({
     Key? key,
     required this.profileId,
-    required this.accessToken,
     required this.appTitle,
     this.publishedDateTime,
-    required this.userId,
-    required this.domainName,
   }) : super(key: key);
 
-  final String accessToken;
   final String profileId;
-  final String userId;
   final DateTime? publishedDateTime;
   final String appTitle;
-  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -142,12 +136,9 @@ class UserHeader extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => Profile(
-          userId: userId,
-          accessToken: accessToken,
           profileId: profileId,
           appTitle: appTitle,
           showAppBar: true,
-          domainName: domainName,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,15 +9,9 @@ class ShareButton extends StatefulWidget {
   const ShareButton({
     Key? key,
     required this.activity,
-    required this.accessToken,
-    required this.userId,
-    required this.domainName,
   }) : super(key: key);
 
   final Activity activity;
-  final String accessToken;
-  final String userId;
-  final String domainName;
 
   @override
   State<ShareButton> createState() => _ShareButtonState();
@@ -28,14 +23,9 @@ class _ShareButtonState extends State<ShareButton> {
   @override
   void initState() {
     super.initState();
-    SharesAPI sharesProvider = SharesAPI(
-      widget.accessToken,
-      widget.domainName,
-      widget.userId,
-    );
+    SharesAPI sharesProvider = SharesAPI();
 
-    isPostSharedFuture =
-        sharesProvider.isPostShared(widget.activity.object.id, widget.userId);
+    isPostSharedFuture = sharesProvider.isPostShared(widget.activity.object.id);
   }
 
   @override
@@ -83,11 +73,7 @@ class _ShareButtonState extends State<ShareButton> {
       isPostSharedFuture = Future.value(true);
     });
 
-    SharesAPI sharesAPI = SharesAPI(
-      widget.accessToken,
-      widget.domainName,
-      widget.userId,
-    );
+    SharesAPI sharesAPI = SharesAPI();
     sharesAPI.share(widget.activity.object.id);
   }
 }

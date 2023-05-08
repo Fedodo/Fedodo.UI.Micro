@@ -10,18 +10,12 @@ import '../../Views/PostViews/create_post.dart';
 class PostBottom extends StatelessWidget {
   const PostBottom({
     Key? key,
-    required this.accessToken,
     required this.activity,
-    required this.userId,
     required this.appTitle,
-    required this.domainName,
   }) : super(key: key);
 
-  final String accessToken;
   final Activity activity;
-  final String userId;
   final String appTitle;
-  final String domainName;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +30,9 @@ class PostBottom extends StatelessWidget {
           ),
           ShareButton(
             activity: activity,
-            accessToken: accessToken,
-            userId: userId,
-            domainName: domainName,
           ),
           LikeButton(
             activity: activity,
-            accessToken: accessToken,
-            userId: userId,
-            domainName: domainName,
           ),
           IconButton(
             onPressed: share,
@@ -72,12 +60,9 @@ class PostBottom extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => CreatePostView(
-          accessToken: accessToken,
-          userId: userId,
           inReplyToActor: activity.object.attributedTo,
           inReplyToPost: activity.object.id,
           appTitle: appTitle,
-          domainName: domainName,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
             SlideTransition(

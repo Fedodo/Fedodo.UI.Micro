@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,15 +9,9 @@ class LikeButton extends StatefulWidget {
   const LikeButton({
     Key? key,
     required this.activity,
-    required this.accessToken,
-    required this.userId,
-    required this.domainName,
   }) : super(key: key);
 
   final Activity activity;
-  final String accessToken;
-  final String userId;
-  final String domainName;
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -28,11 +23,9 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   void initState() {
     super.initState();
-    LikesAPI likesProvider =
-        LikesAPI(widget.accessToken, widget.domainName, widget.userId);
+    LikesAPI likesProvider = LikesAPI();
 
-    isPostLikedFuture =
-        likesProvider.isPostLiked(widget.activity.object.id, widget.userId);
+    isPostLikedFuture = likesProvider.isPostLiked(widget.activity.object.id);
   }
 
   @override
@@ -80,11 +73,7 @@ class _LikeButtonState extends State<LikeButton> {
       isPostLikedFuture = Future.value(true);
     });
 
-    LikesAPI likesAPI = LikesAPI(
-      widget.accessToken,
-      widget.domainName,
-      widget.userId,
-    );
+    LikesAPI likesAPI = LikesAPI();
     likesAPI.like(widget.activity.object.id);
   }
 }

@@ -1,11 +1,8 @@
-import 'dart:math';
-import 'package:fedodo_micro/APIs/OAuth/application_registration.dart';
 import 'package:fedodo_micro/APIs/OAuth/login_manager.dart';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Views/navigation.dart';
-import 'dart:collection';
-import 'package:flutter/material.dart';
 
 void main() {
   runApp(const FedodoMicro());
@@ -16,11 +13,12 @@ class FedodoMicro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalSettings.domainName = "dev.fedodo.social"; // TODO
+    GlobalSettings.userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+    GlobalSettings.actorId =
+        "https://dev.fedodo.social/actor/b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
 
-    String domainName = "dev.fedodo.social"; // TODO
-    String userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
-
-    LoginManager login = LoginManager(domainName);
+    LoginManager login = LoginManager();
     Future<String?> accessTokenFuture = login.login();
 
     return MaterialApp(
@@ -63,11 +61,10 @@ class FedodoMicro extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
           Widget child;
           if (snapshot.hasData) {
+            GlobalSettings.accessToken = snapshot.data!;
+
             child = Navigation(
-              domainName: domainName,
-              userId: userId,
               title: "Fedodo Micro",
-              accessToken: snapshot.data!,
             );
           } else if (snapshot.hasError) {
             child = const Icon(

@@ -2,21 +2,16 @@ import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
+import 'package:fedodo_micro/global_settings.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({
     super.key,
     required this.title,
-    required this.accessToken,
-    required this.userId,
-    required this.domainName,
   });
 
   final String title;
-  final String accessToken;
-  final String userId;
-  final String domainName;
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -34,10 +29,7 @@ class _NavigationState extends State<Navigation> {
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => CreatePostView(
           // post: widget.post,
-          accessToken: widget.accessToken,
-          userId: widget.userId,
           appTitle: widget.title,
-          domainName: widget.domainName,
           // replies: widget.replies,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>
@@ -70,20 +62,14 @@ class _NavigationState extends State<Navigation> {
     List screens = [
       Home(
         scrollController: controller,
-        accessToken: widget.accessToken,
         appTitle: widget.title,
-        userId: widget.userId,
-        domainName: widget.domainName,
       ),
-      Search(accessToken: widget.accessToken),
-      Search(accessToken: widget.accessToken), // TODO
+      Search(),
+      Search(), // TODO
       Profile(
-        userId: widget.userId,
-        accessToken: widget.accessToken,
         appTitle: widget.title,
-        profileId: widget.userId,
+        profileId: "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}",
         showAppBar: false,
-        domainName: widget.domainName,
       ),
     ];
 

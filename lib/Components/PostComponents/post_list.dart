@@ -1,5 +1,4 @@
 import 'package:fedodo_micro/APIs/ActivityPub/post_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/inbox_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:flutter/material.dart';
@@ -12,21 +11,15 @@ import '../../Views/PostViews/post.dart';
 class PostList extends StatefulWidget {
   const PostList({
     Key? key,
-    required this.accessToken,
     required this.appTitle,
-    required this.userId,
     required this.firstPage,
-    required this.domainName,
     this.noReplies = false,
     this.isInbox = true,
     this.scrollController,
   }) : super(key: key);
 
-  final String accessToken;
   final String appTitle;
-  final String userId;
   final String firstPage;
-  final String domainName;
   final bool noReplies;
   final bool isInbox;
   final ScrollController? scrollController;
@@ -54,7 +47,7 @@ class _PostListState extends State<PostList> {
       OrderedCollectionPage orderedCollectionPage;
 
       if (widget.isInbox) {
-        InboxAPI inboxProvider = InboxAPI(widget.accessToken);
+        InboxAPI inboxProvider = InboxAPI();
         orderedCollectionPage = await inboxProvider.getPosts(pageKey);
       } else {
         OutboxAPI provider = OutboxAPI();
@@ -68,7 +61,7 @@ class _PostListState extends State<PostList> {
           if (activity.type == "Create" && activity.object.inReplyTo == null) {
             activities.add(activity as Activity<Post>);
           } else if (activity.type == "Announce") {
-            PostAPI postAPI = PostAPI(widget.accessToken);
+            PostAPI postAPI = PostAPI();
             Post? post = await postAPI.getPost(activity.object);
 
             if (post == null){
@@ -94,7 +87,7 @@ class _PostListState extends State<PostList> {
           if (activity.type == "Create") {
             activities.add(activity as Activity<Post>);
           } else if (activity.type == "Announce") {
-            PostAPI postAPI = PostAPI(widget.accessToken);
+            PostAPI postAPI = PostAPI();
             Post? post = await postAPI.getPost(activity.object);
 
             if (post == null){
@@ -147,10 +140,7 @@ class _PostListState extends State<PostList> {
         builderDelegate: PagedChildBuilderDelegate<Activity<Post>>(
           itemBuilder: (context, item, index) => PostView(
             activity: item,
-            accessToken: widget.accessToken,
             appTitle: widget.appTitle,
-            userId: widget.userId,
-            domainName: widget.domainName,
           ),
         ),
       ),
