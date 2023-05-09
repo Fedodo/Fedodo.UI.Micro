@@ -123,11 +123,13 @@ class _FullPostViewState extends State<FullPostView> {
       ],
     );
 
-    if (widget.activity.object.replies != null) {
-      for (Link link in widget.activity.object.replies!.items) {
+    if (widget.activity.object.replies!.items != null) {
+      for (Object item in widget.activity.object.replies!.items) {
+        String link = item as String;
+
         ActivityAPI activityHandler = ActivityAPI();
         Future<Activity<Post>> activityFuture =
-            activityHandler.getActivity(link.href);
+            activityHandler.getActivity(link);
 
         children.add(
           FutureBuilder<Activity<Post>>(
