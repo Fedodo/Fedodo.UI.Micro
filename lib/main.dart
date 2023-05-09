@@ -1,28 +1,47 @@
-import 'package:fedodo_micro/APIs/OAuth/login_manager.dart';
+import 'package:fedodo_micro/SuSi/APIs/login_manager.dart';
 import 'package:fedodo_micro/global_settings.dart';
+import 'package:fedodo_micro/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'SuSi/susi_view.dart';
 import 'Views/navigation.dart';
 
 void main() {
-  runApp(const FedodoMicro());
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.getInstance().then(
+    (value) {
+      runApp(
+        FedodoMicro(prefs: value),
+      );
+    },
+  );
 }
 
 class FedodoMicro extends StatelessWidget {
-  const FedodoMicro({Key? key}) : super(key: key);
+  const FedodoMicro({
+    Key? key,
+    required this.prefs,
+  }) : super(key: key);
+
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
-    GlobalSettings.domainName = "dev.fedodo.social"; // TODO
-    GlobalSettings.userId = "b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
-    GlobalSettings.actorId =
-        "https://dev.fedodo.social/actor/b8c95012-c092-402c-bfa0-f2c86bd3f211"; // TODO
+    String? domainName = prefs.getString("DomainName");
+    String? userId = prefs.getString("UserId");
+    String? actorId = prefs.getString("ActorId");
+    String? accessToken = prefs.getString("AccessToken");
 
-    LoginManager login = LoginManager();
-    Future<String?> accessTokenFuture = login.login();
+    GlobalSettings.domainName = domainName ?? "";
+    GlobalSettings.userId = userId ?? "";
+    GlobalSettings.actorId = actorId ?? "";
+    GlobalSettings.accessToken = accessToken ?? "";
+
+    String title = "Fedodo Micro";
 
     return MaterialApp(
-      title: 'Fedodo Micro',
+      title: title,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
@@ -56,34 +75,12 @@ class FedodoMicro extends StatelessWidget {
               fontWeight: FontWeight.w100,
             )),
       ),
-      home: FutureBuilder<String?>(
-        future: accessTokenFuture,
-        builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-          Widget child;
-          if (snapshot.hasData) {
-            GlobalSettings.accessToken = snapshot.data!;
-
-            child = Navigation(
-              title: "Fedodo Micro",
-            );
-          } else if (snapshot.hasError) {
-            child = const Icon(
-              Icons.error_outline,
-              color: Colors.red,
-              size: 60,
-            );
-          } else {
-            child = const Center(
-              child: SizedBox(
-                width: 200,
-                height: 200,
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          return child;
-        },
-      ),
+      home: domainName == null || userId == null || actorId == null //|| accessToken == null
+          ? SuSiView(
+              title: title,
+              prefs: prefs,
+            )
+          : const Home(),
     );
   }
 }
