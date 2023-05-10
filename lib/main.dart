@@ -1,5 +1,6 @@
+import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:fedodo_micro/SuSi/APIs/login_manager.dart';
-import 'package:fedodo_micro/global_settings.dart';
+import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:fedodo_micro/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,8 +12,11 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then(
     (value) {
+
+      Preferences.prefs = value;
+
       runApp(
-        FedodoMicro(prefs: value),
+        const FedodoMicro(),
       );
     },
   );
@@ -21,17 +25,14 @@ void main() {
 class FedodoMicro extends StatelessWidget {
   const FedodoMicro({
     Key? key,
-    required this.prefs,
   }) : super(key: key);
-
-  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
-    String? domainName = prefs.getString("DomainName");
-    String? userId = prefs.getString("UserId");
-    String? actorId = prefs.getString("ActorId");
-    String? accessToken = prefs.getString("AccessToken");
+    String? domainName = Preferences.prefs?.getString("DomainName");
+    String? userId = Preferences.prefs?.getString("UserId");
+    String? actorId = Preferences.prefs?.getString("ActorId");
+    String? accessToken = Preferences.prefs?.getString("AccessToken");
 
     GlobalSettings.domainName = domainName ?? "";
     GlobalSettings.userId = userId ?? "";
@@ -78,7 +79,6 @@ class FedodoMicro extends StatelessWidget {
       home: domainName == null || userId == null || actorId == null //|| accessToken == null
           ? SuSiView(
               title: title,
-              prefs: prefs,
             )
           : const Home(),
     );

@@ -2,7 +2,7 @@ import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
-import 'package:fedodo_micro/global_settings.dart';
+import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {

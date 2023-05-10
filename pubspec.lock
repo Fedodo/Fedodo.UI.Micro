@@ -158,6 +158,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
+  flutter_guid:
+    dependency: "direct main"
+    description:
+      name: flutter_guid
+      sha256: "5d9d82bedf77ab5a626f3e3fd505f59db574169f432570c8b006e7c4533b734c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   flutter_html:
     dependency: "direct main"
     description:
@@ -829,6 +837,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  validators:
+    dependency: transitive
+    description:
+      name: validators
+      sha256: "884515951f831a9c669a41ed6c4d3c61c2a0e8ec6bca761a4480b28e99cecf5d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   vector_math:
     dependency: transitive
     description:

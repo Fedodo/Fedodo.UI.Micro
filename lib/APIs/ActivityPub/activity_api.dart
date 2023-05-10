@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fedodo_micro/global_settings.dart';
+import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
@@ -7,8 +7,6 @@ import '../../Models/ActivityPub/post.dart';
 class ActivityAPI {
 
   void follow(Uri object) async {
-
-    var asfd = object.authority;
 
     Map<String, dynamic> body = {
       "to": ["as:Public"],

@@ -10,7 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../Models/ActivityPub/link.dart';
 import '../../Models/ActivityPub/post.dart';
-import '../../global_settings.dart';
+import '../../Globals/global_settings.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({

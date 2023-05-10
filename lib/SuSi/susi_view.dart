@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:fedodo_micro/SuSi/APIs/application_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../global_settings.dart';
+import '../Globals/global_settings.dart';
+import '../Globals/preferences.dart';
 import '../home.dart';
 import 'APIs/login_manager.dart';
 
@@ -9,11 +13,9 @@ class SuSiView extends StatelessWidget {
   SuSiView({
     Key? key,
     required this.title,
-    required this.prefs,
   }) : super(key: key);
 
   final String title;
-  final SharedPreferences prefs;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final domainController = TextEditingController();
 
@@ -43,18 +45,29 @@ class SuSiView extends StatelessWidget {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   GlobalSettings.domainName = domainController.text;
-                  prefs.setString("DomainName", domainController.text);
+                  Preferences.prefs?.setString("DomainName", domainController.text);
+
+                  String? clientId = Preferences.prefs?.getString("ClientId");
+                  String? clientSecret = Preferences.prefs?.getString("ClientSecret");
+
+                  ApplicationRegistration appRegis = ApplicationRegistration();
+                  while(clientId == null || clientSecret == null){
+                    await appRegis.registerApplication();
+
+                    clientId = Preferences.prefs?.getString("ClientId");
+                    clientSecret = Preferences.prefs?.getString("ClientSecret");
+                  }
 
                   LoginManager login = LoginManager();
-                  GlobalSettings.accessToken = await login.login() ?? "";
-                  prefs.setString("AccessToken", GlobalSettings.accessToken);
+                  GlobalSettings.accessToken = await login.login(clientId, clientSecret, Platform.isAndroid) ?? "";
+                  Preferences.prefs?.setString("AccessToken", GlobalSettings.accessToken);
 
                   Map<String, dynamic> decodedToken = JwtDecoder.decode(GlobalSettings.accessToken);
                   GlobalSettings.userId = decodedToken["sub"];
                   GlobalSettings.actorId = "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}";
 
-                  prefs.setString("UserId", GlobalSettings.userId);
-                  prefs.setString("ActorId", GlobalSettings.actorId);
+                  Preferences.prefs?.setString("UserId", GlobalSettings.userId);
+                  Preferences.prefs?.setString("ActorId", GlobalSettings.actorId);
 
                   Navigator.pushReplacement(
                     context,
