@@ -26,6 +26,7 @@ dependencies:
   cached_network_image: ^3.2.3
   jwt_decoder: ^2.0.1
   flutter_guid: ^0.3.1
+  html: ^0.15.3
 
 dev_dependencies:
   flutter_test:

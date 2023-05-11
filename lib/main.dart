@@ -1,12 +1,10 @@
 import 'package:fedodo_micro/Globals/preferences.dart';
-import 'package:fedodo_micro/SuSi/APIs/login_manager.dart';
 import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:fedodo_micro/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'SuSi/susi_view.dart';
-import 'Views/navigation.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

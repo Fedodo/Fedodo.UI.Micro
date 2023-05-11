@@ -8,9 +8,7 @@ import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import '../../Models/ActivityPub/link.dart';
 import '../../Models/ActivityPub/post.dart';
-import '../../Globals/global_settings.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({
