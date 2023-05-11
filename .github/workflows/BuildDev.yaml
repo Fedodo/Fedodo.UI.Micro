@@ -8,7 +8,7 @@ env:
   VERSION: 0.1.${{ github.run_number }}
 
 jobs:
-  Prepare:
+  BuildApk:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,11 +17,6 @@ jobs:
       - name: Install Flutter
         uses: britannio/action-install-flutter@v1.1
 
-  BuildApk:
-    runs-on: ubuntu-latest
-    needs: Prepare
-
-    steps:
       - run: flutter build apk --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
         working-directory: ./
 
@@ -31,13 +26,15 @@ jobs:
           name: apk
           path: ./build/app/outputs/flutter-apk/app-release.apk
 
-
-
   BuildWeb:
     runs-on: ubuntu-latest
-    needs: Prepare
 
     steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1.1
+
       - run: flutter build web --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
         working-directory: ./
 
