@@ -3,6 +3,7 @@ name: BuildDev
 on:
   push:
     branches: [ dev ]
+  workflow_dispatch:
 
 env:
   VERSION: 0.1.${{ github.run_number }}
