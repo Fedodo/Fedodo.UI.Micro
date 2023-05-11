@@ -17,6 +17,8 @@ jobs:
 
       - name: Install Flutter
         uses: britannio/action-install-flutter@v1.1
+        with:
+          version: "3.7.12"
 
       - run: flutter build apk --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
         working-directory: ./
