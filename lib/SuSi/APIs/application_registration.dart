@@ -15,7 +15,7 @@ class ApplicationRegistration
 
     Map<String, dynamic> body = {
       "client_name": clientId,
-      "redirect_uris": Platform.isAndroid ? "my.test.app:/oauth2redirect" : "", // TODO
+      "redirect_uris": Platform.isAndroid ? "my.test.app:/oauth2redirect" : "https://${GlobalSettings.domainName}/redirect.html", // TODO
       "website": "https://fedodo.org"
     };
 

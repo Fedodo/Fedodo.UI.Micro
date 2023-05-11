@@ -9,17 +9,18 @@ class LoginManager {
 
     if (isAndroid) {
       client = OAuth2Client(
-          authorizeUrl:
-              "https://auth.${GlobalSettings.domainName}/oauth/authorize",
-          tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
-          redirectUri: "my.test.app:/oauth2redirect", // TODO
-          customUriScheme: "my.test.app");
+        authorizeUrl:
+            "https://auth.${GlobalSettings.domainName}/oauth/authorize",
+        tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
+        redirectUri: "my.test.app:/oauth2redirect", // TODO
+        customUriScheme: "my.test.app",
+      );
     } else {
       client = OAuth2Client(
         authorizeUrl:
             "https://auth.${GlobalSettings.domainName}/oauth/authorize",
         tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
-        redirectUri: "my.test.app:/oauth2redirect",
+        redirectUri: "https://${GlobalSettings.domainName}/redirect.html",
         customUriScheme: "my.test.app",
       ); // TODO
     }
