@@ -6,6 +6,7 @@ on:
 
 env:
   VERSION: 0.1.${{ github.run_number }}
+  FLUTTER_VERSION: "3.7.12"
 
 jobs:
   BuildApk:
@@ -16,6 +17,8 @@ jobs:
 
       - name: Install Flutter
         uses: britannio/action-install-flutter@v1.1
+        with:
+          version: $FLUTTER_VERSION
 
       - run: flutter build apk --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
         working-directory: ./
