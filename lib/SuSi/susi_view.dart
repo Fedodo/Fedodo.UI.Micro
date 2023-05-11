@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:fedodo_micro/SuSi/APIs/application_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Globals/global_settings.dart';
 import '../Globals/preferences.dart';
 import '../home.dart';
