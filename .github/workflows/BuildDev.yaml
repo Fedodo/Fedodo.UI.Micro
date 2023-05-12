@@ -66,6 +66,7 @@ jobs:
         shell: bash
         run: docker push fedodo/fedodo.ui.micro:dev_${{ github.run_number }}
 
+      # Deploy to dev cluster
       - uses: Fedodo/Fedodo.Pipelines/DeployContainer.NET@main
         with:
           KUBECTL_CONFIG: ${{ secrets.KUBECTL_CONFIG }}
