@@ -65,3 +65,10 @@ jobs:
       - name: Push the image to dockerhub
         shell: bash
         run: docker push fedodo/fedodo.ui.micro:dev_${{ github.run_number }}
+
+      - uses: Fedodo/Fedodo.Pipelines/DeployContainer.NET@main
+        with:
+          KUBECTL_CONFIG: ${{ secrets.KUBECTL_CONFIG }}
+          VALUES_FILE: "./Kubernetes/values.yaml"
+          MICROSERVICE: "fedodo_ui_micro"
+          REPO: "fedodo.ui.micro"
