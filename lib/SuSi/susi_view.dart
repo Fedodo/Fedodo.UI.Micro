@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:fedodo_micro/SuSi/APIs/application_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import '../Globals/auth.dart';
 import '../Globals/global_settings.dart';
 import '../Globals/preferences.dart';
 import '../home.dart';
 import 'APIs/login_manager.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SuSiView extends StatelessWidget {
   SuSiView({
@@ -57,7 +59,7 @@ class SuSiView extends StatelessWidget {
                   }
 
                   LoginManager login = LoginManager();
-                  GlobalSettings.accessToken = await login.login(clientId, clientSecret, Platform.isAndroid) ?? "";
+                  GlobalSettings.accessToken = await login.login(clientId, clientSecret, !kIsWeb && Platform.isAndroid) ?? AuthGlobals.redirectUriWeb;
                   Preferences.prefs?.setString("AccessToken", GlobalSettings.accessToken);
 
                   Map<String, dynamic> decodedToken = JwtDecoder.decode(GlobalSettings.accessToken);

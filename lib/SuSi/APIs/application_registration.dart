@@ -1,21 +1,29 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fedodo_micro/Globals/auth.dart';
 import 'package:flutter_guid/flutter_guid.dart';
 import '../../Globals/global_settings.dart';
 import '../../Globals/preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-class ApplicationRegistration
-{
-
-  registerApplication() async{
-
+class ApplicationRegistration {
+  registerApplication() async {
     Guid id = Guid.newGuid;
     String clientId = "Fedodo.Micro_$id";
+    bool isAndroid;
+
+    if (!kIsWeb && Platform.isAndroid) {
+      isAndroid = true;
+    } else {
+      isAndroid = false;
+    }
 
     Map<String, dynamic> body = {
       "client_name": clientId,
-      "redirect_uris": Platform.isAndroid ? "my.test.app:/oauth2redirect" : "https://${GlobalSettings.domainName}/redirect.html", // TODO
+      "redirect_uris": isAndroid
+          ? "my.test.app:/oauth2redirect"
+          : AuthGlobals.redirectUriWeb,
       "website": "https://fedodo.org"
     };
 

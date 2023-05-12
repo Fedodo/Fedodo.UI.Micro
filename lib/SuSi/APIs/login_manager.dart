@@ -2,6 +2,8 @@ import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 
+import '../../Globals/auth.dart';
+
 class LoginManager {
   Future<String?> login(
       String clientId, String clientSecret, bool isAndroid) async {
@@ -20,7 +22,7 @@ class LoginManager {
         authorizeUrl:
             "https://auth.${GlobalSettings.domainName}/oauth/authorize",
         tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
-        redirectUri: "https://${GlobalSettings.domainName}/redirect.html",
+        redirectUri: AuthGlobals.redirectUriWeb,
         customUriScheme: "my.test.app",
       ); // TODO
     }
