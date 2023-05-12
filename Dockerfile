@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:stable-alpine
 
 COPY ./deployment/nginx.conf /etc/nginx/nginx.conf
 
