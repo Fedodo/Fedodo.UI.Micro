@@ -23,8 +23,8 @@ class LoginManager {
             "https://auth.${GlobalSettings.domainName}/oauth/authorize",
         tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
         redirectUri: AuthGlobals.redirectUriWeb,
-        customUriScheme: "my.test.app",
-      ); // TODO
+        customUriScheme: "localhost:8080", // TODO
+      );
     }
 
     AccessTokenResponse tknResponse = await client.getTokenWithAuthCodeFlow(
