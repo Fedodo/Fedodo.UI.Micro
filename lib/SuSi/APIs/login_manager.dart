@@ -23,7 +23,7 @@ class LoginManager {
             "https://auth.${GlobalSettings.domainName}/oauth/authorize",
         tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
         redirectUri: AuthGlobals.redirectUriWeb,
-        customUriScheme: "localhost:8080", // TODO
+        customUriScheme: Uri.parse(AuthGlobals.redirectUriWeb).authority,
       );
     }
 
