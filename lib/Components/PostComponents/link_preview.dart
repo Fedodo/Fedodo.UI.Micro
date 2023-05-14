@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +22,7 @@ class LinkPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<Metadata?> dataFuture =
         Future.delayed(const Duration(seconds: 1), () {
-      return MetadataFetch.extract(link);
+      return MetadataFetch.extract(link.asProxyString());
     });
 
     var width = MediaQuery.of(context).size.width;
@@ -46,7 +47,7 @@ class LinkPreview extends StatelessWidget {
                   alignment: Alignment.center,
                   fit: BoxFit.cover,
                   image: CachedNetworkImageProvider(
-                    snapshot.data!.image!,
+                    snapshot.data!.image!.asProxyString(),
                     maxHeight: 200,
                     maxWidth: width.round(),
                   ),
