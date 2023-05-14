@@ -29,7 +29,7 @@ class LoginManager {
 
     AccessTokenResponse tknResponse = await client.getTokenWithAuthCodeFlow(
       clientId: clientId,
-      clientSecret: clientSecret,
+      clientSecret: Uri.encodeQueryComponent(clientSecret),
     );
 
     if (tknResponse.accessToken != null) {
