@@ -19,7 +19,7 @@ class FollowingsAPI {
     }
 
     http.Response response = await http.get(
-      Uri.parse(followingsEndpoint),
+      followingsEndpointUri,
       headers: <String, String>{
         "Accept": "application/json"
       },
