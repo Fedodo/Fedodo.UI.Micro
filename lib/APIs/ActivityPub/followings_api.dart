@@ -26,8 +26,7 @@ class FollowingsAPI {
     );
 
     String jsonString = response.body;
-    OrderedPagedCollection collection =
-        OrderedPagedCollection.fromJson(jsonDecode(jsonString));
+    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
 
@@ -54,7 +53,7 @@ class FollowingsAPI {
         },
       );
 
-      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(response.body));
+      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
       if (collection.orderedItems.isEmpty){
         return false;

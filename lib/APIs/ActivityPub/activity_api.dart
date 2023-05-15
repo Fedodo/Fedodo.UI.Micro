@@ -74,8 +74,7 @@ class ActivityAPI {
       },
     );
 
-    String jsonString = response.body;
-    Activity<Post> activity = Activity.fromJson(jsonDecode(jsonString));
+    Activity<Post> activity = Activity.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
     return activity;
   }

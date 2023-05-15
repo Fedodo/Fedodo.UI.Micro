@@ -12,9 +12,7 @@ class SharesAPI {
     http.Response response =
         await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
 
-    String jsonString = response.body;
-    OrderedPagedCollection collection =
-        OrderedPagedCollection.fromJson(jsonDecode(response.body));
+    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
 
@@ -27,8 +25,7 @@ class SharesAPI {
         Uri.parse(url),
       );
 
-      OrderedCollectionPage collection =
-          OrderedCollectionPage.fromJson(jsonDecode(response.body));
+      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
       if (collection.orderedItems.isEmpty) {
         return false;

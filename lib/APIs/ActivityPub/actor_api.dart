@@ -20,7 +20,9 @@ class ActorAPI {
       },
     );
 
-    Actor actor = Actor.fromJson(jsonDecode(response.body));
+    String utf8String = utf8.decode(response.bodyBytes);
+    
+    Actor actor = Actor.fromJson(jsonDecode(utf8String));
 
     return actor;
   }

@@ -19,10 +19,7 @@ class InboxAPI {
       headers: <String, String>{"Authorization": "Bearer ${GlobalSettings.accessToken}"},
     );
 
-    String jsonString = pageResponse.body;
-
-    OrderedCollectionPage collection =
-        OrderedCollectionPage.fromJson(jsonDecode(jsonString));
+    OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(pageResponse.bodyBytes)));
 
     return collection;
   }

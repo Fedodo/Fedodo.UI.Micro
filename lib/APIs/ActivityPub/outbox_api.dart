@@ -15,7 +15,7 @@ class OutboxAPI {
     }
 
     http.Response pageResponse = await http.get(outboxUri);
-    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(pageResponse.body));
+    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(pageResponse.bodyBytes)));
     return collection;
   }
 
@@ -29,9 +29,7 @@ class OutboxAPI {
 
     http.Response pageResponse = await http.get(nextUri);
 
-    String jsonString = pageResponse.body;
-
-    OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(jsonString));
+    OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(pageResponse.bodyBytes)));
 
     return collection;
   }

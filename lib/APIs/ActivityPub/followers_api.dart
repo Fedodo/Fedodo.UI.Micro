@@ -22,8 +22,7 @@ class FollowersAPI {
       },
     );
 
-    String jsonString = response.body;
-    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(jsonString));
+    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
 }

@@ -20,7 +20,7 @@ class PostAPI {
 
       String jsonString = response.body;
 
-      Post post = Post.fromJson(jsonDecode(jsonString));
+      Post post = Post.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       return post;
     } catch (ex) {
       return null;

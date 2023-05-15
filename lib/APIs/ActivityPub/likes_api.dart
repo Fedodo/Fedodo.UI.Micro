@@ -13,7 +13,7 @@ class LikesAPI{
 
     String jsonString = response.body;
     OrderedPagedCollection collection =
-    OrderedPagedCollection.fromJson(jsonDecode(jsonString));
+    OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
 
@@ -26,7 +26,7 @@ class LikesAPI{
         Uri.parse(url),
       );
 
-      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(response.body));
+      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
       if (collection.orderedItems.isEmpty){
         return false;
