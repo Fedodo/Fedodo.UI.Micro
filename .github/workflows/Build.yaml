@@ -1,0 +1,67 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+env:
+  VERSION: 0.2.${{ github.run_number }}
+  FLUTTER_VERSION: "3.7.12"
+
+jobs:
+  BuildApk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@main
+        with:
+          version: ${{ env.FLUTTER_VERSION }}
+
+      - run: flutter build apk --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
+        working-directory: ./
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: apk
+          path: ./build/app/outputs/flutter-apk/app-release.apk
+
+  BuildWeb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@main
+        with:
+          version: ${{ env.FLUTTER_VERSION }}
+
+      - run: flutter build web --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
+        working-directory: ./
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: web
+          path: ./build/web/
+
+      # Build
+      - name: Build the Docker image
+        shell: bash
+        run: docker build . --file Dockerfile --tag fedodo/fedodo.ui.micro:${{ github.run_number }}
+
+      # Publish
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: fedodo
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push the image to dockerhub
+        shell: bash
+        run: docker push fedodo/fedodo.ui.micro:${{ github.run_number }}
