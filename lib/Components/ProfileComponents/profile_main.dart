@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/actor.dart';
-import '../../global_settings.dart';
+import '../../Globals/global_settings.dart';
 
 class ProfileMain extends StatefulWidget {
   ProfileMain({

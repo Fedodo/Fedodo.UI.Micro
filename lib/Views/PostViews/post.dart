@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:html/dom.dart" as dom;
-import 'package:flutter_html/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:html/parser.dart' as htmlparser;

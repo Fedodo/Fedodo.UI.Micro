@@ -1,7 +1,6 @@
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:flutter/material.dart';
-
-import '../../global_settings.dart';
+import '../../Globals/global_settings.dart';
 
 class Home extends StatelessWidget {
   const Home({

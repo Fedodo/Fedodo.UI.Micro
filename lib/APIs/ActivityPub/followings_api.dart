@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
+import 'package:fedodo_micro/Extensions/url_extensions.dart';
 import 'package:http/http.dart' as http;
+import '../../Globals/global_settings.dart';
 import '../../Models/ActivityPub/actor.dart';
 import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
@@ -8,18 +10,23 @@ import '../../Models/ActivityPub/ordered_paged_collection.dart';
 class FollowingsAPI {
   FollowingsAPI();
 
-  Future<OrderedPagedCollection> getFollowings(
-      String followingsEndpoint) async {
+  Future<OrderedPagedCollection> getFollowings(String followingsEndpoint) async {
+
+    Uri followingsEndpointUri = Uri.parse(followingsEndpoint);
+
+    if(followingsEndpointUri.authority != GlobalSettings.domainName){
+      followingsEndpointUri = followingsEndpointUri.asProxyUri();
+    }
+
     http.Response response = await http.get(
-      Uri.parse(followingsEndpoint),
+      followingsEndpointUri,
       headers: <String, String>{
         "Accept": "application/json"
       },
     );
 
     String jsonString = response.body;
-    OrderedPagedCollection collection =
-        OrderedPagedCollection.fromJson(jsonDecode(jsonString));
+    OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
 
@@ -29,16 +36,24 @@ class FollowingsAPI {
 
     OrderedPagedCollection follows = await getFollowings(actor.following!);
 
-    String url = follows.first!;
+
     do {
+
+      String url = follows.first!;
+      Uri uri = Uri.parse(url);
+
+      if(uri.authority != GlobalSettings.domainName){
+        uri = uri.asProxyUri();
+      }
+
       http.Response response = await http.get(
-        Uri.parse(url),
+        uri,
         headers: <String, String>{
           "Accept": "application/json"
         },
       );
 
-      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(response.body));
+      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
       if (collection.orderedItems.isEmpty){
         return false;

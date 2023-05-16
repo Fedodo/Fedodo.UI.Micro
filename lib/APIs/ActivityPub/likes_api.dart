@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fedodo_micro/global_settings.dart';
+import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
@@ -13,7 +13,7 @@ class LikesAPI{
 
     String jsonString = response.body;
     OrderedPagedCollection collection =
-    OrderedPagedCollection.fromJson(jsonDecode(jsonString));
+    OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
 
@@ -26,7 +26,7 @@ class LikesAPI{
         Uri.parse(url),
       );
 
-      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(response.body));
+      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
       if (collection.orderedItems.isEmpty){
         return false;

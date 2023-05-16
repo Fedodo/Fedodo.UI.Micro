@@ -1,4 +1,5 @@
 import 'package:fedodo_micro/Models/ActivityPub/link.dart';
+import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 
 class CollectionPage{
   final dynamic context;
@@ -7,7 +8,7 @@ class CollectionPage{
   final String? prev;
   final String? partOf;
   final String? id;
-  final List<Link> items;
+  final List<String> items;
 
   CollectionPage(
       this.context,
@@ -26,5 +27,5 @@ class CollectionPage{
         prev = json["prev"],
         partOf = json["partOf"],
         id = json["id"],
-        items = Link.generateLinks(json["items"]);
+        items = json["items"];
 }

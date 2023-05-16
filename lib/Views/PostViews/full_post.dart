@@ -8,9 +8,7 @@ import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import '../../Models/ActivityPub/link.dart';
 import '../../Models/ActivityPub/post.dart';
-import '../../global_settings.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({
@@ -123,11 +121,13 @@ class _FullPostViewState extends State<FullPostView> {
       ],
     );
 
-    if (widget.activity.object.replies != null) {
-      for (Link link in widget.activity.object.replies!.items) {
+    if (widget.activity.object.replies!.items != null) {
+      for (Object item in widget.activity.object.replies!.items) {
+        String link = item as String;
+
         ActivityAPI activityHandler = ActivityAPI();
         Future<Activity<Post>> activityFuture =
-            activityHandler.getActivity(link.href);
+            activityHandler.getActivity(link);
 
         children.add(
           FutureBuilder<Activity<Post>>(

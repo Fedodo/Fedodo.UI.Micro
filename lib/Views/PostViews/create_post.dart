@@ -1,7 +1,7 @@
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
-import 'package:fedodo_micro/global_settings.dart';
+import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Components/PostComponents/user_header.dart';

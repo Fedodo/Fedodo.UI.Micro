@@ -1,12 +1,12 @@
-name: BuildDev
+name: Build
 
 on:
   workflow_dispatch:
   push:
-    branches: [ dev ]
+    branches: [ main ]
 
 env:
-  VERSION: 0.1.${{ github.run_number }}
+  VERSION: 0.2.${{ github.run_number }}
   FLUTTER_VERSION: "3.7.12"
 
 jobs:
@@ -53,7 +53,7 @@ jobs:
       # Build
       - name: Build the Docker image
         shell: bash
-        run: docker build . --file Dockerfile --tag fedodo/fedodo.ui.micro:dev_${{ github.run_number }}
+        run: docker build . --file Dockerfile --tag fedodo/fedodo.ui.micro:${{ github.run_number }}
 
       # Publish
       - name: Login to Docker Hub
@@ -64,12 +64,4 @@ jobs:
 
       - name: Push the image to dockerhub
         shell: bash
-        run: docker push fedodo/fedodo.ui.micro:dev_${{ github.run_number }}
-
-      # Deploy to dev cluster
-      - uses: Fedodo/Fedodo.Pipelines/DeployContainer.NET@main
-        with:
-          KUBECTL_CONFIG: ${{ secrets.KUBECTL_CONFIG }}
-          VALUES_FILE: "./Kubernetes/values.yaml"
-          MICROSERVICE: "fedodo_ui_micro"
-          REPO: "fedodo.ui.micro"
+        run: docker push fedodo/fedodo.ui.micro:${{ github.run_number }}
