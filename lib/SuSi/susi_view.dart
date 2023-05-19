@@ -21,6 +21,15 @@ class SuSiView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    if(kIsWeb){
+      var url = Uri.base;
+      GlobalSettings.domainName = url.authority;
+      Preferences.prefs?.setString("DomainName", url.authority);
+
+      login(context);
+    }
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -47,40 +56,44 @@ class SuSiView extends StatelessWidget {
                   GlobalSettings.domainName = domainController.text;
                   Preferences.prefs?.setString("DomainName", domainController.text);
 
-                  String? clientId = Preferences.prefs?.getString("ClientId");
-                  String? clientSecret = Preferences.prefs?.getString("ClientSecret");
-
-                  ApplicationRegistration appRegis = ApplicationRegistration();
-                  while(clientId == null || clientSecret == null){
-                    await appRegis.registerApplication();
-
-                    clientId = Preferences.prefs?.getString("ClientId");
-                    clientSecret = Preferences.prefs?.getString("ClientSecret");
-                  }
-
-                  LoginManager login = LoginManager();
-                  GlobalSettings.accessToken = await login.login(clientId, clientSecret, !kIsWeb && Platform.isAndroid) ?? AuthGlobals.redirectUriWeb;
-                  Preferences.prefs?.setString("AccessToken", GlobalSettings.accessToken);
-
-                  Map<String, dynamic> decodedToken = JwtDecoder.decode(GlobalSettings.accessToken);
-                  GlobalSettings.userId = decodedToken["sub"];
-                  GlobalSettings.actorId = "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}";
-
-                  Preferences.prefs?.setString("UserId", GlobalSettings.userId);
-                  Preferences.prefs?.setString("ActorId", GlobalSettings.actorId);
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(),
-                    ),
-                  );
+                  login(context);
                 }
               },
               child: const Text("Submit"),
             ),
           ],
         ),
+      ),
+    );
+  }
+  
+  Future login(BuildContext context) async{
+    String? clientId = Preferences.prefs?.getString("ClientId");
+    String? clientSecret = Preferences.prefs?.getString("ClientSecret");
+
+    ApplicationRegistration appRegis = ApplicationRegistration();
+    while(clientId == null || clientSecret == null){
+      await appRegis.registerApplication();
+
+      clientId = Preferences.prefs?.getString("ClientId");
+      clientSecret = Preferences.prefs?.getString("ClientSecret");
+    }
+
+    LoginManager login = LoginManager();
+    GlobalSettings.accessToken = await login.login(clientId, clientSecret, !kIsWeb && Platform.isAndroid) ?? AuthGlobals.redirectUriWeb;
+    Preferences.prefs?.setString("AccessToken", GlobalSettings.accessToken);
+
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(GlobalSettings.accessToken);
+    GlobalSettings.userId = decodedToken["sub"];
+    GlobalSettings.actorId = "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}";
+
+    Preferences.prefs?.setString("UserId", GlobalSettings.userId);
+    Preferences.prefs?.setString("ActorId", GlobalSettings.actorId);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Home(),
       ),
     );
   }
