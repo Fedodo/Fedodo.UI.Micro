@@ -148,21 +148,24 @@ class _NavigationState extends State<Navigation> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SideMenu(
-                style: SideMenuStyle(
-                  displayMode: SideMenuDisplayMode.auto,
-                  hoverColor: const Color.fromARGB(165, 0, 84, 84),
-                  selectedColor: const Color.fromARGB(255, 0, 84, 84),
-                  selectedTitleTextStyle: const TextStyle(color: Colors.white),
-                  selectedIconColor: Colors.white,
-                  unselectedIconColor: Colors.white70,
-                  unselectedTitleTextStyle:
-                      const TextStyle(color: Colors.white70),
-                  backgroundColor: const Color.fromARGB(255, 1, 35, 35),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SideMenu(
+                  style: SideMenuStyle(
+                    displayMode: SideMenuDisplayMode.auto,
+                    hoverColor: const Color.fromARGB(165, 0, 84, 84),
+                    selectedColor: const Color.fromARGB(255, 0, 84, 84),
+                    selectedTitleTextStyle: const TextStyle(color: Colors.white),
+                    selectedIconColor: Colors.white,
+                    unselectedIconColor: Colors.white70,
+                    unselectedTitleTextStyle:
+                        const TextStyle(color: Colors.white70),
+                    backgroundColor: const Color.fromARGB(255, 1, 35, 35),
+                  ),
+                  footer: const Text('Fedodo'),
+                  items: items,
+                  controller: sideMenuController,
                 ),
-                footer: const Text('Fedodo'),
-                items: items,
-                controller: sideMenuController,
               ),
             ),
             Expanded(
