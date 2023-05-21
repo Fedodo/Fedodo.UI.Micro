@@ -9,8 +9,8 @@ import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
 import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
+import '../../Globals/preferences.dart';
 import '../../Models/ActivityPub/actor.dart';
-import '../../Globals/global_settings.dart';
 import 'About/about.dart';
 
 class ProfileMain extends StatefulWidget {
@@ -180,12 +180,12 @@ class _ProfileMainState extends State<ProfileMain>
   }
 
   Future<ProfileButtonState> getProfileButtonState(Actor actor) async {
-    if (widget.profileId == GlobalSettings.actorId) {
+    if (widget.profileId == Preferences.prefs!.getString("ActorId")) {
       return ProfileButtonState.ownProfile;
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
       var isFollowed = await followingsAPI.isFollowed(
-          widget.profileId, GlobalSettings.actorId);
+          widget.profileId, Preferences.prefs!.getString("ActorId")!);
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {

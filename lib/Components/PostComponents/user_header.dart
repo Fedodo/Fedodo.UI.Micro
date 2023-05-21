@@ -3,7 +3,6 @@ import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../APIs/ActivityPub/actor_api.dart';
-import '../../Globals/global_settings.dart';
 import '../../Models/ActivityPub/actor.dart';
 import '../../Views/NavigationViews/profile.dart';
 

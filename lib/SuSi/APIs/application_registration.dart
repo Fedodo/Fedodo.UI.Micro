@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:fedodo_micro/Globals/auth.dart';
 import 'package:flutter_guid/flutter_guid.dart';
-import '../../Globals/global_settings.dart';
 import '../../Globals/preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -30,7 +29,7 @@ class ApplicationRegistration {
     String json = jsonEncode(body);
 
     var response = await http.post(
-      Uri.parse("https://auth.${GlobalSettings.domainName}/api/v1/apps"),
+      Uri.parse("https://auth.${Preferences.prefs!.getString("DomainName")}/api/v1/apps"),
       headers: <String, String>{
         "content-type": "application/json",
       },

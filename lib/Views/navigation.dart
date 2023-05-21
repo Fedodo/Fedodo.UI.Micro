@@ -3,8 +3,9 @@ import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:flutter/material.dart';
+
+import '../Globals/preferences.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({
@@ -88,8 +89,7 @@ class _NavigationState extends State<Navigation> {
           padding: paddings,
           child: Profile(
             appTitle: widget.title,
-            profileId:
-                "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}",
+            profileId: Preferences.prefs!.getString("ActorId")!,
             showAppBar: false,
           ),
         ),
@@ -189,8 +189,7 @@ class _NavigationState extends State<Navigation> {
         Search(), // TODO
         Profile(
           appTitle: widget.title,
-          profileId:
-              "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}",
+          profileId: Preferences.prefs!.getString("ActorId")!,
           showAppBar: false,
         ),
       ];

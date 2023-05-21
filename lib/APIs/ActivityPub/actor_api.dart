@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:http/http.dart' as http;
-import '../../Globals/global_settings.dart';
+
+import '../../Globals/preferences.dart';
 
 class ActorAPI {
   Future<Actor> getActor(String actorId) async {
 
     var actorUri = Uri.parse(actorId);
 
-    if(actorUri.authority != GlobalSettings.domainName){
+    if(actorUri.authority != Preferences.prefs!.getString("DomainName")){
       actorUri = actorUri.asProxyUri();
     }
 

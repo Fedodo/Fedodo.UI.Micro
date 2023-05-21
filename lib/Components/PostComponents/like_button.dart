@@ -1,4 +1,3 @@
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

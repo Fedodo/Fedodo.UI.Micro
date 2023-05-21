@@ -1,7 +1,7 @@
-import '../Globals/global_settings.dart';
+import '../Globals/preferences.dart';
 
 extension StringExtensions on String{
   String asProxyString() {
-    return "https://${GlobalSettings.domainName}/proxy?url=${Uri.encodeQueryComponent(this)}";
+    return "https://${Preferences.prefs!.getString("DomainName")}/proxy?url=${Uri.encodeQueryComponent(this)}";
   }
 }
