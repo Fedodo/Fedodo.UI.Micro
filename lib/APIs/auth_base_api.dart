@@ -1,15 +1,30 @@
+import 'dart:io';
+import 'package:fedodo_micro/Globals/preferences.dart';
+import 'package:fedodo_micro/SuSi/APIs/login_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import '../Globals/global_settings.dart';
 
 class AuthBaseApi {
-  static Future<Response> get({required Uri url, Map<String, String>? headers}) async {
+  static LoginManager loginManager =
+      LoginManager(!kIsWeb && Platform.isAndroid);
+
+  static Future<Response> get({
+    required Uri url,
+    Map<String, String>? headers,
+  }) async {
+    if (JwtDecoder.isExpired(GlobalSettings.accessToken)) {
+      loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
+          Preferences.prefs!.getString("ClientSecret")!);
+    }
 
     var headersToBeSent = <String, String>{
       "Authorization": "Bearer ${GlobalSettings.accessToken}"
     };
 
-    if(headers != null && headers.isNotEmpty){
+    if (headers != null && headers.isNotEmpty) {
       headersToBeSent.addAll(headers);
     }
 
@@ -21,13 +36,21 @@ class AuthBaseApi {
     return response;
   }
 
-  static Future<Response> post({required Uri url, required String body, Map<String, String>? headers}) async {
+  static Future<Response> post({
+    required Uri url,
+    required String body,
+    Map<String, String>? headers,
+  }) async {
+    if (JwtDecoder.isExpired(GlobalSettings.accessToken)) {
+      loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
+          Preferences.prefs!.getString("ClientSecret")!);
+    }
 
     var headersToBeSent = <String, String>{
       "Authorization": "Bearer ${GlobalSettings.accessToken}"
     };
 
-    if(headers != null && headers.isNotEmpty){
+    if (headers != null && headers.isNotEmpty) {
       headersToBeSent.addAll(headers);
     }
 
