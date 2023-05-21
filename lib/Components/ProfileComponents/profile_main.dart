@@ -11,6 +11,7 @@ import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/actor.dart';
 import '../../Globals/global_settings.dart';
+import 'About/about.dart';
 
 class ProfileMain extends StatefulWidget {
   ProfileMain({
@@ -151,11 +152,8 @@ class _ProfileMainState extends State<ProfileMain>
                       color: Colors.blueAccent,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.blueAccent,
-                    ),
+                  About(
+                    actor: snapshot.data!,
                   ),
                 ],
               ),
@@ -186,8 +184,8 @@ class _ProfileMainState extends State<ProfileMain>
       return ProfileButtonState.ownProfile;
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
-      var isFollowed =
-          await followingsAPI.isFollowed(widget.profileId, GlobalSettings.actorId);
+      var isFollowed = await followingsAPI.isFollowed(
+          widget.profileId, GlobalSettings.actorId);
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {

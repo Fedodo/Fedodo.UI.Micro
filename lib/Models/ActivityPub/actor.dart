@@ -16,21 +16,24 @@ class Actor {
   final Media? icon;
   final PublicKey? publicKey;
   final Endpoints? endpoints;
+  final DateTime? published;
 
   Actor(
-      this.context,
-      this.id,
-      this.type,
-      this.name,
-      this.preferredUsername,
-      this.summary,
-      this.inbox,
-      this.outbox,
-      this.followers,
-      this.following,
-      this.icon,
-      this.publicKey,
-      this.endpoints);
+    this.context,
+    this.id,
+    this.type,
+    this.name,
+    this.preferredUsername,
+    this.summary,
+    this.inbox,
+    this.outbox,
+    this.followers,
+    this.following,
+    this.icon,
+    this.publicKey,
+    this.endpoints,
+    this.published,
+  );
 
   Actor.fromJson(Map<String, dynamic> json)
       : context = json["@context"],
@@ -45,14 +48,15 @@ class Actor {
         following = json["following"],
         icon = getMedia(json["icon"]),
         publicKey = PublicKey.fromJson(json["publicKey"]),
-        endpoints = Endpoints.fromJson(json["endpoints"]);
-  
-  static Media? getMedia(dynamic json){
-    if (json != null){
+        endpoints = Endpoints.fromJson(json["endpoints"]),
+        published = DateTime.tryParse(json["published"]);
+
+  static Media? getMedia(dynamic json) {
+    if (json != null) {
       Media? media = Media.fromJson(json);
       return media;
     }
-    
+
     return null;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fedodo_micro/APIs/auth_base_api.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:http/http.dart' as http;
@@ -52,10 +53,9 @@ class SharesAPI {
 
     String json = jsonEncode(body);
 
-    var result = await http.post(
-      Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
+    var result = await AuthBaseApi.post(
+      url: Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
       headers: <String, String>{
-        "Authorization": "Bearer ${GlobalSettings.accessToken}",
         "content-type": "application/json",
       },
       body: json,
