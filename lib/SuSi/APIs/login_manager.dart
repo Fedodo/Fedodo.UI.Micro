@@ -55,6 +55,7 @@ class LoginManager {
     );
 
     Preferences.prefs?.setString("AccessToken", tknResponse.accessToken!);
+    Preferences.prefs?.setString("RefreshToken", tknResponse.refreshToken!);
 
     return tknResponse.accessToken;
   }
