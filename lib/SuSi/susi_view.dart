@@ -79,9 +79,8 @@ class SuSiView extends StatelessWidget {
       clientSecret = Preferences.prefs?.getString("ClientSecret");
     }
 
-    LoginManager login = LoginManager();
-    GlobalSettings.accessToken = await login.login(clientId, clientSecret, !kIsWeb && Platform.isAndroid) ?? AuthGlobals.redirectUriWeb;
-    Preferences.prefs?.setString("AccessToken", GlobalSettings.accessToken);
+    LoginManager login = LoginManager(!kIsWeb && Platform.isAndroid);
+    GlobalSettings.accessToken = await login.login(clientId, clientSecret) ?? AuthGlobals.redirectUriWeb;
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(GlobalSettings.accessToken);
     GlobalSettings.userId = decodedToken["sub"];
