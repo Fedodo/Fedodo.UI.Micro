@@ -34,7 +34,7 @@ class _ProfilePictureDetailState extends State<ProfilePictureDetail> {
                   width: 80,
                   height: 80,
                   widget.iconUrl != null
-                      ? widget.iconUrl!.asProxyString()
+                      ? widget.iconUrl!
                       : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
                           .asProxyString(),
                 ),
