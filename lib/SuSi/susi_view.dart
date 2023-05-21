@@ -25,7 +25,7 @@ class SuSiView extends StatelessWidget {
     if(kIsWeb){
       var url = Uri.base;
       GlobalSettings.domainName = url.authority.replaceAll("micro.", "");
-      Preferences.prefs?.setString("DomainName", url.authority);
+      Preferences.prefs?.setString("DomainName", GlobalSettings.domainName);
 
       login(context);
     }
