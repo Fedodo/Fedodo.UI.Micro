@@ -51,7 +51,7 @@ class UserHeader extends StatelessWidget {
                       width: 45,
                       height: 45,
                       imageUrl: snapshot.data?.icon?.url != null
-                          ? snapshot.data!.icon!.url
+                          ? snapshot.data!.icon!.url.asProxyString()
                           : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
                               .asProxyString(),
                     ),

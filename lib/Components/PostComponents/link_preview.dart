@@ -47,7 +47,7 @@ class LinkPreview extends StatelessWidget {
                     alignment: Alignment.center,
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                      snapshot.data!.image!,
+                      snapshot.data!.image!.asProxyString(),
                       maxHeight: 200,
                       maxWidth: width.round(),
                     ),
