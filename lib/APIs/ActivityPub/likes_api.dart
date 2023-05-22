@@ -53,7 +53,7 @@ class LikesAPI{
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("DomainName")}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
       headers: <String, String>{
         "content-type": "application/json",
       },
