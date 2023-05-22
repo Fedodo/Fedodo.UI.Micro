@@ -142,7 +142,15 @@ class _NavigationState extends State<Navigation> {
 
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: const TextStyle(
+              fontFamily: "Righteous",
+              fontSize: 25,
+              fontWeight: FontWeight.w100,
+              color: Colors.white,
+            ),
+          ),
         ),
         body: Row(
           children: [
@@ -155,7 +163,8 @@ class _NavigationState extends State<Navigation> {
                     displayMode: SideMenuDisplayMode.auto,
                     hoverColor: const Color.fromARGB(165, 0, 84, 84),
                     selectedColor: const Color.fromARGB(255, 0, 84, 84),
-                    selectedTitleTextStyle: const TextStyle(color: Colors.white),
+                    selectedTitleTextStyle:
+                        const TextStyle(color: Colors.white),
                     selectedIconColor: Colors.white,
                     unselectedIconColor: Colors.white70,
                     unselectedTitleTextStyle:
@@ -196,7 +205,15 @@ class _NavigationState extends State<Navigation> {
 
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: const TextStyle(
+              fontFamily: "Righteous",
+              fontSize: 25,
+              fontWeight: FontWeight.w100,
+              color: Colors.white,
+            ),
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
