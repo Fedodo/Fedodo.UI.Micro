@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -62,10 +63,12 @@ class _LikeButtonState extends State<LikeButton> {
   }
 
   void like() async {
-    bool canVibrate = await Vibrate.canVibrate;
+    if (!kIsWeb) {
+      bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate) {
-      Vibrate.feedback(FeedbackType.light);
+      if (canVibrate) {
+        Vibrate.feedback(FeedbackType.light);
+      }
     }
 
     setState(() {

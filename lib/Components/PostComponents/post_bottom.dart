@@ -1,5 +1,6 @@
 import 'package:fedodo_micro/Components/PostComponents/like_button.dart';
 import 'package:fedodo_micro/Components/PostComponents/share_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,10 +45,12 @@ class PostBottom extends StatelessWidget {
   }
 
   void feedbackLight() async {
-    bool canVibrate = await Vibrate.canVibrate;
+    if (!kIsWeb) {
+      bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate) {
-      Vibrate.feedback(FeedbackType.light);
+      if (canVibrate) {
+        Vibrate.feedback(FeedbackType.light);
+      }
     }
   }
 
@@ -76,10 +79,12 @@ class PostBottom extends StatelessWidget {
   }
 
   void share() async {
-    bool canVibrate = await Vibrate.canVibrate;
+    if (!kIsWeb) {
+      bool canVibrate = await Vibrate.canVibrate;
 
-    if (canVibrate) {
-      Vibrate.feedback(FeedbackType.light);
+      if (canVibrate) {
+        Vibrate.feedback(FeedbackType.light);
+      }
     }
 
     Share.share("Checkout this post on Fedodo. ${activity.object.id} \n\n");
