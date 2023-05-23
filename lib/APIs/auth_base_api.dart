@@ -15,7 +15,7 @@ class AuthBaseApi {
     Map<String, String>? headers,
   }) async {
     if (JwtDecoder.isExpired(Preferences.prefs!.getString("AccessToken")!)) {
-      loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
+      await loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
           Preferences.prefs!.getString("ClientSecret")!);
     }
 
