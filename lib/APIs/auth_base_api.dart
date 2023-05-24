@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import '../Globals/global_settings.dart';
 
 class AuthBaseApi {
   static LoginManager loginManager =
@@ -15,13 +14,13 @@ class AuthBaseApi {
     required Uri url,
     Map<String, String>? headers,
   }) async {
-    if (JwtDecoder.isExpired(GlobalSettings.accessToken)) {
-      loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
+    if (JwtDecoder.isExpired(Preferences.prefs!.getString("AccessToken")!)) {
+      await loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
           Preferences.prefs!.getString("ClientSecret")!);
     }
 
     var headersToBeSent = <String, String>{
-      "Authorization": "Bearer ${GlobalSettings.accessToken}"
+      "Authorization": "Bearer ${Preferences.prefs!.getString("AccessToken")}"
     };
 
     if (headers != null && headers.isNotEmpty) {
@@ -41,13 +40,13 @@ class AuthBaseApi {
     required String body,
     Map<String, String>? headers,
   }) async {
-    if (JwtDecoder.isExpired(GlobalSettings.accessToken)) {
+    if (JwtDecoder.isExpired(Preferences.prefs!.getString("AccessToken")!)) {
       loginManager.refresh(Preferences.prefs!.getString("ClientId")!,
           Preferences.prefs!.getString("ClientSecret")!);
     }
 
     var headersToBeSent = <String, String>{
-      "Authorization": "Bearer ${GlobalSettings.accessToken}"
+      "Authorization": "Bearer ${Preferences.prefs!.getString("AccessToken")}"
     };
 
     if (headers != null && headers.isNotEmpty) {

@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:fedodo_micro/APIs/auth_base_api.dart';
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:http/http.dart' as http;
+import '../../Globals/preferences.dart';
 import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
 
 class LikesAPI{
   Future<OrderedPagedCollection> getLikes(String postId) async {
-    String formattedUrl = "https://${GlobalSettings.domainName}/likes/${Uri.encodeQueryComponent(postId)}";
+    String formattedUrl = "https://${Preferences.prefs!.getString("DomainName")}/likes/${Uri.encodeQueryComponent(postId)}";
 
     http.Response response =
     await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
@@ -33,7 +33,7 @@ class LikesAPI{
         return false;
       }
 
-      if (collection.orderedItems.where((element) => element.actor == GlobalSettings.actorId).isNotEmpty){
+      if (collection.orderedItems.where((element) => element.actor == Preferences.prefs!.getString("ActorId")).isNotEmpty){
         return true;
       }
 
@@ -53,7 +53,7 @@ class LikesAPI{
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
       headers: <String, String>{
         "content-type": "application/json",
       },

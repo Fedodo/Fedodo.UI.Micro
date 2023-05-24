@@ -2,8 +2,6 @@ import 'dart:io';
 import 'package:fedodo_micro/SuSi/APIs/application_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import '../Globals/auth.dart';
-import '../Globals/global_settings.dart';
 import '../Globals/preferences.dart';
 import '../home.dart';
 import 'APIs/login_manager.dart';
@@ -24,8 +22,7 @@ class SuSiView extends StatelessWidget {
     
     if(kIsWeb){
       var url = Uri.base;
-      GlobalSettings.domainName = url.authority.replaceAll("micro.", "");
-      Preferences.prefs?.setString("DomainName", GlobalSettings.domainName);
+      Preferences.prefs!.setString("DomainName", url.authority.replaceAll("micro.", ""));
 
       login(context);
     }
@@ -53,8 +50,7 @@ class SuSiView extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  GlobalSettings.domainName = domainController.text;
-                  Preferences.prefs?.setString("DomainName", domainController.text);
+                  Preferences.prefs!.setString("DomainName", domainController.text);
 
                   login(context);
                 }
@@ -80,14 +76,11 @@ class SuSiView extends StatelessWidget {
     }
 
     LoginManager login = LoginManager(!kIsWeb && Platform.isAndroid);
-    GlobalSettings.accessToken = await login.login(clientId, clientSecret) ?? AuthGlobals.redirectUriWeb;
+    Preferences.prefs!.setString("AccessToken", (await login.login(clientId, clientSecret))!);
 
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(GlobalSettings.accessToken);
-    GlobalSettings.userId = decodedToken["sub"];
-    GlobalSettings.actorId = "https://${GlobalSettings.domainName}/actor/${GlobalSettings.userId}";
-
-    Preferences.prefs?.setString("UserId", GlobalSettings.userId);
-    Preferences.prefs?.setString("ActorId", GlobalSettings.actorId);
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(Preferences.prefs!.getString("AccessToken")!);
+    Preferences.prefs!.setString("UserId", decodedToken["sub"]!);
+    Preferences.prefs!.setString("ActorId", "https://${Preferences.prefs!.getString("DomainName")}/actor/${Preferences.prefs!.getString("UserId")}");
 
     Navigator.pushReplacement(
       context,

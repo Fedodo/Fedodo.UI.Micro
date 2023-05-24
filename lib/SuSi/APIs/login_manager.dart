@@ -1,8 +1,5 @@
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/oauth2_client.dart';
-import 'package:oauth2_client/oauth2_helper.dart';
-
 import '../../Globals/auth.dart';
 import '../../Globals/preferences.dart';
 
@@ -13,16 +10,16 @@ class LoginManager {
     if (isAndroid) {
       client = OAuth2Client(
         authorizeUrl:
-            "https://auth.${GlobalSettings.domainName}/oauth/authorize",
-        tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
+            "https://auth.${Preferences.prefs!.getString("DomainName")}/oauth/authorize",
+        tokenUrl: "https://auth.${Preferences.prefs!.getString("DomainName")}/oauth/token",
         redirectUri: "my.test.app:/oauth2redirect", // TODO
         customUriScheme: "my.test.app",
       );
     } else {
       client = OAuth2Client(
         authorizeUrl:
-            "https://auth.${GlobalSettings.domainName}/oauth/authorize",
-        tokenUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
+            "https://auth.${Preferences.prefs!.getString("DomainName")}/oauth/authorize",
+        tokenUrl: "https://auth.${Preferences.prefs!.getString("DomainName")}/oauth/token",
         redirectUri: AuthGlobals.redirectUriWeb,
         // refreshUrl: "https://auth.${GlobalSettings.domainName}/oauth/token",
         customUriScheme: Uri.parse(AuthGlobals.redirectUriWeb).authority,

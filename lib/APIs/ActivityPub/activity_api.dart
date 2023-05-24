@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:fedodo_micro/APIs/auth_base_api.dart';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
-import 'package:fedodo_micro/Globals/global_settings.dart';
+import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/activity.dart';
 import '../../Models/ActivityPub/post.dart';
@@ -19,7 +19,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
       body: json,
       headers: <String, String>{
         "content-type": "application/json",
@@ -48,7 +48,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${GlobalSettings.domainName}/outbox/${GlobalSettings.userId}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
       headers: <String, String>{
         "content-type": "application/json",
       },
@@ -62,7 +62,7 @@ class ActivityAPI {
 
     Uri activityUri = Uri.parse(activityId);
 
-    if(activityUri.authority != GlobalSettings.domainName){
+    if(activityUri.authority != Preferences.prefs!.getString("DomainName")){
       activityUri = activityUri.asProxyUri();
     }
 

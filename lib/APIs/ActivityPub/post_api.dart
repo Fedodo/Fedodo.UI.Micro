@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:http/http.dart' as http;
+import '../../Globals/preferences.dart';
 import '../../Models/ActivityPub/post.dart';
 
 class PostAPI {
@@ -9,7 +9,7 @@ class PostAPI {
     try {
       var activityUrl = Uri.parse(activityId);
 
-      if(activityUrl.authority != GlobalSettings.domainName){
+      if(activityUrl.authority != Preferences.prefs!.getString("DomainName")){
         activityUrl = activityUrl.asProxyUri();
       }
 

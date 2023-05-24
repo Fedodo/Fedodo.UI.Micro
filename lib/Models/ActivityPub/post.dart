@@ -1,6 +1,6 @@
 import 'dart:core';
+import 'package:fedodo_micro/Models/ActivityPub/ObjectTypes/document.dart';
 import 'collection.dart';
-import 'collection_page.dart';
 
 class Post {
   final List<String> to;
@@ -14,6 +14,7 @@ class Post {
   final DateTime published;
   final String attributedTo;
   final Collection? replies;
+  final List<Document>? attachment;
 
   Post(
     this.to,
@@ -27,6 +28,7 @@ class Post {
     this.published,
     this.attributedTo,
     this.replies,
+    this.attachment,
   );
 
   Post.fromJson(Map<String, dynamic> json)
@@ -40,7 +42,10 @@ class Post {
         type = json["type"],
         published = DateTime.parse(json["published"]),
         attributedTo = json["attributedTo"],
-        replies = json["replies"] == null ? null : Collection.fromJson(json["replies"]);
+        attachment = toListOfDocuments(json["attachment"]),
+        replies = json["replies"] == null
+            ? null
+            : Collection.fromJson(json["replies"]);
 
   static List<String> convertToStringList(json) {
     List<String> jsonList = [];
@@ -50,5 +55,19 @@ class Post {
     }
 
     return jsonList;
+  }
+
+  static List<Document>? toListOfDocuments(json) {
+    if (json == null) {
+      return null;
+    }
+
+    List<Document> documents = [];
+
+    for (dynamic item in json) {
+      documents.add(Document.fromJson(item));
+    }
+
+    return documents;
   }
 }

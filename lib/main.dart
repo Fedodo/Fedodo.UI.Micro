@@ -1,5 +1,4 @@
 import 'package:fedodo_micro/Globals/preferences.dart';
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:fedodo_micro/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,16 +26,6 @@ class FedodoMicro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? domainName = Preferences.prefs?.getString("DomainName");
-    String? userId = Preferences.prefs?.getString("UserId");
-    String? actorId = Preferences.prefs?.getString("ActorId");
-    String? accessToken = Preferences.prefs?.getString("AccessToken");
-
-    GlobalSettings.domainName = domainName ?? "";
-    GlobalSettings.userId = userId ?? "";
-    GlobalSettings.actorId = actorId ?? "";
-    GlobalSettings.accessToken = accessToken ?? "";
-
     String title = "Fedodo Micro";
 
     return MaterialApp(
@@ -74,7 +63,7 @@ class FedodoMicro extends StatelessWidget {
               fontWeight: FontWeight.w100,
             )),
       ),
-      home: domainName == null || userId == null || actorId == null //|| accessToken == null
+      home: Preferences.prefs!.getString("DomainName") == null || Preferences.prefs!.getString("UserId") == null || Preferences.prefs!.getString("ActorId") == null //|| accessToken == null
           ? SuSiView(
               title: title,
             )

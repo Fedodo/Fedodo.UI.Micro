@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
-import 'package:fedodo_micro/Globals/global_settings.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:http/http.dart' as http;
+
+import '../../Globals/preferences.dart';
 
 class OutboxAPI {
   Future<OrderedPagedCollection> getFirstPage(String outboxUrl) async {
 
     Uri outboxUri = Uri.parse(outboxUrl);
 
-    if(outboxUri.authority != GlobalSettings.domainName){
+    if(outboxUri.authority != Preferences.prefs!.getString("DomainName")){
       outboxUri = outboxUri.asProxyUri();
     }
 
@@ -23,7 +24,7 @@ class OutboxAPI {
 
     Uri nextUri = Uri.parse(nextUrl);
 
-    if(nextUri.authority != GlobalSettings.domainName){
+    if(nextUri.authority != Preferences.prefs!.getString("DomainName")){
       nextUri = nextUri.asProxyUri();
     }
 

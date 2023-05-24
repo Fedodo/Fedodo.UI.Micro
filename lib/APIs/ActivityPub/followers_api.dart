@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:http/http.dart' as http;
-import '../../Globals/global_settings.dart';
+
+import '../../Globals/preferences.dart';
 
 class FollowersAPI {
   FollowersAPI();
@@ -11,7 +12,7 @@ class FollowersAPI {
 
     Uri followerEndpointUri = Uri.parse(followerEndpoint);
 
-    if(followerEndpointUri.authority != GlobalSettings.domainName){
+    if(followerEndpointUri.authority != Preferences.prefs!.getString("DomainName")){
       followerEndpointUri = followerEndpointUri.asProxyUri();
     }
 
