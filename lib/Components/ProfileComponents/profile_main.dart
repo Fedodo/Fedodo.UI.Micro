@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/Components/ProfileComponents/Gallery/gallery.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
@@ -146,10 +147,11 @@ class _ProfileMainState extends State<ProfileMain>
                     firstPage: widget.outboxUrl,
                     isInbox: false,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.blueAccent,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                    child: Gallery(
+                      firstPage: widget.outboxUrl,
+                      isInbox: false,
                     ),
                   ),
                   About(
