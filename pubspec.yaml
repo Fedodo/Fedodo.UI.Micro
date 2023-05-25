@@ -28,6 +28,7 @@ dependencies:
   flutter_guid: ^0.3.1
   html: ^0.15.3
   easy_sidemenu: ^0.4.1+1
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:

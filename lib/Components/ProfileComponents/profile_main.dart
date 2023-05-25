@@ -152,6 +152,7 @@ class _ProfileMainState extends State<ProfileMain>
                     child: Gallery(
                       firstPage: widget.outboxUrl,
                       isInbox: false,
+                      appTitle: widget.appTitle,
                     ),
                   ),
                   About(
