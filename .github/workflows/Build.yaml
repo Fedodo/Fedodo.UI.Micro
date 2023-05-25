@@ -18,8 +18,8 @@ jobs:
 
       - name: Install Flutter
         uses: britannio/action-install-flutter@main
-        with:
-          version: ${{ env.FLUTTER_VERSION }}
+#        with:
+#          version: ${{ env.FLUTTER_VERSION }}
 
       - run: flutter build apk --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
         working-directory: ./
@@ -38,8 +38,8 @@ jobs:
 
       - name: Install Flutter
         uses: britannio/action-install-flutter@main
-        with:
-          version: ${{ env.FLUTTER_VERSION }}
+#        with:
+#          version: ${{ env.FLUTTER_VERSION }}
 
       - run: flutter build web --build-name=${{ env.VERSION }} --build-number=${{ github.run_number }}
         working-directory: ./
