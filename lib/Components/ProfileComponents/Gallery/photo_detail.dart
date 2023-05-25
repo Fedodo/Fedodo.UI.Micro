@@ -28,6 +28,7 @@ class PhotoDetail extends StatelessWidget {
       ),
       body: PhotoView(
         imageProvider: CachedNetworkImageProvider(url),
+        filterQuality: FilterQuality.high,
       ),
     );
   }

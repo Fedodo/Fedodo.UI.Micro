@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedodo_micro/Components/PostComponents/BottomChildren/bottom_children_image.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/Components/PostComponents/user_header.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
+import 'package:fedodo_micro/Extensions/url_extensions.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
@@ -30,10 +33,24 @@ class PostView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> bottomChildren = [];
+
     dom.Document document = htmlparser.parse(activity.object.content);
-    Widget? linkPreview = getLinkPreview(document);
-    if (linkPreview != null) {
-      bottomChildren.add(linkPreview);
+
+    if (activity.object.attachment?.isNotEmpty ?? false) {
+      for (var item in activity.object.attachment!) {
+        bottomChildren.add(
+          BottomChildrenImage(
+            url: item.url!.toString(),
+            appTitle: appTitle,
+            noPadding: activity.object.attachment!.length != 1 ? false : true,
+          ),
+        );
+      }
+    } else {
+      Widget? linkPreview = getLinkPreview(document);
+      if (linkPreview != null) {
+        bottomChildren.add(linkPreview);
+      }
     }
 
     List<Widget> children = [
