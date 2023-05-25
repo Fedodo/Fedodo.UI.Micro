@@ -45,22 +45,35 @@ class PostView extends StatelessWidget {
       Html(
         data: document.outerHtml,
         style: {
-          "p": Style(fontSize: const FontSize(16)),
+          "p": Style(fontSize: FontSize(16)),
           "a": Style(
-            fontSize: const FontSize(16),
+            fontSize: FontSize(16),
             textDecoration: TextDecoration.none,
           ),
         },
-        customRender: {
-          "a": (RenderContext context, Widget child) {
-            return InkWell(
-              onTap: () => {
-                launchUrl(Uri.parse(context.tree.element!.attributes["href"]!))
-              },
-              child: child,
-            );
-          },
-        },
+        extensions: [
+          TagExtension(
+            tagsToExtend: {"a"},
+            builder: (extensionContext) {
+              return InkWell(
+                onTap: () => {
+                  launchUrl(
+                    Uri.parse(
+                      extensionContext.element!.attributes["href"]!,
+                    ),
+                  ),
+                },
+                child: Text(
+                  extensionContext.node.text!,
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       Row(
         children: bottomChildren,
