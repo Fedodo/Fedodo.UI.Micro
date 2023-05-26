@@ -30,6 +30,7 @@ class FedodoMicro extends StatelessWidget {
     return MaterialApp(
       title: title,
       theme: ThemeData(
+        fontFamily: "Roboto",
         fontFamilyFallback: const ["NotoColorEmoji"],
         useMaterial3: true,
         brightness: Brightness.dark,

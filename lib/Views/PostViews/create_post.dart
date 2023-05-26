@@ -1,3 +1,4 @@
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
@@ -26,8 +27,17 @@ class CreatePostView extends StatefulWidget {
 }
 
 class _CreatePostViewState extends State<CreatePostView> {
+
+  final TextEditingController _controller = TextEditingController();
+
+  bool emojiShowing = false;
+
   @override
   Widget build(BuildContext context) {
+
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     List<Widget> widgets = [
       UserHeader(
         profileId: Preferences.prefs!.getString("ActorId")!,
@@ -38,22 +48,10 @@ class _CreatePostViewState extends State<CreatePostView> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: _controller,
               maxLines: null,
               onChanged: (String text) {
-                if (text != "") {
-                  setState(() {
-                    widget.buttonFunction = () {
-                      ActivityAPI activityHandler = ActivityAPI();
-                      activityHandler.post(text, widget.inReplyToPost);
-
-                      Navigator.pop(context);
-                    };
-                  });
-                } else {
-                  setState(() {
-                    widget.buttonFunction = null;
-                  });
-                }
+                setButtonFunction(text);
               },
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -62,6 +60,54 @@ class _CreatePostViewState extends State<CreatePostView> {
             ),
           ),
         ),
+      ),
+      Row(
+        children: [
+          IconButton(onPressed: (){
+            setState(() {
+              emojiShowing = !emojiShowing;
+            });
+          }, icon: const Icon(Icons.emoji_emotions))
+        ],
+      ),
+      Offstage(
+        offstage: !emojiShowing,
+        child: SizedBox(
+            height: height * 0.5,
+            child: EmojiPicker(
+              onEmojiSelected: (category, emoji){
+                setButtonFunction(_controller.text);
+              },
+              textEditingController: _controller,
+              config: Config(
+                columns: (width / 50).ceil(),
+                verticalSpacing: 0,
+                horizontalSpacing: 0,
+                gridPadding: EdgeInsets.zero,
+                initCategory: Category.RECENT,
+                bgColor: const Color(0xFFF2F2F2),
+                indicatorColor: Colors.blue,
+                iconColor: Colors.grey,
+                iconColorSelected: Colors.blue,
+                backspaceColor: Colors.blue,
+                skinToneDialogBgColor: Colors.white,
+                skinToneIndicatorColor: Colors.grey,
+                enableSkinTones: true,
+                showRecentsTab: true,
+                recentsLimit: 28,
+                replaceEmojiOnLimitExceed: false,
+                noRecents: const Text(
+                  'No Recents',
+                  style: TextStyle(fontSize: 20, color: Colors.black26),
+                  textAlign: TextAlign.center,
+                ),
+                loadingIndicator: const SizedBox.shrink(),
+                tabIndicatorAnimDuration: kTabScrollDuration,
+                categoryIcons: const CategoryIcons(),
+                buttonMode: ButtonMode.MATERIAL,
+                checkPlatformCompatibility: true,
+              ),
+            )),
       ),
     ];
 
@@ -121,4 +167,22 @@ class _CreatePostViewState extends State<CreatePostView> {
       ),
     );
   }
+
+  void setButtonFunction(String text){
+    if (text != "") {
+      setState(() {
+        widget.buttonFunction = () {
+          ActivityAPI activityHandler = ActivityAPI();
+          activityHandler.post(text, widget.inReplyToPost);
+
+          Navigator.pop(context);
+        };
+      });
+    } else {
+      setState(() {
+        widget.buttonFunction = null;
+      });
+    }
+  }
+
 }
