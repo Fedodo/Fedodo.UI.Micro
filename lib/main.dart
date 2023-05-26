@@ -9,7 +9,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then(
     (value) {
-
       Preferences.prefs = value;
 
       runApp(
@@ -31,6 +30,7 @@ class FedodoMicro extends StatelessWidget {
     return MaterialApp(
       title: title,
       theme: ThemeData(
+        fontFamilyFallback: const ["NotoColorEmoji"],
         useMaterial3: true,
         brightness: Brightness.dark,
         colorSchemeSeed: const Color.fromARGB(255, 1, 76, 72),
@@ -63,7 +63,10 @@ class FedodoMicro extends StatelessWidget {
               fontWeight: FontWeight.w100,
             )),
       ),
-      home: Preferences.prefs!.getString("DomainName") == null || Preferences.prefs!.getString("UserId") == null || Preferences.prefs!.getString("ActorId") == null //|| accessToken == null
+      home: Preferences.prefs!.getString("DomainName") == null ||
+              Preferences.prefs!.getString("UserId") == null ||
+              Preferences.prefs!.getString("ActorId") ==
+                  null //|| accessToken == null
           ? SuSiView(
               title: title,
             )

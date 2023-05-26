@@ -40,6 +40,9 @@ flutter:
     - family: Righteous
       fonts:
         - asset: fonts/Righteous-Regular.ttf
+    - family: NotoColorEmoji
+      fonts:
+        - asset: fonts/NotoColorEmoji-Regular.ttf
   uses-material-design: true
 
   assets:
