@@ -162,7 +162,15 @@ class _FullPostViewState extends State<FullPostView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.appTitle),
+        title: Text(
+          widget.appTitle,
+          style: const TextStyle(
+            fontFamily: "Righteous",
+            fontSize: 25,
+            fontWeight: FontWeight.w100,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: ListView(
         children: children,
