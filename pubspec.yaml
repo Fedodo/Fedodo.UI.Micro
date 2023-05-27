@@ -29,6 +29,8 @@ dependencies:
   html: ^0.15.3
   easy_sidemenu: ^0.4.1+1
   photo_view: ^0.14.0
+  emoji_picker_flutter: ^1.5.4
+  random_string: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +39,13 @@ dev_dependencies:
 
 flutter:
   fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto/Roboto-Regular.ttf
+        - asset: fonts/Roboto/Roboto-Black.ttf
+    - family: NotoColorEmoji
+      fonts:
+        - asset: fonts/NotoColorEmoji-Regular.ttf
     - family: Righteous
       fonts:
         - asset: fonts/Righteous-Regular.ttf

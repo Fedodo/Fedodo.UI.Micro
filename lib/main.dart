@@ -1,3 +1,4 @@
+import 'package:fedodo_micro/Globals/auth.dart';
 import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:fedodo_micro/home.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then(
     (value) {
-
       Preferences.prefs = value;
 
       runApp(
@@ -30,7 +30,16 @@ class FedodoMicro extends StatelessWidget {
 
     return MaterialApp(
       title: title,
+      onGenerateRoute: (settings){
+        if(settings.name?.contains("code") ?? false){
+          AuthGlobals.appLoginCodeRoute = settings.name;
+        }
+
+        return null;
+      },
       theme: ThemeData(
+        fontFamily: "Roboto",
+        fontFamilyFallback: const ["NotoColorEmoji"],
         useMaterial3: true,
         brightness: Brightness.dark,
         colorSchemeSeed: const Color.fromARGB(255, 1, 76, 72),
@@ -63,7 +72,10 @@ class FedodoMicro extends StatelessWidget {
               fontWeight: FontWeight.w100,
             )),
       ),
-      home: Preferences.prefs!.getString("DomainName") == null || Preferences.prefs!.getString("UserId") == null || Preferences.prefs!.getString("ActorId") == null //|| accessToken == null
+      home: Preferences.prefs!.getString("DomainName") == null ||
+              Preferences.prefs!.getString("UserId") == null ||
+              Preferences.prefs!.getString("ActorId") ==
+                  null //|| accessToken == null
           ? SuSiView(
               title: title,
             )

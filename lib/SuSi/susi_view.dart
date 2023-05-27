@@ -19,17 +19,27 @@ class SuSiView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    if(kIsWeb){
+    if (kIsWeb  && Preferences.prefs!.getString("DomainName") == null) {
       var url = Uri.base;
-      Preferences.prefs!.setString("DomainName", url.authority.replaceAll("micro.", ""));
+      Preferences.prefs!
+          .setString("DomainName", url.authority.replaceAll("micro.", ""));
 
       login(context);
+    }else{
+      login(context);
     }
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontFamily: "Righteous",
+            fontSize: 25,
+            fontWeight: FontWeight.w100,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Form(
         key: _formKey,
@@ -50,7 +60,8 @@ class SuSiView extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  Preferences.prefs!.setString("DomainName", domainController.text);
+                  Preferences.prefs!
+                      .setString("DomainName", domainController.text);
 
                   login(context);
                 }
@@ -62,13 +73,13 @@ class SuSiView extends StatelessWidget {
       ),
     );
   }
-  
-  Future login(BuildContext context) async{
+
+  Future login(BuildContext context) async {
     String? clientId = Preferences.prefs?.getString("ClientId");
     String? clientSecret = Preferences.prefs?.getString("ClientSecret");
 
     ApplicationRegistration appRegis = ApplicationRegistration();
-    while(clientId == null || clientSecret == null){
+    while (clientId == null || clientSecret == null) {
       await appRegis.registerApplication();
 
       clientId = Preferences.prefs?.getString("ClientId");
@@ -76,11 +87,14 @@ class SuSiView extends StatelessWidget {
     }
 
     LoginManager login = LoginManager(!kIsWeb && Platform.isAndroid);
-    Preferences.prefs!.setString("AccessToken", (await login.login(clientId, clientSecret))!);
+    Preferences.prefs!
+        .setString("AccessToken", (await login.login(clientId, clientSecret))!);
 
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(Preferences.prefs!.getString("AccessToken")!);
+    Map<String, dynamic> decodedToken =
+        JwtDecoder.decode(Preferences.prefs!.getString("AccessToken")!);
     Preferences.prefs!.setString("UserId", decodedToken["sub"]!);
-    Preferences.prefs!.setString("ActorId", "https://${Preferences.prefs!.getString("DomainName")}/actor/${Preferences.prefs!.getString("UserId")}");
+    Preferences.prefs!.setString("ActorId",
+        "https://${Preferences.prefs!.getString("DomainName")}/actor/${Preferences.prefs!.getString("UserId")}");
 
     Navigator.pushReplacement(
       context,

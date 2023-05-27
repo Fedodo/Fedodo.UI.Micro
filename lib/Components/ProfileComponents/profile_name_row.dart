@@ -100,7 +100,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
                   } else {
                     child = ElevatedButton(
                       onPressed: () {},
-                      child: const Text(""),
+                      child: const Text("Loading"),
                     );
                   }
                   return child;

@@ -36,10 +36,10 @@ class FollowingsAPI {
 
     OrderedPagedCollection follows = await getFollowings(actor.following!);
 
+    String url = follows.first!;
 
     do {
 
-      String url = follows.first!;
       Uri uri = Uri.parse(url);
 
       if(uri.authority != Preferences.prefs!.getString("DomainName")){
@@ -53,7 +53,9 @@ class FollowingsAPI {
         },
       );
 
-      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      var json = jsonDecode(utf8.decode(response.bodyBytes));
+
+      OrderedCollectionPage collection = OrderedCollectionPage.fromJson(json);
 
       if (collection.orderedItems.isEmpty){
         return false;

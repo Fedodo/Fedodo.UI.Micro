@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedodo_micro/Components/PostComponents/BottomChildren/bottom_children_image.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/Components/PostComponents/user_header.dart';
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
-import 'package:fedodo_micro/Extensions/url_extensions.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
@@ -62,7 +60,9 @@ class PostView extends StatelessWidget {
       Html(
         data: document.outerHtml,
         style: {
-          "p": Style(fontSize: FontSize(16)),
+          "p": Style(
+            fontSize: FontSize(16),
+          ),
           "a": Style(
             fontSize: FontSize(16),
             textDecoration: TextDecoration.none,
