@@ -19,11 +19,13 @@ class SuSiView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
+    if (kIsWeb  && Preferences.prefs!.getString("DomainName") == null) {
       var url = Uri.base;
       Preferences.prefs!
           .setString("DomainName", url.authority.replaceAll("micro.", ""));
 
+      login(context);
+    }else{
       login(context);
     }
 
