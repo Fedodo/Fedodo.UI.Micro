@@ -9,4 +9,5 @@ class AuthGlobals {
       return "https://micro.${Preferences.prefs!.getString("DomainName")}/redirect.html";
     }
   }
+  static String? appLoginCodeRoute;
 }
