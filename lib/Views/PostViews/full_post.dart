@@ -121,7 +121,7 @@ class _FullPostViewState extends State<FullPostView> {
       ],
     );
 
-    if (widget.activity.object.replies!.items != null) {
+    if (widget.activity.object.replies?.items != null) {
       for (Object item in widget.activity.object.replies!.items) {
         String link = item as String;
 
