@@ -29,7 +29,6 @@ class _NavigationState extends State<Navigation> {
     double height = MediaQuery.of(context).size.height;
 
     if (width > height && width >= 600) {
-
       EdgeInsets paddings = EdgeInsets.fromLTRB(width * 0.1, 0, width * 0.1, 0);
 
       List screens = [
@@ -42,11 +41,15 @@ class _NavigationState extends State<Navigation> {
         ),
         Padding(
           padding: paddings,
-          child: Search(),
+          child: Search(
+            appTitle: widget.title,
+          ),
         ),
         Padding(
           padding: paddings,
-          child: Search(),
+          child: Search(
+            appTitle: widget.title,
+          ),
         ), // TODO
         Padding(
           padding: paddings,
@@ -123,7 +126,8 @@ class _NavigationState extends State<Navigation> {
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: SizedBox( // Workaround for the SideMenu
+                child: SizedBox(
+                  // Workaround for the SideMenu
                   height: height,
                   width: 300,
                   child: SideMenu(
@@ -163,8 +167,12 @@ class _NavigationState extends State<Navigation> {
           scrollController: controller,
           appTitle: widget.title,
         ),
-        Search(),
-        Search(), // TODO
+        Search(
+          appTitle: widget.title,
+        ),
+        Search(
+          appTitle: widget.title,
+        ), // TODO
         Profile(
           appTitle: widget.title,
           profileId: Preferences.prefs!.getString("ActorId")!,
