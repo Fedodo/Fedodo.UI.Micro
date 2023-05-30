@@ -53,7 +53,7 @@ class AuthBaseApi {
       headersToBeSent.addAll(headers);
     }
 
-    var response = http.post(
+    var response = await http.post(
       url,
       headers: headersToBeSent,
       body: body,
