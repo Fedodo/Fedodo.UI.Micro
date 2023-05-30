@@ -45,12 +45,12 @@ class _NavigationState extends State<Navigation> {
             appTitle: widget.title,
           ),
         ),
-        Padding(
-          padding: paddings,
-          child: Search(
-            appTitle: widget.title,
-          ),
-        ), // TODO
+        // Padding(
+        //   padding: paddings,
+        //   child: Search(
+        //     appTitle: widget.title,
+        //   ),
+        // ), // TODO
         Padding(
           padding: paddings,
           child: Profile(
@@ -84,19 +84,19 @@ class _NavigationState extends State<Navigation> {
           },
           icon: const Icon(Icons.search),
         ),
+        // SideMenuItem(
+        //   priority: 2,
+        //   title: 'Notifications',
+        //   onTap: (int index, SideMenuController controller) {
+        //     setState(() {
+        //       currentIndex = index;
+        //     });
+        //     sideMenuController.changePage(currentIndex);
+        //   },
+        //   icon: const Icon(Icons.notifications),
+        // ),
         SideMenuItem(
           priority: 2,
-          title: 'Notifications',
-          onTap: (int index, SideMenuController controller) {
-            setState(() {
-              currentIndex = index;
-            });
-            sideMenuController.changePage(currentIndex);
-          },
-          icon: const Icon(Icons.notifications),
-        ),
-        SideMenuItem(
-          priority: 3,
           title: 'Profile',
           onTap: (int index, SideMenuController controller) {
             setState(() {
@@ -170,9 +170,9 @@ class _NavigationState extends State<Navigation> {
         Search(
           appTitle: widget.title,
         ),
-        Search(
-          appTitle: widget.title,
-        ), // TODO
+        // Search(
+        //   appTitle: widget.title,
+        // ), // TODO
         Profile(
           appTitle: widget.title,
           profileId: Preferences.prefs!.getString("ActorId")!,
@@ -198,8 +198,8 @@ class _NavigationState extends State<Navigation> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notifications), label: "Notifications"),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Icons.notifications), label: "Notifications"),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],
         ),
