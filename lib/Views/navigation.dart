@@ -29,7 +29,6 @@ class _NavigationState extends State<Navigation> {
     double height = MediaQuery.of(context).size.height;
 
     if (width > height && width >= 600) {
-
       EdgeInsets paddings = EdgeInsets.fromLTRB(width * 0.1, 0, width * 0.1, 0);
 
       List screens = [
@@ -42,12 +41,16 @@ class _NavigationState extends State<Navigation> {
         ),
         Padding(
           padding: paddings,
-          child: Search(),
+          child: Search(
+            appTitle: widget.title,
+          ),
         ),
-        Padding(
-          padding: paddings,
-          child: Search(),
-        ), // TODO
+        // Padding(
+        //   padding: paddings,
+        //   child: Search(
+        //     appTitle: widget.title,
+        //   ),
+        // ), // TODO
         Padding(
           padding: paddings,
           child: Profile(
@@ -81,19 +84,19 @@ class _NavigationState extends State<Navigation> {
           },
           icon: const Icon(Icons.search),
         ),
+        // SideMenuItem(
+        //   priority: 2,
+        //   title: 'Notifications',
+        //   onTap: (int index, SideMenuController controller) {
+        //     setState(() {
+        //       currentIndex = index;
+        //     });
+        //     sideMenuController.changePage(currentIndex);
+        //   },
+        //   icon: const Icon(Icons.notifications),
+        // ),
         SideMenuItem(
           priority: 2,
-          title: 'Notifications',
-          onTap: (int index, SideMenuController controller) {
-            setState(() {
-              currentIndex = index;
-            });
-            sideMenuController.changePage(currentIndex);
-          },
-          icon: const Icon(Icons.notifications),
-        ),
-        SideMenuItem(
-          priority: 3,
           title: 'Profile',
           onTap: (int index, SideMenuController controller) {
             setState(() {
@@ -123,7 +126,8 @@ class _NavigationState extends State<Navigation> {
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: SizedBox( // Workaround for the SideMenu
+                child: SizedBox(
+                  // Workaround for the SideMenu
                   height: height,
                   width: 300,
                   child: SideMenu(
@@ -163,8 +167,12 @@ class _NavigationState extends State<Navigation> {
           scrollController: controller,
           appTitle: widget.title,
         ),
-        Search(),
-        Search(), // TODO
+        Search(
+          appTitle: widget.title,
+        ),
+        // Search(
+        //   appTitle: widget.title,
+        // ), // TODO
         Profile(
           appTitle: widget.title,
           profileId: Preferences.prefs!.getString("ActorId")!,
@@ -190,8 +198,8 @@ class _NavigationState extends State<Navigation> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notifications), label: "Notifications"),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Icons.notifications), label: "Notifications"),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],
         ),

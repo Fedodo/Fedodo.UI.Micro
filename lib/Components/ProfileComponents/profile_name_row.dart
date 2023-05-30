@@ -78,7 +78,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
                         break;
                       case ProfileButtonState.notSubscribed:
                         child = ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             ActivityAPI activityApi = ActivityAPI();
                             activityApi.follow(Uri.parse(widget.userId));
 

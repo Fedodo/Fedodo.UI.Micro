@@ -8,7 +8,7 @@ import '../../Models/ActivityPub/post.dart';
 
 class ActivityAPI {
 
-  void follow(Uri object) async {
+  Future follow(Uri object) async {
 
     Map<String, dynamic> body = {
       "to": ["as:Public"],
