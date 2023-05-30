@@ -31,8 +31,11 @@ class FollowingsAPI {
   }
 
   Future<bool> isFollowed(String followId, String actorId) async {
+
     ActorAPI actorAPI = ActorAPI();
     Actor actor = await actorAPI.getActor(actorId);
+    Actor followActor = await actorAPI.getActor(followId);
+    followId = followActor.id!;
 
     OrderedPagedCollection follows = await getFollowings(actor.following!);
 
