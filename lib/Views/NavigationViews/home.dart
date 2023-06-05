@@ -1,5 +1,6 @@
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:flutter/material.dart';
+import '../../Globals/general.dart';
 import '../../Globals/preferences.dart';
 
 class Home extends StatelessWidget {
@@ -19,7 +20,7 @@ class Home extends StatelessWidget {
       appTitle: appTitle,
       isInbox: true,
       noReplies: true,
-      firstPage: "https://${Preferences.prefs!.getString("DomainName")}/inbox/${Preferences.prefs!.getString("UserId")}/page/0",
+      firstPage: "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0",
     );
   }
 }
