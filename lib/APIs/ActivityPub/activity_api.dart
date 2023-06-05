@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:fedodo_micro/APIs/auth_base_api.dart';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
+import 'package:fedodo_micro/Globals/general.dart';
 import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../Models/ActivityPub/activity.dart';
@@ -19,7 +20,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       body: json,
       headers: <String, String>{
         "content-type": "application/json",
@@ -48,7 +49,7 @@ class ActivityAPI {
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       headers: <String, String>{
         "content-type": "application/json",
       },

@@ -73,9 +73,7 @@ class FedodoMicro extends StatelessWidget {
             )),
       ),
       home: Preferences.prefs!.getString("DomainName") == null ||
-              Preferences.prefs!.getString("UserId") == null ||
-              Preferences.prefs!.getString("ActorId") ==
-                  null //|| accessToken == null
+              Preferences.prefs!.getString("AccessToken") == null
           ? SuSiView(
               title: title,
             )

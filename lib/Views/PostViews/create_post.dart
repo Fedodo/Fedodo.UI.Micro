@@ -5,7 +5,7 @@ import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Components/PostComponents/user_header.dart';
-import '../../Globals/preferences.dart';
+import '../../Globals/general.dart';
 import '../../Models/ActivityPub/actor.dart';
 
 class CreatePostView extends StatefulWidget {
@@ -40,7 +40,7 @@ class _CreatePostViewState extends State<CreatePostView> {
 
     List<Widget> widgets = [
       UserHeader(
-        profileId: Preferences.prefs!.getString("ActorId")!,
+        profileId: General.fullActorId,
         appTitle: widget.appTitle,
       ),
       Expanded(

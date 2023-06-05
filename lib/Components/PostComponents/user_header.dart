@@ -31,7 +31,7 @@ class UserHeader extends StatelessWidget {
           Widget child;
           if (snapshot.hasData) {
             String text =
-                "@${snapshot.data!.preferredUsername!}@${Uri.parse(snapshot.data!.id!).authority}";
+                "@${snapshot.data!.preferredUsername}@${Uri.parse(snapshot.data!.id!).authority}";
 
             if (publishedDateTime != null) {
               text +=
@@ -61,7 +61,7 @@ class UserHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          snapshot.data!.name!,
+                          snapshot.data!.name ?? snapshot.data!.preferredUsername!,
                           style: const TextStyle(fontSize: 17),
                         ),
                         Text(

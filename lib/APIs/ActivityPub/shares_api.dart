@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fedodo_micro/APIs/auth_base_api.dart';
+import 'package:fedodo_micro/Globals/general.dart';
 import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
 import 'package:http/http.dart' as http;
 import '../../Globals/preferences.dart';
@@ -33,7 +34,7 @@ class SharesAPI {
       }
 
       if (collection.orderedItems
-          .where((element) => element.actor == Preferences.prefs!.getString("ActorId"))
+          .where((element) => element.actor == General.fullActorId)
           .isNotEmpty) {
         return true;
       }
@@ -54,7 +55,7 @@ class SharesAPI {
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       headers: <String, String>{
         "content-type": "application/json",
       },

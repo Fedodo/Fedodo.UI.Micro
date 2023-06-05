@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:fedodo_micro/APIs/auth_base_api.dart';
 import 'package:http/http.dart' as http;
+import '../../Globals/general.dart';
 import '../../Globals/preferences.dart';
 import '../../Models/ActivityPub/ordered_collection_page.dart';
 import '../../Models/ActivityPub/ordered_paged_collection.dart';
@@ -33,7 +34,7 @@ class LikesAPI{
         return false;
       }
 
-      if (collection.orderedItems.where((element) => element.actor == Preferences.prefs!.getString("ActorId")).isNotEmpty){
+      if (collection.orderedItems.where((element) => element.actor == General.fullActorId).isNotEmpty){
         return true;
       }
 
@@ -53,7 +54,7 @@ class LikesAPI{
     String json = jsonEncode(body);
 
     var result = await AuthBaseApi.post(
-      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${Preferences.prefs!.getString("UserId")}"),
+      url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       headers: <String, String>{
         "content-type": "application/json",
       },

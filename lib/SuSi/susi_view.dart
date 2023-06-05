@@ -90,12 +90,6 @@ class SuSiView extends StatelessWidget {
     Preferences.prefs!
         .setString("AccessToken", (await login.login(clientId, clientSecret))!);
 
-    Map<String, dynamic> decodedToken =
-        JwtDecoder.decode(Preferences.prefs!.getString("AccessToken")!);
-    Preferences.prefs!.setString("UserId", decodedToken["sub"]!);
-    Preferences.prefs!.setString("ActorId",
-        "https://${Preferences.prefs!.getString("DomainName")}/actor/${Preferences.prefs!.getString("UserId")}");
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

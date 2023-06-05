@@ -4,6 +4,7 @@ import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
 import 'package:flutter/material.dart';
+import '../Globals/general.dart';
 import '../Globals/preferences.dart';
 
 class Navigation extends StatefulWidget {
@@ -55,7 +56,7 @@ class _NavigationState extends State<Navigation> {
           padding: paddings,
           child: Profile(
             appTitle: widget.title,
-            profileId: Preferences.prefs!.getString("ActorId")!,
+            profileId: General.fullActorId,
             showAppBar: false,
           ),
         ),
@@ -175,7 +176,7 @@ class _NavigationState extends State<Navigation> {
         // ), // TODO
         Profile(
           appTitle: widget.title,
-          profileId: Preferences.prefs!.getString("ActorId")!,
+          profileId: General.fullActorId,
           showAppBar: false,
         ),
       ];
