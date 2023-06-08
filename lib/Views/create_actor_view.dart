@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Globals/preferences.dart';
+import 'package:fedodo_micro/SuSi/susi_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+
+import '../SuSi/APIs/login_manager.dart';
 
 class CreateActorView extends StatelessWidget {
    CreateActorView({
@@ -61,7 +67,17 @@ class CreateActorView extends StatelessWidget {
                   String userId = token["sub"];
 
                   ActorAPI actorApi = ActorAPI();
-                  actorApi.createActor(userId, userNameController.text, summaryController.text);
+                  await actorApi.createActor(userId, userNameController.text, summaryController.text);
+
+                  // TODO Not sure if this works
+                  // String clientId = Preferences.prefs!.getString("ClientId")!;
+                  // String clientSecret = Preferences.prefs!.getString("ClientSecret")!;
+                  //
+                  // LoginManager login = LoginManager(!kIsWeb && Platform.isAndroid);
+                  // Preferences.prefs!
+                  //     .setString("AccessToken", (await login.login(clientId, clientSecret))!);
+
+                  Navigator.pop(context);
                 }
               },
               child: const Text("Create Actor"),
