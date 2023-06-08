@@ -1,11 +1,38 @@
 import 'dart:convert';
+import 'package:fedodo_micro/APIs/auth_base_api.dart';
 import 'package:fedodo_micro/Extensions/url_extensions.dart';
 import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:http/http.dart' as http;
-
 import '../../Globals/preferences.dart';
 
 class ActorAPI {
+  Future<List<String>> getAllActorsOfUser(String userId) async{
+    var domainName = Preferences.prefs!.getString("DomainName");
+
+    var response = await AuthBaseApi.get(url: Uri.parse("https://auth.$domainName/user/actors?userid=$userId"));
+
+    var json = jsonDecode(response.body);
+
+    List<String> result = List<String>.from(json);
+
+    return result;
+  }
+
+  Future createActor(String userId, String name, String? summary) async{
+
+    var domainName = Preferences.prefs!.getString("DomainName");
+
+    Map<String, dynamic> bodyMap = {
+      "type": "Person",
+      "name": name,
+      "preferredUsername": name,
+      "summary": summary,
+    };
+
+    String body = jsonEncode(bodyMap);
+    var response = await AuthBaseApi.post(url: Uri.parse("https://auth.$domainName/user/actors?userid=$userId"), body: body);
+  }
+
   Future<Actor> getActor(String actorId) async {
 
     var actorUri = Uri.parse(actorId);

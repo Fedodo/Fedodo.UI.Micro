@@ -20,7 +20,8 @@ class AuthBaseApi {
     }
 
     var headersToBeSent = <String, String>{
-      "Authorization": "Bearer ${Preferences.prefs!.getString("AccessToken")}"
+      "Authorization": "Bearer ${Preferences.prefs!.getString("AccessToken")}",
+      "Content-Type": "application/json"
     };
 
     if (headers != null && headers.isNotEmpty) {
@@ -46,7 +47,8 @@ class AuthBaseApi {
     }
 
     var headersToBeSent = <String, String>{
-      "Authorization": "Bearer ${Preferences.prefs!.getString("AccessToken")}"
+      "Authorization": "Bearer ${Preferences.prefs!.getString("AccessToken")}",
+      "Content-Type": "application/json"
     };
 
     if (headers != null && headers.isNotEmpty) {

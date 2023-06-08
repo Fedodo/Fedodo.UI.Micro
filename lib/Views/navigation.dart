@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:fedodo_micro/Components/NavigationComponents/switch_actor_button.dart';
+import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
@@ -111,6 +114,9 @@ class _NavigationState extends State<Navigation> {
 
       return Scaffold(
         appBar: AppBar(
+          actions: const [
+            SwitchActorButton(),
+          ],
           title: Text(
             widget.title,
             style: const TextStyle(
@@ -183,6 +189,9 @@ class _NavigationState extends State<Navigation> {
 
       return Scaffold(
         appBar: AppBar(
+          actions: const [
+            SwitchActorButton(),
+          ],
           title: Text(
             widget.title,
             style: const TextStyle(

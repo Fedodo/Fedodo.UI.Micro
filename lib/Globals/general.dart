@@ -8,11 +8,7 @@ class General {
     return "https://${Preferences.prefs!.getString("DomainName")}/actor/${actorIds.first}"; // TODO
   }
 
-  static String get actorId {
-    var actorIds = getActorIds();
-
-    return actorIds.first; // TODO
-  }
+  static String actorId = getActorIds().first;
 
   static List<String> getActorIds(){
     Map<String, dynamic> decodedToken = JwtDecoder.decode(Preferences.prefs!.getString(
