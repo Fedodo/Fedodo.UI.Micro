@@ -1,13 +1,7 @@
-import 'dart:io';
-
 import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Globals/preferences.dart';
-import 'package:fedodo_micro/SuSi/susi_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-
-import '../SuSi/APIs/login_manager.dart';
 
 class CreateActorView extends StatelessWidget {
    CreateActorView({
