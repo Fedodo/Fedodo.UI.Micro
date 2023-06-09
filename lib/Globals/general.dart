@@ -3,9 +3,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 class General {
   static String get fullActorId {
-    var actorIds = getActorIds();
-
-    return "https://${Preferences.prefs!.getString("DomainName")}/actor/${actorIds.first}"; // TODO
+    return "https://${Preferences.prefs!.getString("DomainName")}/actor/${actorId}";
   }
 
   static String actorId = getActorIds().first;
