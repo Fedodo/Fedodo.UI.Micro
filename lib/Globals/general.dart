@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -11,13 +9,13 @@ class General {
   static String get actorId {
     String? currentActorId = Preferences.prefs!.getString("CurrentActorId");
 
-    if(currentActorId.isNull){
+    if(currentActorId == null){
       var temp = getActorIds().first;
       actorId = temp;
       return temp;
     }
     
-    return currentActorId!;
+    return currentActorId;
   }
 
   static set actorId(String selectedId) {
