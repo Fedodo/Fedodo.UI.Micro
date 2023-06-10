@@ -12,7 +12,10 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 class SwitchActorButton extends StatefulWidget {
   const SwitchActorButton({
     Key? key,
+    required this.reloadState,
   }) : super(key: key);
+
+  final Function reloadState;
 
   @override
   State<SwitchActorButton> createState() => _SwitchActorButtonState();
@@ -31,7 +34,6 @@ class _SwitchActorButtonState extends State<SwitchActorButton> {
           child = Theme(
             data: Theme.of(context).copyWith(
               highlightColor: Colors.lightBlue,
-
             ),
             child: PopupMenuButton<int>(
               onSelected: (int index) {
@@ -63,6 +65,8 @@ class _SwitchActorButtonState extends State<SwitchActorButton> {
                 setState(() {
                   General.actorId = actor.id!.split("/").last;
                 });
+
+                widget.reloadState();
               },
               tooltip: "Switch Profile",
               icon: ClipRRect(
@@ -71,7 +75,8 @@ class _SwitchActorButtonState extends State<SwitchActorButton> {
                   width: 30,
                   height: 30,
                   imageUrl: snapshot.data
-                          ?.where((element) => element.id == General.fullActorId)
+                          ?.where(
+                              (element) => element.id == General.fullActorId)
                           .first
                           .icon
                           ?.url
@@ -88,7 +93,9 @@ class _SwitchActorButtonState extends State<SwitchActorButton> {
                   widgets.add(
                     CustomPopupMenuItem(
                       value: count,
-                      color: General.fullActorId == snapshot.data![count].id ? Colors.black26 : null,
+                      color: General.fullActorId == snapshot.data![count].id
+                          ? Colors.black26
+                          : null,
                       child: Row(
                         children: [
                           ClipRRect(

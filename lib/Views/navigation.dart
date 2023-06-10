@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:fedodo_micro/Components/NavigationComponents/switch_actor_button.dart';
-import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:fedodo_micro/Views/NavigationViews/search.dart';
@@ -26,6 +24,8 @@ class _NavigationState extends State<Navigation> {
   int currentIndex = 0;
   final ScrollController controller = ScrollController();
   SideMenuController sideMenuController = SideMenuController();
+  String firstPage =
+      "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0";
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,7 @@ class _NavigationState extends State<Navigation> {
           child: Home(
             scrollController: controller,
             appTitle: widget.title,
+            firstPage: firstPage,
           ),
         ),
         Padding(
@@ -49,12 +50,6 @@ class _NavigationState extends State<Navigation> {
             appTitle: widget.title,
           ),
         ),
-        // Padding(
-        //   padding: paddings,
-        //   child: Search(
-        //     appTitle: widget.title,
-        //   ),
-        // ), // TODO
         Padding(
           padding: paddings,
           child: Profile(
@@ -88,17 +83,6 @@ class _NavigationState extends State<Navigation> {
           },
           icon: const Icon(Icons.search),
         ),
-        // SideMenuItem(
-        //   priority: 2,
-        //   title: 'Notifications',
-        //   onTap: (int index, SideMenuController controller) {
-        //     setState(() {
-        //       currentIndex = index;
-        //     });
-        //     sideMenuController.changePage(currentIndex);
-        //   },
-        //   icon: const Icon(Icons.notifications),
-        // ),
         SideMenuItem(
           priority: 2,
           title: 'Profile',
@@ -114,8 +98,15 @@ class _NavigationState extends State<Navigation> {
 
       return Scaffold(
         appBar: AppBar(
-          actions: const [
-            SwitchActorButton(),
+          actions: [
+            SwitchActorButton(
+              reloadState: () {
+                setState(() {
+                  firstPage =
+                      "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0";
+                });
+              },
+            ),
           ],
           title: Text(
             widget.title,
@@ -173,13 +164,11 @@ class _NavigationState extends State<Navigation> {
         Home(
           scrollController: controller,
           appTitle: widget.title,
+          firstPage: firstPage,
         ),
         Search(
           appTitle: widget.title,
         ),
-        // Search(
-        //   appTitle: widget.title,
-        // ), // TODO
         Profile(
           appTitle: widget.title,
           profileId: General.fullActorId,
@@ -189,8 +178,15 @@ class _NavigationState extends State<Navigation> {
 
       return Scaffold(
         appBar: AppBar(
-          actions: const [
-            SwitchActorButton(),
+          actions: [
+            SwitchActorButton(
+              reloadState: () {
+                setState(() {
+                  firstPage =
+                      "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0";
+                });
+              },
+            ),
           ],
           title: Text(
             widget.title,
