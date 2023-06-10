@@ -26,6 +26,7 @@ class _NavigationState extends State<Navigation> {
   SideMenuController sideMenuController = SideMenuController();
   String firstPage =
       "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0";
+  String profileId = General.fullActorId;
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,9 @@ class _NavigationState extends State<Navigation> {
         Padding(
           padding: paddings,
           child: Profile(
+            key: Key(profileId),
             appTitle: widget.title,
-            profileId: General.fullActorId,
+            profileId: profileId,
             showAppBar: false,
           ),
         ),
@@ -104,6 +106,7 @@ class _NavigationState extends State<Navigation> {
                 setState(() {
                   firstPage =
                       "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0";
+                  profileId = General.fullActorId;
                 });
               },
             ),
@@ -170,8 +173,9 @@ class _NavigationState extends State<Navigation> {
           appTitle: widget.title,
         ),
         Profile(
+          key: Key(profileId),
           appTitle: widget.title,
-          profileId: General.fullActorId,
+          profileId: profileId,
           showAppBar: false,
         ),
       ];
@@ -184,6 +188,7 @@ class _NavigationState extends State<Navigation> {
                 setState(() {
                   firstPage =
                       "https://${Preferences.prefs!.getString("DomainName")}/inbox/${General.actorId}/page/0";
+                  profileId = General.fullActorId;
                 });
               },
             ),

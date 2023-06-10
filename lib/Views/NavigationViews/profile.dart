@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Models/ActivityPub/actor.dart';
 
-class Profile extends StatefulWidget {
+class Profile extends StatelessWidget {
   const Profile({
     Key? key,
     required this.appTitle,
@@ -18,52 +18,20 @@ class Profile extends StatefulWidget {
   final bool showAppBar;
 
   @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  @override
   Widget build(BuildContext context) {
-    ActorAPI actorProvider = ActorAPI();
-
-    return FutureBuilder<Actor>(
-      future: actorProvider.getActor(widget.profileId),
-      builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
+    return FutureBuilder<OrderedPagedCollection>(
+      future: getFirstPageAsync(),
+      builder: (BuildContext outboxContext,
+          AsyncSnapshot<OrderedPagedCollection> outboxSnapshot) {
         Widget child;
-        if (snapshot.hasData) {
-          OutboxAPI provider = OutboxAPI();
-
-          child = FutureBuilder<OrderedPagedCollection>(
-            future: provider.getFirstPage(snapshot.data?.outbox ?? ""),
-            builder: (BuildContext outboxContext,
-                AsyncSnapshot<OrderedPagedCollection> outboxSnapshot) {
-              Widget child;
-              if (outboxSnapshot.hasData) {
-                child = ProfileMain(
-                  outboxUrl: outboxSnapshot.data?.first ?? "",
-                  profileId: widget.profileId,
-                  appTitle: widget.appTitle,
-                  showAppBar: widget.showAppBar,
-                );
-              } else if (outboxSnapshot.hasError) {
-                child = const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
-                );
-              } else {
-                child = const Center(
-                  child: SizedBox(
-                    width: 45,
-                    height: 45,
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-              return child;
-            },
+        if (outboxSnapshot.hasData) {
+          child = ProfileMain(
+            outboxUrl: outboxSnapshot.data!.first ?? "",
+            profileId: profileId,
+            appTitle: appTitle,
+            showAppBar: showAppBar,
           );
-        } else if (snapshot.hasError) {
+        } else if (outboxSnapshot.hasError) {
           child = const Icon(
             Icons.error_outline,
             color: Colors.red,
@@ -81,5 +49,15 @@ class _ProfileState extends State<Profile> {
         return child;
       },
     );
+  }
+
+  Future<OrderedPagedCollection> getFirstPageAsync() async {
+    ActorAPI actorProvider = ActorAPI();
+    Actor actor = await actorProvider.getActor(profileId);
+
+    OutboxAPI outboxAPI = OutboxAPI();
+    var firstPage = await outboxAPI.getFirstPage(actor.outbox!);
+    
+    return firstPage;
   }
 }
