@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guid/flutter_guid.dart';
 
 class Home extends StatelessWidget {
-  Home({
+  const Home({
     Key? key,
     required this.appTitle,
     required this.scrollController,
