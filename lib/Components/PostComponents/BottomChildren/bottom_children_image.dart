@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
-
 import '../../ProfileComponents/Gallery/photo_detail.dart';
 
 class BottomChildrenImage extends StatelessWidget {

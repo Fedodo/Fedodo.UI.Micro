@@ -6,24 +6,16 @@ import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkPreview extends StatelessWidget {
-  const LinkPreview({Key? key, required this.link}) : super(key: key);
+  const LinkPreview({
+    Key? key,
+    required this.link,
+  }) : super(key: key);
 
   final String link;
 
-  linkPreviewPressed() async {
-    bool couldLaunchUrl = await canLaunchUrl(Uri.parse(link));
-
-    if (couldLaunchUrl) {
-      launchUrl(Uri.parse(link));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    Future<Metadata?> dataFuture =
-        Future.delayed(const Duration(seconds: 1), () {
-      return MetadataFetch.extract(link.asProxyString());
-    });
+    Future<Metadata?> dataFuture = MetadataFetch.extract(link.asProxyString());
 
     var width = MediaQuery.of(context).size.width;
 
@@ -38,19 +30,13 @@ class LinkPreview extends StatelessWidget {
                 snapshot.data!.title != null &&
                 snapshot.data!.url != null &&
                 snapshot.data!.image != null) {
-              child = Stack(
-                alignment: AlignmentDirectional.bottomStart,
+              child = Column(
                 children: [
                   Ink.image(
-                    width: width,
-                    height: 200,
-                    alignment: Alignment.center,
+                    height: 150,
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                      snapshot.data!.image!.asProxyString(),
-                      maxHeight: 200,
-                      maxWidth: width.round(),
-                    ),
+                        snapshot.data!.image!.asProxyString()),
                     child: InkWell(
                       onTap: linkPreviewPressed,
                     ),
@@ -58,7 +44,7 @@ class LinkPreview extends StatelessWidget {
                   Container(
                     width: width,
                     height: 50,
-                    color: const Color.fromARGB(210, 7, 5, 5),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                       child: Column(
@@ -86,9 +72,9 @@ class LinkPreview extends StatelessWidget {
                 ],
               );
             } else if (snapshot.hasError || snapshot.hasData) {
-              child = Column(
+              child = const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(
                     Icons.error_outline,
                     color: Colors.red,
@@ -101,12 +87,26 @@ class LinkPreview extends StatelessWidget {
                 ],
               );
             } else {
-              child = Image.asset("assets/placeholder.png");
+              child = const Center(
+                child: SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
             return child;
           },
         ),
       ),
     );
+  }
+
+  linkPreviewPressed() async {
+    bool couldLaunchUrl = await canLaunchUrl(Uri.parse(link));
+
+    if (couldLaunchUrl) {
+      launchUrl(Uri.parse(link));
+    }
   }
 }
