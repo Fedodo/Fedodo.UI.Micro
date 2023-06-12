@@ -30,7 +30,7 @@ class ActorAPI {
     };
 
     String body = jsonEncode(bodyMap);
-    var response = await AuthBaseApi.post(url: Uri.parse("https://auth.$domainName/user/actors?userid=$userId"), body: body);
+    await AuthBaseApi.post(url: Uri.parse("https://auth.$domainName/user/actors?userid=$userId"), body: body);
   }
 
   Future<Actor> getActor(String actorId) async {

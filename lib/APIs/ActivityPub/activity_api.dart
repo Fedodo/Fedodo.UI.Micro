@@ -19,15 +19,13 @@ class ActivityAPI {
 
     String json = jsonEncode(body);
 
-    var result = await AuthBaseApi.post(
+    await AuthBaseApi.post(
       url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       body: json,
       headers: <String, String>{
         "content-type": "application/json",
       },
     );
-
-    var bodyString = result.body;
   }
 
   void post(String content, String? inReplyTo) async {
@@ -48,15 +46,13 @@ class ActivityAPI {
 
     String json = jsonEncode(body);
 
-    var result = await AuthBaseApi.post(
+    await AuthBaseApi.post(
       url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       headers: <String, String>{
         "content-type": "application/json",
       },
       body: json,
     );
-
-    var bodyString = result.body;
   }
 
   Future<Activity<Post>> getActivity(String activityId) async {

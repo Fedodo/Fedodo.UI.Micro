@@ -1,6 +1,3 @@
-import 'package:fedodo_micro/Models/ActivityPub/link.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
-
 class CollectionPage{
   final dynamic context;
   final String type;

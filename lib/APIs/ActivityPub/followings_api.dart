@@ -25,7 +25,6 @@ class FollowingsAPI {
       },
     );
 
-    String jsonString = response.body;
     OrderedPagedCollection collection = OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
   }
@@ -70,7 +69,5 @@ class FollowingsAPI {
 
       url = collection.next!;
     } while (true);
-
-    return false;
   }
 }

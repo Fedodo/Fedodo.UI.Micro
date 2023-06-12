@@ -41,8 +41,6 @@ class SharesAPI {
 
       url = collection.next!;
     } while (true);
-
-    return false;
   }
 
   void share(String postId) async {
@@ -54,14 +52,12 @@ class SharesAPI {
 
     String json = jsonEncode(body);
 
-    var result = await AuthBaseApi.post(
+    await AuthBaseApi.post(
       url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       headers: <String, String>{
         "content-type": "application/json",
       },
       body: json,
     );
-
-    var bodyString = result.body;
   }
 }

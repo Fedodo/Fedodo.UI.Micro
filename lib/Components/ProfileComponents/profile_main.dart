@@ -11,12 +11,11 @@ import 'package:flutter/material.dart';
 import '../../APIs/ActivityPub/actor_api.dart';
 import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Globals/general.dart';
-import '../../Globals/preferences.dart';
 import '../../Models/ActivityPub/actor.dart';
 import 'About/about.dart';
 
 class ProfileMain extends StatefulWidget {
-  ProfileMain({
+  const ProfileMain({
     Key? key,
     this.showAppBar = true,
     required this.profileId,
@@ -27,11 +26,7 @@ class ProfileMain extends StatefulWidget {
   final String profileId;
   final String appTitle;
   final String outboxUrl;
-
-  int? postCount;
-  int? followingCount;
-  int? followersCount;
-  bool showAppBar = true;
+  final bool showAppBar;
 
   @override
   State<ProfileMain> createState() => _ProfileMainState();
@@ -43,6 +38,10 @@ class _ProfileMainState extends State<ProfileMain>
   late final ActorAPI actorProvider = ActorAPI();
   late final Future<Actor> actorFuture =
       actorProvider.getActor(widget.profileId);
+
+  int? postCount;
+  int? followingCount;
+  int? followersCount;
 
   @override
   void initState() {
@@ -58,15 +57,13 @@ class _ProfileMainState extends State<ProfileMain>
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          if (widget.followersCount == null &&
-              snapshot.data?.followers != null) {
+          if (followersCount == null && snapshot.data?.followers != null) {
             setFollowers(snapshot.data!.followers!);
           }
-          if (widget.followingCount == null &&
-              snapshot.data?.following != null) {
+          if (followingCount == null && snapshot.data?.following != null) {
             setFollowings(snapshot.data!.following!);
           }
-          if (widget.postCount == null) {
+          if (postCount == null) {
             setPosts(snapshot.data!.outbox!);
           }
 
@@ -75,13 +72,14 @@ class _ProfileMainState extends State<ProfileMain>
               delegate: SliverChildListDelegate(
                 [
                   ProfilePictureDetail(
-                    followersCount: widget.followersCount ?? 0,
-                    followingCount: widget.followingCount ?? 0,
+                    followersCount: followersCount ?? 0,
+                    followingCount: followingCount ?? 0,
                     iconUrl: snapshot.data!.icon?.url,
-                    postsCount: widget.postCount ?? 0,
+                    postsCount: postCount ?? 0,
                   ),
                   ProfileNameRow(
-                    profileButtonState: getProfileButtonState(snapshot.data!),
+                    profileButtonInitialState:
+                        getProfileButtonState(snapshot.data!),
                     preferredUsername: snapshot.data!.preferredUsername!,
                     userId: snapshot.data!.id!,
                     name: snapshot.data!.name,
@@ -188,8 +186,8 @@ class _ProfileMainState extends State<ProfileMain>
       return ProfileButtonState.ownProfile;
     } else {
       FollowingsAPI followingsAPI = FollowingsAPI();
-      var isFollowed = await followingsAPI.isFollowed(
-          widget.profileId, General.fullActorId);
+      var isFollowed =
+          await followingsAPI.isFollowed(widget.profileId, General.fullActorId);
       if (isFollowed) {
         return ProfileButtonState.subscribed;
       } else {
@@ -204,7 +202,7 @@ class _ProfileMainState extends State<ProfileMain>
         await followersProvider.getFollowers(followersString);
 
     setState(() {
-      widget.followersCount = followersCollection.totalItems;
+      followersCount = followersCollection.totalItems;
     });
   }
 
@@ -214,7 +212,7 @@ class _ProfileMainState extends State<ProfileMain>
         await followersProvider.getFollowings(followingsString);
 
     setState(() {
-      widget.followingCount = followingCollection.totalItems;
+      followingCount = followingCollection.totalItems;
     });
   }
 
@@ -225,7 +223,7 @@ class _ProfileMainState extends State<ProfileMain>
         await outboxProvider.getFirstPage(outboxUrl);
 
     setState(() {
-      widget.postCount = orderedPagedCollection.totalItems;
+      postCount = orderedPagedCollection.totalItems;
     });
   }
 

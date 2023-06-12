@@ -3,26 +3,31 @@ import 'package:fedodo_micro/Enums/profile_button_state.dart';
 import 'package:flutter/material.dart';
 
 class ProfileNameRow extends StatefulWidget {
-  ProfileNameRow({
+  const ProfileNameRow({
     Key? key,
     required this.preferredUsername,
     required this.userId,
     required this.name,
-    required this.profileButtonState,
+    required this.profileButtonInitialState,
   }) : super(key: key);
 
   final String preferredUsername;
   final String userId;
   final String? name;
-  Future<ProfileButtonState> profileButtonState;
+  final Future<ProfileButtonState> profileButtonInitialState;
 
   @override
   State<ProfileNameRow> createState() => _ProfileNameRowState();
 }
 
 class _ProfileNameRowState extends State<ProfileNameRow> {
+  late Future<ProfileButtonState> profileButtonState;
+
   @override
   Widget build(BuildContext context) {
+
+    profileButtonState = widget.profileButtonInitialState;
+
     String fullUserName =
         "@${widget.preferredUsername}@${Uri.parse(widget.userId).authority}";
 
@@ -54,7 +59,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
           Column(
             children: [
               FutureBuilder<ProfileButtonState>(
-                future: widget.profileButtonState,
+                future: profileButtonState,
                 builder: (BuildContext context,
                     AsyncSnapshot<ProfileButtonState> snapshot) {
                   Widget child;
@@ -83,7 +88,7 @@ class _ProfileNameRowState extends State<ProfileNameRow> {
                             activityApi.follow(Uri.parse(widget.userId));
 
                             setState(() {
-                              widget.profileButtonState = Future.sync(
+                              profileButtonState = Future.sync(
                                   () => ProfileButtonState.subscribed);
                             });
                           },
