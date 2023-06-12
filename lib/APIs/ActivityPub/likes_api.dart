@@ -13,7 +13,6 @@ class LikesAPI{
     http.Response response =
     await http.get(Uri.parse(formattedUrl), headers: <String, String>{});
 
-    String jsonString = response.body;
     OrderedPagedCollection collection =
     OrderedPagedCollection.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return collection;
@@ -40,8 +39,6 @@ class LikesAPI{
 
       url = collection.next!;
     } while (true);
-
-    return false;
   }
 
   void like(String postId) async {
@@ -53,14 +50,12 @@ class LikesAPI{
 
     String json = jsonEncode(body);
 
-    var result = await AuthBaseApi.post(
+    await AuthBaseApi.post(
       url: Uri.parse("https://${Preferences.prefs!.getString("DomainName")}/outbox/${General.actorId}"),
       headers: <String, String>{
         "content-type": "application/json",
       },
       body: json,
     );
-
-    var bodyString = result.body;
   }
 }

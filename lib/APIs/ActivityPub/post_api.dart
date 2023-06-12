@@ -18,8 +18,6 @@ class PostAPI {
         headers: <String, String>{"Accept": "application/json"},
       );
 
-      String jsonString = response.body;
-
       Post post = Post.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       return post;
     } catch (ex) {

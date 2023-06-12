@@ -3,16 +3,25 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 class General {
   static String get fullActorId {
-    var actorIds = getActorIds();
-
-    return "https://${Preferences.prefs!.getString("DomainName")}/actor/${actorIds.first}"; // TODO
+    return "https://${Preferences.prefs!.getString("DomainName")}/actor/$actorId";
   }
 
   static String get actorId {
-    var actorIds = getActorIds();
+    String? currentActorId = Preferences.prefs!.getString("CurrentActorId");
 
-    return actorIds.first; // TODO
+    if(currentActorId == null){
+      var temp = getActorIds().first;
+      actorId = temp;
+      return temp;
+    }
+    
+    return currentActorId;
   }
+
+  static set actorId(String selectedId) {
+    Preferences.prefs!.setString("CurrentActorId", selectedId);
+  }
+
 
   static List<String> getActorIds(){
     Map<String, dynamic> decodedToken = JwtDecoder.decode(Preferences.prefs!.getString(

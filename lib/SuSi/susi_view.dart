@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:fedodo_micro/SuSi/APIs/application_registration.dart';
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import '../Globals/preferences.dart';
 import '../home.dart';
 import 'APIs/login_manager.dart';
@@ -93,7 +92,7 @@ class SuSiView extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Home(),
+        builder: (context) => const Home(),
       ),
     );
   }

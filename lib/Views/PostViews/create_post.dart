@@ -9,7 +9,7 @@ import '../../Globals/general.dart';
 import '../../Models/ActivityPub/actor.dart';
 
 class CreatePostView extends StatefulWidget {
-  CreatePostView({
+  const CreatePostView({
     Key? key,
     required this.appTitle,
     this.inReplyToActor,
@@ -17,17 +17,15 @@ class CreatePostView extends StatefulWidget {
   }) : super(key: key);
 
   final String appTitle;
-
-  String? inReplyToPost;
-  String? inReplyToActor;
-  Function()? buttonFunction;
+  final String? inReplyToPost;
+  final String? inReplyToActor;
 
   @override
   State<CreatePostView> createState() => _CreatePostViewState();
 }
 
 class _CreatePostViewState extends State<CreatePostView> {
-
+  Function()? buttonFunction;
   final TextEditingController _controller = TextEditingController();
 
   bool emojiShowing = false;
@@ -97,7 +95,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                 recentsLimit: 28,
                 replaceEmojiOnLimitExceed: false,
                 noRecents: const Text(
-                  'No Recents',
+                  'No Recent',
                   style: TextStyle(fontSize: 20, color: Colors.black26),
                   textAlign: TextAlign.center,
                 ),
@@ -157,7 +155,7 @@ class _CreatePostViewState extends State<CreatePostView> {
         ),
         actions: [
           ElevatedButton(
-            onPressed: widget.buttonFunction,
+            onPressed: buttonFunction,
             child: const Text("Publish"),
           ),
         ],
@@ -171,7 +169,7 @@ class _CreatePostViewState extends State<CreatePostView> {
   void setButtonFunction(String text){
     if (text != "") {
       setState(() {
-        widget.buttonFunction = () {
+        buttonFunction = () {
           ActivityAPI activityHandler = ActivityAPI();
           activityHandler.post(text, widget.inReplyToPost);
 
@@ -180,7 +178,7 @@ class _CreatePostViewState extends State<CreatePostView> {
       });
     } else {
       setState(() {
-        widget.buttonFunction = null;
+        buttonFunction = null;
       });
     }
   }
