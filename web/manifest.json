@@ -1,6 +1,6 @@
 {
-    "name": "fedodo_micro",
-    "short_name": "fedodo_micro",
+    "name": "Fedodo Micro",
+    "short_name": "Micro",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
