@@ -1,9 +1,6 @@
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
+import 'package:activitypub/activitypub.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_main.dart';
 import 'package:flutter/material.dart';
-import '../../APIs/ActivityPub/outbox_api.dart';
-import '../../Models/ActivityPub/actor.dart';
 
 class Profile extends StatelessWidget {
   const Profile({

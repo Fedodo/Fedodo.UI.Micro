@@ -1,14 +1,9 @@
+import 'package:activitypub/activitypub.dart';
 import 'package:fedodo_micro/Components/PostComponents/icon_bar.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/shares_api.dart';
-import 'package:fedodo_micro/Models/ActivityPub/activity.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import '../../Models/ActivityPub/post.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({

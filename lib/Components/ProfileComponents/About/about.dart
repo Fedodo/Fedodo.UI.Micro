@@ -1,7 +1,7 @@
+import 'package:activitypub/Models/actor.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/About/about_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../Models/ActivityPub/actor.dart';
 
 class About extends StatelessWidget {
   const About({

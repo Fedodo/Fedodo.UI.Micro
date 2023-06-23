@@ -1,4 +1,4 @@
-import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
+import 'package:activitypub/activitypub.dart';
 import 'package:fedodo_micro/Enums/profile_button_state.dart';
 import 'package:flutter/material.dart';
 

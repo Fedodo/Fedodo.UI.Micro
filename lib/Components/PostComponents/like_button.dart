@@ -1,9 +1,9 @@
+import 'package:activitypub/APIs/likes_api.dart';
+import 'package:activitypub/Models/activity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../APIs/ActivityPub/likes_api.dart';
-import '../../Models/ActivityPub/activity.dart';
 
 class LikeButton extends StatefulWidget {
   const LikeButton({

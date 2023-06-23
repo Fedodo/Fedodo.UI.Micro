@@ -1,10 +1,8 @@
+import 'package:activitypub/activitypub.dart';
 import 'package:fedodo_micro/Components/PostComponents/BottomChildren/bottom_children_image.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
 import 'package:fedodo_micro/Components/PostComponents/user_header.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
-import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
-import 'package:fedodo_micro/Models/ActivityPub/post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
 import 'package:fedodo_micro/Components/PostComponents/link_preview.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +12,6 @@ import "package:html/dom.dart" as dom;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:html/parser.dart' as htmlparser;
-import '../../Models/ActivityPub/activity.dart';
 
 class PostView extends StatelessWidget {
   const PostView({

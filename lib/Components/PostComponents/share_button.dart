@@ -1,9 +1,8 @@
+import 'package:activitypub/activitypub.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../APIs/ActivityPub/shares_api.dart';
-import '../../Models/ActivityPub/activity.dart';
 
 class ShareButton extends StatefulWidget {
   const ShareButton({

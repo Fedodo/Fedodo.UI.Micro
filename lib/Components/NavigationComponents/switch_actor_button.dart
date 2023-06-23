@@ -1,10 +1,10 @@
+import 'package:activitypub/APIs/actor_api.dart';
+import 'package:activitypub/Models/actor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Components/NavigationComponents/custom_popup_menu_item.dart';
 import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:fedodo_micro/Globals/general.dart';
 import 'package:fedodo_micro/Globals/preferences.dart';
-import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
 import 'package:fedodo_micro/Views/create_actor_view.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';

@@ -1,5 +1,5 @@
+import 'package:activitypub/APIs/actor_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
 import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:flutter/material.dart';

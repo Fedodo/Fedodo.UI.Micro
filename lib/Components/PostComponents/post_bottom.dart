@@ -1,3 +1,4 @@
+import 'package:activitypub/Models/activity.dart';
 import 'package:fedodo_micro/Components/PostComponents/like_button.dart';
 import 'package:fedodo_micro/Components/PostComponents/share_button.dart';
 import 'package:flutter/foundation.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../Models/ActivityPub/activity.dart';
 import '../../Views/PostViews/create_post.dart';
 
 class PostBottom extends StatelessWidget {

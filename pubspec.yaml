@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  activitypub: ^1.1.0
   shared_preferences: ^2.0.17
   oauth2_client: ^3.0.0
   http: ^0.13.5

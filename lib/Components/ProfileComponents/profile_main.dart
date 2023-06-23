@@ -1,17 +1,12 @@
+import 'package:activitypub/activitypub.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/Gallery/gallery.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/followers_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/followings_api.dart';
 import 'package:fedodo_micro/Enums/profile_button_state.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:flutter/material.dart';
-import '../../APIs/ActivityPub/actor_api.dart';
-import '../../APIs/ActivityPub/outbox_api.dart';
 import '../../Globals/general.dart';
-import '../../Models/ActivityPub/actor.dart';
 import 'About/about.dart';
 
 class ProfileMain extends StatefulWidget {
