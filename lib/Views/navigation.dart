@@ -1,4 +1,5 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:fedodo_general/Globals/preferences.dart';
 import 'package:fedodo_micro/Components/NavigationComponents/switch_actor_button.dart';
 import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
@@ -6,7 +7,6 @@ import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
 import 'package:flutter/material.dart';
 import '../Globals/general.dart';
-import '../Globals/preferences.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({

@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:fedodo_micro/Extensions/url_extensions.dart';
+import 'package:activitypub/Extensions/url_extensions.dart';
 import 'package:http/http.dart' as http;
 
 class WebfingerApi {

@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:activitypub/Extensions/string_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';

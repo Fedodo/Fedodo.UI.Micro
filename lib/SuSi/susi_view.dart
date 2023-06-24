@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:fedodo_general/Globals/preferences.dart';
 import 'package:fedodo_micro/SuSi/APIs/application_registration.dart';
 import 'package:flutter/material.dart';
-import '../Globals/preferences.dart';
 import '../home.dart';
 import 'APIs/login_manager.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;

@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:activitypub/Extensions/string_extensions.dart';
+import 'package:activitypub/Extensions/url_extensions.dart';
 import 'package:activitypub/config.dart';
-import 'package:fedodo_micro/Extensions/string_extensions.dart';
-import 'package:fedodo_micro/Extensions/url_extensions.dart';
+import 'package:fedodo_general/Globals/preferences.dart';
 import 'package:fedodo_micro/Globals/general.dart';
-import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:fedodo_micro/SuSi/APIs/login_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

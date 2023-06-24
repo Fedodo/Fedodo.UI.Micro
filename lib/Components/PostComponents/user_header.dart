@@ -1,6 +1,6 @@
+import 'package:activitypub/Extensions/string_extensions.dart';
 import 'package:activitypub/activitypub.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_micro/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Views/NavigationViews/profile.dart';

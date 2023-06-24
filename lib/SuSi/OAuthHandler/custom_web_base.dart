@@ -1,5 +1,5 @@
+import 'package:fedodo_general/Globals/preferences.dart';
 import 'package:fedodo_micro/Globals/auth.dart';
-import 'package:fedodo_micro/Globals/preferences.dart';
 import 'package:oauth2_client/interfaces.dart';
 import 'dart:html' as html;
 
