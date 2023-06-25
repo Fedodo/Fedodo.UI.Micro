@@ -1,9 +1,9 @@
-import 'package:activitypub/Extensions/url_extensions.dart';
 import 'package:activitypub/activitypub.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/Gallery/photo_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:fedodo_general/Extensions/url_extensions.dart';
 
 class Gallery extends StatefulWidget {
   const Gallery({
@@ -91,7 +91,7 @@ class _GalleryState extends State<Gallery> {
         builderDelegate: PagedChildBuilderDelegate<Document>(
           itemBuilder: (context, item, index) => Ink.image(
             image: CachedNetworkImageProvider(
-              item.url?.asProxyUri().toString() ?? "", // TODO Handle null
+              item.url?.asFedodoProxyUri().toString() ?? "", // TODO Handle null
             ),
             child: InkWell(
               onTap: () {
@@ -104,7 +104,7 @@ class _GalleryState extends State<Gallery> {
                     pageBuilder: (context, animation, animation2) =>
                         PhotoDetail(
                       title: widget.appTitle,
-                      url: item.url?.asProxyUri().toString() ??
+                      url: item.url?.asFedodoProxyUri().toString() ??
                           "", // TODO Handle null
                     ),
                     transitionsBuilder:

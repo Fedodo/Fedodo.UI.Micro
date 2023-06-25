@@ -1,7 +1,7 @@
 import 'package:activitypub/APIs/actor_api.dart';
-import 'package:activitypub/Extensions/string_extensions.dart';
 import 'package:activitypub/Models/actor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedodo_general/Extensions/string_extensions.dart';
 import 'package:fedodo_general/Globals/preferences.dart';
 import 'package:fedodo_micro/Components/NavigationComponents/custom_popup_menu_item.dart';
 import 'package:fedodo_micro/Globals/general.dart';
@@ -80,9 +80,9 @@ class _SwitchActorButtonState extends State<SwitchActorButton> {
                           .first
                           .icon
                           ?.url
-                          .asProxyString() ??
+                          .asFedodoProxyString() ??
                       "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
-                          .asProxyString(),
+                          .asFedodoProxyString(),
                 ),
               ),
               itemBuilder: (BuildContext context) {
@@ -103,9 +103,10 @@ class _SwitchActorButtonState extends State<SwitchActorButton> {
                             child: CachedNetworkImage(
                               width: 30,
                               height: 30,
-                              imageUrl: element.icon?.url.asProxyString() ??
+                              imageUrl: element.icon?.url
+                                      .asFedodoProxyString() ??
                                   "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
-                                      .asProxyString(),
+                                      .asFedodoProxyString(),
                             ),
                           ),
                           Padding(

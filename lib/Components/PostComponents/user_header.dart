@@ -1,6 +1,6 @@
-import 'package:activitypub/Extensions/string_extensions.dart';
 import 'package:activitypub/activitypub.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedodo_general/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../Views/NavigationViews/profile.dart';
@@ -49,9 +49,9 @@ class UserHeader extends StatelessWidget {
                       width: 45,
                       height: 45,
                       imageUrl: snapshot.data?.icon?.url != null
-                          ? snapshot.data!.icon!.url.asProxyString()
+                          ? snapshot.data!.icon!.url.asFedodoProxyString()
                           : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
-                              .asProxyString(),
+                              .asFedodoProxyString(),
                     ),
                   ),
                   Padding(
@@ -60,7 +60,8 @@ class UserHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          snapshot.data!.name ?? snapshot.data!.preferredUsername!,
+                          snapshot.data!.name ??
+                              snapshot.data!.preferredUsername!,
                           style: const TextStyle(fontSize: 17),
                         ),
                         Text(

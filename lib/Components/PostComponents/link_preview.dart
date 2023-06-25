@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:activitypub/Extensions/string_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedodo_general/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,7 +15,8 @@ class LinkPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<Metadata?> dataFuture = MetadataFetch.extract(link.asProxyString());
+    Future<Metadata?> dataFuture =
+        MetadataFetch.extract(link.asFedodoProxyString());
 
     var width = MediaQuery.of(context).size.width;
 
@@ -36,7 +37,7 @@ class LinkPreview extends StatelessWidget {
                     height: 150,
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                        snapshot.data!.image!.asProxyString()),
+                        snapshot.data!.image!.asFedodoProxyString()),
                     child: InkWell(
                       onTap: linkPreviewPressed,
                     ),

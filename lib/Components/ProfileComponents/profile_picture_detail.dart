@@ -1,4 +1,4 @@
-import 'package:activitypub/Extensions/string_extensions.dart';
+import 'package:fedodo_general/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePictureDetail extends StatefulWidget {
@@ -34,9 +34,9 @@ class _ProfilePictureDetailState extends State<ProfilePictureDetail> {
                   width: 80,
                   height: 80,
                   widget.iconUrl != null
-                      ? widget.iconUrl!.asProxyString()
+                      ? widget.iconUrl!.asFedodoProxyString()
                       : "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
-                          .asProxyString(),
+                          .asFedodoProxyString(),
                 ),
               ),
             ],

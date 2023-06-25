@@ -1,5 +1,5 @@
-import 'package:activitypub/Extensions/string_extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fedodo_general/Extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import '../../ProfileComponents/Gallery/photo_detail.dart';
 
@@ -17,10 +17,9 @@ class BottomChildrenImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     double padding = 4;
 
-    if(noPadding){
+    if (noPadding) {
       padding = 0;
     }
 
@@ -31,7 +30,7 @@ class BottomChildrenImage extends StatelessWidget {
           height: 200,
           child: Ink.image(
             fit: BoxFit.cover,
-            image: CachedNetworkImageProvider(url.asProxyString()),
+            image: CachedNetworkImageProvider(url.asFedodoProxyString()),
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -41,7 +40,8 @@ class BottomChildrenImage extends StatelessWidget {
                     reverseTransitionDuration:
                         const Duration(milliseconds: 300),
                     pageBuilder: (context, animation, animation2) =>
-                        PhotoDetail(title: appTitle, url: url.asProxyString()),
+                        PhotoDetail(
+                            title: appTitle, url: url.asFedodoProxyString()),
                     transitionsBuilder:
                         (context, animation, animation2, widget) =>
                             SlideTransition(

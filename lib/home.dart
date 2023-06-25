@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:activitypub/Extensions/string_extensions.dart';
-import 'package:activitypub/Extensions/url_extensions.dart';
 import 'package:activitypub/config.dart';
+import 'package:fedodo_general/Extensions/string_extensions.dart';
+import 'package:fedodo_general/Extensions/url_extensions.dart';
 import 'package:fedodo_general/Globals/preferences.dart';
 import 'package:fedodo_micro/Globals/general.dart';
 import 'package:fedodo_micro/SuSi/APIs/login_manager.dart';
@@ -18,10 +18,10 @@ class Home extends StatelessWidget {
     Config.domainName = Preferences.prefs?.getString("DomainName");
     Config.ownActorId = General.actorId;
     Config.asProxyString = (String value) {
-      return value.asProxyString();
+      return value.asFedodoProxyString();
     };
     Config.asProxyUri = (Uri value) {
-      return value.asProxyUri();
+      return value.asFedodoProxyUri();
     };
     Config.refreshAccessToken = () async {
       LoginManager loginManager = LoginManager(!kIsWeb && Platform.isAndroid);

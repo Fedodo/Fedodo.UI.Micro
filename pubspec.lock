@@ -133,10 +133,10 @@ packages:
     dependency: "direct main"
     description:
       name: fedodo_general
-      sha256: "233800e875590352f11e5ca2ac257d054fdb6589d91745acefc4cc69bdc8fc25"
+      sha256: "548daedd96a87f5cf17462333e34376ec86e14a763519b4b54e3a812429aeb13"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   ffi:
     dependency: transitive
     description:
