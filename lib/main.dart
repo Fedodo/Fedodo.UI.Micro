@@ -1,14 +1,15 @@
+import 'package:fedodo_general/Globals/auth.dart';
 import 'package:fedodo_general/Globals/preferences.dart';
-import 'package:fedodo_micro/Globals/auth.dart';
+import 'package:fedodo_general/SuSi/susi_view.dart';
 import 'package:fedodo_micro/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
-import 'SuSi/susi_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences.getInstance().then( // Put this into the general package
+  SharedPreferences.getInstance().then(
+    // Put this into the general package
     (value) {
       Preferences.prefs = value;
 
@@ -30,8 +31,8 @@ class FedodoMicro extends StatelessWidget {
 
     return MaterialApp(
       title: title,
-      onGenerateRoute: (settings){
-        if(settings.name?.contains("code") ?? false){
+      onGenerateRoute: (settings) {
+        if (settings.name?.contains("code") ?? false) {
           AuthGlobals.appLoginCodeRoute = settings.name;
         }
 
@@ -76,6 +77,7 @@ class FedodoMicro extends StatelessWidget {
               Preferences.prefs!.getString("AccessToken") == null
           ? SuSiView(
               title: title,
+              returnToWidget: const Home(),
             )
           : const Home(),
     );
