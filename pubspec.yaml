@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   activitypub: ^1.1.2
-  fedodo_general: ^1.1.0
+  fedodo_general: ^1.2.0
 
   flutter_html: ^3.0.0-beta.1
   font_awesome_flutter: ^10.3.0
@@ -40,14 +40,14 @@ flutter:
   fonts:
     - family: Roboto
       fonts:
-        - asset: fonts/Roboto/Roboto-Regular.ttf
-        - asset: fonts/Roboto/Roboto-Black.ttf
+        - asset: packages/fedodo_general/Fonts/Roboto/Roboto-Regular.ttf
+        - asset: packages/fedodo_general/Fonts/Roboto/Roboto-Black.ttf
     - family: NotoColorEmoji
       fonts:
-        - asset: fonts/NotoColorEmoji-Regular.ttf
+        - asset: packages/fedodo_general/Fonts/NotoColorEmoji-Regular.ttf
     - family: Righteous
       fonts:
-        - asset: fonts/Righteous-Regular.ttf
+        - asset: packages/fedodo_general/Fonts/Righteous-Regular.ttf
   uses-material-design: true
 
   assets:
