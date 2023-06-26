@@ -1,4 +1,4 @@
-import 'package:fedodo_micro/APIs/webfinger_api.dart';
+import 'package:activitypub/APIs/ActivityPubRelated/webfinger_api.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:flutter/material.dart';
 
