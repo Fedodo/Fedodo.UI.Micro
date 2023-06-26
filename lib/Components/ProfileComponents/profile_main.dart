@@ -1,4 +1,5 @@
 import 'package:activitypub/activitypub.dart';
+import 'package:fedodo_general/Globals/general.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/Gallery/gallery.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
@@ -6,7 +7,6 @@ import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
 import 'package:fedodo_micro/Enums/profile_button_state.dart';
 import 'package:flutter/material.dart';
-import '../../Globals/general.dart';
 import 'About/about.dart';
 
 class ProfileMain extends StatefulWidget {
