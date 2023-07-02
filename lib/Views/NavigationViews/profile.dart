@@ -1,16 +1,15 @@
 import 'package:activitypub/activitypub.dart';
+import 'package:fedodo_general/Globals/general.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_main.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
   const Profile({
     Key? key,
-    required this.appTitle,
     required this.profileId,
     required this.showAppBar,
   }) : super(key: key);
 
-  final String appTitle;
   final String profileId;
   final bool showAppBar;
 
@@ -25,7 +24,7 @@ class Profile extends StatelessWidget {
           child = ProfileMain(
             outboxUrl: outboxSnapshot.data!.first ?? "",
             profileId: profileId,
-            appTitle: appTitle,
+            appTitle: General.appName,
             showAppBar: showAppBar,
           );
         } else if (outboxSnapshot.hasError) {

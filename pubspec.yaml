@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   activitypub: ^1.2.0
-  fedodo_general: ^1.6.3
+  fedodo_general: ^1.6.5
 
   flutter_html: ^3.0.0-beta.1
   font_awesome_flutter: ^10.3.0

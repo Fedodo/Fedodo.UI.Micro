@@ -140,7 +140,6 @@ class UserHeader extends StatelessWidget {
         reverseTransitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, animation, animation2) => Profile(
           profileId: profileId,
-          appTitle: appTitle,
           showAppBar: true,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>

@@ -1,10 +1,10 @@
 import 'package:fedodo_general/Globals/general.dart';
 import 'package:fedodo_general/Globals/preferences.dart';
+import 'package:fedodo_general/Widgets/search.dart';
 import 'package:fedodo_general/navigation.dart' as general;
 import 'package:fedodo_micro/Components/NavigationComponents/switch_actor_button.dart';
 import 'package:fedodo_micro/Views/NavigationViews/home.dart';
 import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
-import 'package:fedodo_micro/Views/NavigationViews/search.dart';
 import 'package:fedodo_micro/Views/PostViews/create_post.dart';
 import 'package:flutter/material.dart';
 
@@ -42,11 +42,15 @@ class _NavigationState extends State<Navigation> {
           firstPage: firstPage,
         ),
         Search(
-          appTitle: widget.title,
+          getProfile: (String profileId) {
+            return Profile(
+              profileId: profileId,
+              showAppBar: true,
+            );
+          },
         ),
         Profile(
           key: Key(profileId),
-          appTitle: widget.title,
           profileId: profileId,
           showAppBar: false,
         ),
