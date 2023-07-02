@@ -1,11 +1,7 @@
 import 'package:activitypub/activitypub.dart';
-import 'package:fedodo_general/Globals/general.dart';
+import 'package:fedodo_general/widgets/profile/profile_head.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/Gallery/gallery.dart';
-import 'package:fedodo_micro/Components/ProfileComponents/profile_description.dart';
-import 'package:fedodo_micro/Components/ProfileComponents/profile_name_row.dart';
-import 'package:fedodo_micro/Components/ProfileComponents/profile_picture_detail.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_list.dart';
-import 'package:fedodo_micro/Enums/profile_button_state.dart';
 import 'package:flutter/material.dart';
 import 'About/about.dart';
 
@@ -27,16 +23,11 @@ class ProfileMain extends StatefulWidget {
   State<ProfileMain> createState() => _ProfileMainState();
 }
 
-class _ProfileMainState extends State<ProfileMain>
-    with TickerProviderStateMixin {
+class _ProfileMainState extends State<ProfileMain> with TickerProviderStateMixin {
   late TabController _tabController;
   late final ActorAPI actorProvider = ActorAPI();
   late final Future<Actor> actorFuture =
       actorProvider.getActor(widget.profileId);
-
-  int? postCount;
-  int? followingCount;
-  int? followersCount;
 
   @override
   void initState() {
@@ -52,35 +43,12 @@ class _ProfileMainState extends State<ProfileMain>
       builder: (BuildContext context, AsyncSnapshot<Actor> snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          if (followersCount == null && snapshot.data?.followers != null) {
-            setFollowers(snapshot.data!.followers!);
-          }
-          if (followingCount == null && snapshot.data?.following != null) {
-            setFollowings(snapshot.data!.following!);
-          }
-          if (postCount == null) {
-            setPosts(snapshot.data!.outbox!);
-          }
-
           var slivers = <Widget>[
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  ProfilePictureDetail(
-                    followersCount: followersCount ?? 0,
-                    followingCount: followingCount ?? 0,
-                    iconUrl: snapshot.data!.icon?.url,
-                    postsCount: postCount ?? 0,
-                  ),
-                  ProfileNameRow(
-                    profileButtonInitialState:
-                        getProfileButtonState(snapshot.data!),
-                    preferredUsername: snapshot.data!.preferredUsername!,
-                    userId: snapshot.data!.id!,
-                    name: snapshot.data!.name,
-                  ),
-                  ProfileDescription(
-                    htmlData: snapshot.data!.summary ?? "",
+                  ProfileHead(
+                    actor: snapshot.data!,
                   ),
                 ],
               ),
@@ -174,52 +142,6 @@ class _ProfileMainState extends State<ProfileMain>
         return child;
       },
     );
-  }
-
-  Future<ProfileButtonState> getProfileButtonState(Actor actor) async {
-    if (widget.profileId == General.fullActorId) {
-      return ProfileButtonState.ownProfile;
-    } else {
-      FollowingsAPI followingsAPI = FollowingsAPI();
-      var isFollowed =
-          await followingsAPI.isFollowed(widget.profileId, General.fullActorId);
-      if (isFollowed) {
-        return ProfileButtonState.subscribed;
-      } else {
-        return ProfileButtonState.notSubscribed;
-      }
-    }
-  }
-
-  void setFollowers(String followersString) async {
-    FollowersAPI followersProvider = FollowersAPI();
-    OrderedPagedCollection followersCollection =
-        await followersProvider.getFollowers(followersString);
-
-    setState(() {
-      followersCount = followersCollection.totalItems;
-    });
-  }
-
-  void setFollowings(String followingsString) async {
-    FollowingsAPI followersProvider = FollowingsAPI();
-    OrderedPagedCollection followingCollection =
-        await followersProvider.getFollowings(followingsString);
-
-    setState(() {
-      followingCount = followingCollection.totalItems;
-    });
-  }
-
-  void setPosts(String outboxUrl) async {
-    OutboxAPI outboxProvider = OutboxAPI();
-
-    OrderedPagedCollection orderedPagedCollection =
-        await outboxProvider.getFirstPage(outboxUrl);
-
-    setState(() {
-      postCount = orderedPagedCollection.totalItems;
-    });
   }
 
   @override
