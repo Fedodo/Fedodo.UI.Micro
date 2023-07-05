@@ -1,7 +1,7 @@
 import 'package:activitypub/APIs/actor_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_general/Extensions/string_extensions.dart';
-import 'package:fedodo_general/Globals/preferences.dart';
+import 'package:fedodo_general/extensions/string_extensions.dart';
+import 'package:fedodo_general/globals/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 

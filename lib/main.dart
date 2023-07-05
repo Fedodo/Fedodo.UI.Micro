@@ -1,4 +1,4 @@
-import 'package:fedodo_general/Globals/app_globals.dart';
+import 'package:fedodo_general/globals/app_globals.dart';
 import 'package:fedodo_micro/home.dart';
 
 void main() {

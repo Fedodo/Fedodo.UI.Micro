@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/Gallery/photo_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:fedodo_general/Extensions/url_extensions.dart';
+import 'package:fedodo_general/extensions/url_extensions.dart';
 
 class Gallery extends StatefulWidget {
   const Gallery({

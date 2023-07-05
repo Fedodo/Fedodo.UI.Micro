@@ -34,7 +34,6 @@ class _FullPostViewState extends State<FullPostView> {
         PostView(
           isClickable: false,
           activity: widget.activity,
-          appTitle: widget.appTitle,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
@@ -133,7 +132,6 @@ class _FullPostViewState extends State<FullPostView> {
               if (snapshot.hasData) {
                 child = PostView(
                   activity: snapshot.data!,
-                  appTitle: widget.appTitle,
                 );
               } else if (snapshot.hasError) {
                 child = const Icon(

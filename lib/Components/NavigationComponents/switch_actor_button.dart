@@ -1,9 +1,9 @@
 import 'package:activitypub/APIs/actor_api.dart';
 import 'package:activitypub/Models/actor.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_general/Extensions/string_extensions.dart';
-import 'package:fedodo_general/Globals/general.dart';
-import 'package:fedodo_general/Globals/preferences.dart';
+import 'package:fedodo_general/extensions/string_extensions.dart';
+import 'package:fedodo_general/globals/general.dart';
+import 'package:fedodo_general/globals/preferences.dart';
 import 'package:fedodo_micro/Components/NavigationComponents/custom_popup_menu_item.dart';
 import 'package:fedodo_micro/Views/create_actor_view.dart';
 import 'package:flutter/material.dart';

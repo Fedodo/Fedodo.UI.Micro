@@ -135,7 +135,6 @@ class _PostListState extends State<PostList> {
         builderDelegate: PagedChildBuilderDelegate<Activity<Post>>(
           itemBuilder: (context, item, index) => PostView(
             activity: item,
-            appTitle: widget.appTitle,
           ),
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:activitypub/activitypub.dart';
-import 'package:fedodo_general/Globals/general.dart';
+import 'package:fedodo_general/globals/general.dart';
 import 'package:fedodo_micro/Components/ProfileComponents/profile_main.dart';
 import 'package:flutter/material.dart';
 

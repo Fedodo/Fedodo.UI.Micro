@@ -1,5 +1,5 @@
-import 'package:fedodo_general/Globals/general.dart';
-import 'package:fedodo_general/Globals/preferences.dart';
+import 'package:fedodo_general/globals/general.dart';
+import 'package:fedodo_general/globals/preferences.dart';
 import 'package:fedodo_general/navigation.dart' as general;
 import 'package:fedodo_general/widgets/search.dart';
 import 'package:fedodo_micro/Components/NavigationComponents/switch_actor_button.dart';
