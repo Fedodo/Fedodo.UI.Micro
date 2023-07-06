@@ -51,6 +51,7 @@ class PostView extends StatelessWidget {
       UserHeader(
         profileId: activity.object.attributedTo,
         publishedDateTime: activity.published,
+        profile: , // TODO
       ),
       Html(
         data: document.outerHtml,
@@ -92,6 +93,7 @@ class PostView extends StatelessWidget {
       ),
       PostBottom(
         activity: activity,
+        createPostView: , // TODO
       ),
       const Divider(
         thickness: 1,
