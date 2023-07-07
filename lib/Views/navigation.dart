@@ -81,9 +81,8 @@ class _NavigationState extends State<Navigation> {
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 300),
-        pageBuilder: (context, animation, animation2) => CreatePostView(
+        pageBuilder: (context, animation, animation2) => const CreatePostView(
           // post: widget.post,
-          appTitle: widget.title,
           // replies: widget.replies,
         ),
         transitionsBuilder: (context, animation, animation2, widget) =>

@@ -5,6 +5,8 @@ import 'package:fedodo_general/widgets/posts/components/post_bottom.dart';
 import 'package:fedodo_general/widgets/posts/components/user_header.dart';
 import 'package:fedodo_micro/Components/PostComponents/BottomChildren/bottom_children_image.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
+import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
+import 'package:fedodo_micro/Views/PostViews/create_post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
 import 'package:fedodo_micro/Components/PostComponents/link_preview.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +53,10 @@ class PostView extends StatelessWidget {
       UserHeader(
         profileId: activity.object.attributedTo,
         publishedDateTime: activity.published,
-        profile: , // TODO
+        profile: Profile(
+          profileId: activity.object.attributedTo,
+          showAppBar: true,
+        ),
       ),
       Html(
         data: document.outerHtml,
@@ -93,7 +98,7 @@ class PostView extends StatelessWidget {
       ),
       PostBottom(
         activity: activity,
-        createPostView: , // TODO
+        createPostView: const CreatePostView(),
       ),
       const Divider(
         thickness: 1,

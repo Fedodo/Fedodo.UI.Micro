@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   activitypub: ^1.2.0
-  fedodo_general: ^1.8.2
+  fedodo_general: ^1.8.3
 
   flutter_html: ^3.0.0-beta.1
   metadata_fetch: ^0.4.1
