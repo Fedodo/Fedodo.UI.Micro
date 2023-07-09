@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class IconBar extends StatefulWidget {
+class IconBar extends StatelessWidget {
   const IconBar({
     Key? key,
     required this.name,
@@ -13,11 +13,6 @@ class IconBar extends StatefulWidget {
   final IconData iconData;
 
   @override
-  State<IconBar> createState() => _IconBarState();
-}
-
-class _IconBarState extends State<IconBar> {
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
@@ -26,7 +21,7 @@ class _IconBarState extends State<IconBar> {
           Column(
             children: [
               Icon(
-                widget.iconData,
+                iconData,
                 size: 24.0,
               ),
             ],
@@ -37,14 +32,14 @@ class _IconBarState extends State<IconBar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.name,
+                  name,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
-                  widget.count.toString(),
+                  count.toString(),
                   style: const TextStyle(
                     fontSize: 13,
                     color: Colors.white54,

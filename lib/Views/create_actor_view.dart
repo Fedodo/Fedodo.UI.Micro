@@ -1,7 +1,7 @@
+import 'package:activitypub/APIs/actor_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
-import 'package:fedodo_micro/Extensions/string_extensions.dart';
-import 'package:fedodo_micro/Globals/preferences.dart';
+import 'package:fedodo_general/extensions/string_extensions.dart';
+import 'package:fedodo_general/globals/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -48,7 +48,7 @@ class CreateActorView extends StatelessWidget {
                         height: 160,
                         imageUrl:
                             "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010"
-                                .asProxyString(),
+                                .asFedodoProxyString(),
                       ),
                     ),
                   ),

@@ -1,10 +1,12 @@
+import 'package:activitypub/activitypub.dart';
+import 'package:fedodo_general/globals/general.dart';
+import 'package:fedodo_general/logic/vibrate.dart';
+import 'package:fedodo_general/widgets/posts/components/post_bottom.dart';
+import 'package:fedodo_general/widgets/posts/components/user_header.dart';
 import 'package:fedodo_micro/Components/PostComponents/BottomChildren/bottom_children_image.dart';
-import 'package:fedodo_micro/Components/PostComponents/post_bottom.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
-import 'package:fedodo_micro/Components/PostComponents/user_header.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
-import 'package:fedodo_micro/Models/ActivityPub/actor.dart';
-import 'package:fedodo_micro/Models/ActivityPub/post.dart';
+import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
+import 'package:fedodo_micro/Views/PostViews/create_post.dart';
 import 'package:fedodo_micro/Views/PostViews/full_post.dart';
 import 'package:fedodo_micro/Components/PostComponents/link_preview.dart';
 import 'package:flutter/material.dart';
@@ -12,20 +14,16 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import "package:html/dom.dart" as dom;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:html/parser.dart' as htmlparser;
-import '../../Models/ActivityPub/activity.dart';
 
 class PostView extends StatelessWidget {
   const PostView({
     Key? key,
     this.isClickable = true,
     required this.activity,
-    required this.appTitle,
   }) : super(key: key);
 
   final Activity<Post> activity;
-  final String appTitle;
   final bool isClickable;
 
   @override
@@ -39,7 +37,7 @@ class PostView extends StatelessWidget {
         bottomChildren.add(
           BottomChildrenImage(
             url: item.url!.toString(),
-            appTitle: appTitle,
+            appTitle: General.appName,
             noPadding: activity.object.attachment!.length != 1 ? false : true,
           ),
         );
@@ -55,7 +53,10 @@ class PostView extends StatelessWidget {
       UserHeader(
         profileId: activity.object.attributedTo,
         publishedDateTime: activity.published,
-        appTitle: appTitle,
+        profile: Profile(
+          profileId: activity.object.attributedTo,
+          showAppBar: true,
+        ),
       ),
       Html(
         data: document.outerHtml,
@@ -97,7 +98,7 @@ class PostView extends StatelessWidget {
       ),
       PostBottom(
         activity: activity,
-        appTitle: appTitle,
+        createPostView: const CreatePostView(),
       ),
       const Divider(
         thickness: 1,
@@ -205,16 +206,8 @@ class PostView extends StatelessWidget {
     return null;
   }
 
-  void feedbackSelect() async {
-    bool canVibrate = await Vibrate.canVibrate;
-
-    if (canVibrate) {
-      Vibrate.feedback(FeedbackType.selection);
-    }
-  }
-
   void openPost(BuildContext context) {
-    feedbackSelect();
+    VibrateFeedback.feedbackSelect();
 
     if (isClickable) {
       Navigator.push(
@@ -224,7 +217,7 @@ class PostView extends StatelessWidget {
           reverseTransitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, animation2) => FullPostView(
             activity: activity,
-            appTitle: appTitle,
+            appTitle: General.appName,
           ),
           transitionsBuilder: (context, animation, animation2, widget) =>
               SlideTransition(

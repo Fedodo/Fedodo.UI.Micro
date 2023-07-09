@@ -1,14 +1,9 @@
+import 'package:activitypub/activitypub.dart';
 import 'package:fedodo_micro/Components/PostComponents/icon_bar.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/likes_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/shares_api.dart';
-import 'package:fedodo_micro/Models/ActivityPub/activity.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_paged_collection.dart';
 import 'package:fedodo_micro/Views/PostViews/post.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import '../../Models/ActivityPub/post.dart';
 
 class FullPostView extends StatefulWidget {
   const FullPostView({
@@ -39,7 +34,6 @@ class _FullPostViewState extends State<FullPostView> {
         PostView(
           isClickable: false,
           activity: widget.activity,
-          appTitle: widget.appTitle,
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 8, 8),
@@ -138,7 +132,6 @@ class _FullPostViewState extends State<FullPostView> {
               if (snapshot.hasData) {
                 child = PostView(
                   activity: snapshot.data!,
-                  appTitle: widget.appTitle,
                 );
               } else if (snapshot.hasError) {
                 child = const Icon(

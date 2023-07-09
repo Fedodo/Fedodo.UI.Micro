@@ -1,11 +1,6 @@
-import 'package:fedodo_micro/APIs/ActivityPub/post_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/inbox_api.dart';
-import 'package:fedodo_micro/Models/ActivityPub/ordered_collection_page.dart';
+import 'package:activitypub/activitypub.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import '../../APIs/ActivityPub/outbox_api.dart';
-import '../../Models/ActivityPub/activity.dart';
-import '../../Models/ActivityPub/post.dart';
 import '../../Views/PostViews/post.dart';
 
 class PostList extends StatefulWidget {
@@ -140,7 +135,6 @@ class _PostListState extends State<PostList> {
         builderDelegate: PagedChildBuilderDelegate<Activity<Post>>(
           itemBuilder: (context, item, index) => PostView(
             activity: item,
-            appTitle: widget.appTitle,
           ),
         ),
       ),

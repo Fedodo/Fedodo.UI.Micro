@@ -1,22 +1,21 @@
+import 'package:activitypub/APIs/activity_api.dart';
+import 'package:activitypub/APIs/actor_api.dart';
+import 'package:activitypub/Models/actor.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:fedodo_general/globals/general.dart';
+import 'package:fedodo_general/widgets/posts/components/user_header.dart';
 import 'package:fedodo_micro/Components/PostComponents/post_head_indicator.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/activity_api.dart';
-import 'package:fedodo_micro/APIs/ActivityPub/actor_api.dart';
+import 'package:fedodo_micro/Views/NavigationViews/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../Components/PostComponents/user_header.dart';
-import '../../Globals/general.dart';
-import '../../Models/ActivityPub/actor.dart';
 
 class CreatePostView extends StatefulWidget {
   const CreatePostView({
     Key? key,
-    required this.appTitle,
     this.inReplyToActor,
     this.inReplyToPost,
   }) : super(key: key);
 
-  final String appTitle;
   final String? inReplyToPost;
   final String? inReplyToActor;
 
@@ -32,14 +31,16 @@ class _CreatePostViewState extends State<CreatePostView> {
 
   @override
   Widget build(BuildContext context) {
-
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
     List<Widget> widgets = [
       UserHeader(
         profileId: General.fullActorId,
-        appTitle: widget.appTitle,
+        profile: Profile(
+          profileId: General.fullActorId,
+          showAppBar: false,
+        ),
       ),
       Expanded(
         child: SingleChildScrollView(
@@ -61,11 +62,13 @@ class _CreatePostViewState extends State<CreatePostView> {
       ),
       Row(
         children: [
-          IconButton(onPressed: (){
-            setState(() {
-              emojiShowing = !emojiShowing;
-            });
-          }, icon: const Icon(Icons.emoji_emotions))
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  emojiShowing = !emojiShowing;
+                });
+              },
+              icon: const Icon(Icons.emoji_emotions))
         ],
       ),
       Offstage(
@@ -73,7 +76,7 @@ class _CreatePostViewState extends State<CreatePostView> {
         child: SizedBox(
             height: height * 0.5,
             child: EmojiPicker(
-              onEmojiSelected: (category, emoji){
+              onEmojiSelected: (category, emoji) {
                 setButtonFunction(_controller.text);
               },
               textEditingController: _controller,
@@ -91,7 +94,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                 skinToneDialogBgColor: Colors.white,
                 skinToneIndicatorColor: Colors.grey,
                 enableSkinTones: true,
-                showRecentsTab: true,
+                // showRecentsTab: true,
                 recentsLimit: 28,
                 replaceEmojiOnLimitExceed: false,
                 noRecents: const Text(
@@ -166,7 +169,7 @@ class _CreatePostViewState extends State<CreatePostView> {
     );
   }
 
-  void setButtonFunction(String text){
+  void setButtonFunction(String text) {
     if (text != "") {
       setState(() {
         buttonFunction = () {
@@ -182,5 +185,4 @@ class _CreatePostViewState extends State<CreatePostView> {
       });
     }
   }
-
 }
