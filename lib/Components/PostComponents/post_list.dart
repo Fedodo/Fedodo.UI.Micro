@@ -1,4 +1,5 @@
 import 'package:activitypub/activitypub.dart';
+import 'package:fedodo_general/globals/general.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../Views/PostViews/post.dart';
@@ -59,7 +60,7 @@ class _PostListState extends State<PostList> {
             PostAPI postAPI = PostAPI();
             Post? post = await postAPI.getPost(activity.object);
 
-            if (post == null){
+            if (post == null) {
               continue;
             }
 
@@ -85,7 +86,7 @@ class _PostListState extends State<PostList> {
             PostAPI postAPI = PostAPI();
             Post? post = await postAPI.getPost(activity.object);
 
-            if (post == null){
+            if (post == null) {
               continue;
             }
 
@@ -115,6 +116,7 @@ class _PostListState extends State<PostList> {
         _paginationController.appendPage(activities, nextPageKey);
       }
     } catch (error) {
+      General.logger.e(error, "An error occurred in PostList.");
       _paginationController.error = error;
     }
   }
