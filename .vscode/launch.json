@@ -8,6 +8,5 @@
       "type": "dart",
       "toolArgs": ["--web-port=8080"]
     }
-  ],
-  "env": { }
+  ]
 }
