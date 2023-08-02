@@ -57,7 +57,7 @@ class _GalleryState extends State<Gallery> {
 
           if (convertedActivity.object.attachment != null &&
               convertedActivity.object.attachment!.isNotEmpty) {
-            activities.addAll(convertedActivity.object.attachment!);
+            activities.addAll(convertedActivity.object.attachment! as dynamic);
           }
         }
       }

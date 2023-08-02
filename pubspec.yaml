@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  activitypub: ^1.2.0
+  activitypub: ^1.2.9
   fedodo_general: ^1.8.3
 
   flutter_html: ^3.0.0-beta.1

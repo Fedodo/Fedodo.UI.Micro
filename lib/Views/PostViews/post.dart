@@ -33,7 +33,7 @@ class PostView extends StatelessWidget {
     dom.Document document = htmlparser.parse(activity.object.content);
 
     if (activity.object.attachment?.isNotEmpty ?? false) {
-      for (var item in activity.object.attachment!) {
+      for (dynamic item in activity.object.attachment!) {
         bottomChildren.add(
           BottomChildrenImage(
             url: item.url!.toString(),
@@ -51,10 +51,10 @@ class PostView extends StatelessWidget {
 
     List<Widget> children = [
       UserHeader(
-        profileId: activity.object.attributedTo,
+        profileId: activity.object.attributedTo!,
         publishedDateTime: activity.published,
         profile: Profile(
-          profileId: activity.object.attributedTo,
+          profileId: activity.object.attributedTo!,
           showAppBar: true,
         ),
       ),
@@ -109,7 +109,7 @@ class PostView extends StatelessWidget {
     if (activity.object.inReplyTo != null) {
       ActorAPI actorProvider = ActorAPI();
       Future<Actor> actorFuture =
-          actorProvider.getActor(activity.object.attributedTo);
+          actorProvider.getActor(activity.object.attributedTo!);
       children.insert(
         0,
         FutureBuilder<Actor>(
