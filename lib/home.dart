@@ -29,6 +29,8 @@ class Home extends StatelessWidget {
       Config.accessToken = Preferences.prefs?.getString("AccessToken");
     };
 
+    Config.logger = General.logger;
+
     return const Navigation(title: "Fedodo Micro");
   }
 }
